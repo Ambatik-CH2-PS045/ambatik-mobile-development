@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -27,8 +28,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -36,8 +40,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,6 +50,8 @@ fun LoginScreen(
     var username by remember { mutableStateOf("") }
     var passwordLogin by remember { mutableStateOf("") }
     var showPassword by remember { mutableStateOf(value = false) }
+
+    val localFocusManager = LocalFocusManager.current
     Surface(
         color = Color(0xFF282A37),
         modifier = modifier
@@ -75,6 +79,13 @@ fun LoginScreen(
             OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { localFocusManager.moveFocus(FocusDirection.Down) }
+                ),
+                singleLine = true,
                 placeholder = {
                     Text(
                         text = "Username",
@@ -102,7 +113,14 @@ fun LoginScreen(
                 value = passwordLogin,
                 onValueChange = { passwordLogin = it },
                 visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { localFocusManager.clearFocus() }
+                ),
+                singleLine = true,
                 trailingIcon = {
                     if(showPassword){
                         IconButton(onClick = { showPassword = false }) {
@@ -141,6 +159,9 @@ fun LoginScreen(
                     focusedTextColor = Color(0xFFFFFFFF),
                     unfocusedTextColor = Color(0xFFFFFFFF),
                 ),
+                isError = passwordLogin.isNotEmpty() && !isValidPassword(
+                    passwordLogin
+                ),
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
                     .width(327.dp)
@@ -161,6 +182,10 @@ fun LoginScreen(
             }
         }
     }
+}
+
+fun isValidPassword(text: String): Boolean{
+    return text.matches(Regex(".{8,}"))
 }
 
 @Preview

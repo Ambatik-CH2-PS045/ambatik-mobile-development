@@ -1,12 +1,16 @@
 package com.example.ambatik.ui.screen.register
 
+import android.util.Patterns
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -26,9 +30,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -36,7 +46,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ambatik.ui.screen.login.LoginScreen
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,12 +58,17 @@ fun RegisterScreen(
         modifier = modifier
     ) {
         var fullname by remember { mutableStateOf("") }
+        var username by remember { mutableStateOf("") }
         var email by remember { mutableStateOf("") }
         var passwordRegister by remember { mutableStateOf("") }
-        var reTypePasswordRegister by remember { mutableStateOf("") }
-
         var showPasswordRegister by remember { mutableStateOf(value = false) }
-        var showReTypePasswordRegister by remember { mutableStateOf(value = false) }
+
+        var isValidEmpty by remember { mutableStateOf(false) }
+        var isValidEmail by remember { mutableStateOf(false) }
+        var isValidEmptyPassword by remember { mutableStateOf(value = false) }
+        var isValidPassword by remember { mutableStateOf(false) }
+
+        val localFocusManager = LocalFocusManager.current
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -78,6 +92,13 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = fullname,
                 onValueChange = { fullname = it },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { localFocusManager.moveFocus(FocusDirection.Down) }
+                ),
+                singleLine = true,
                 placeholder = {
                     Text(
                         text = "Fullname",
@@ -101,10 +122,68 @@ fun RegisterScreen(
                 modifier = Modifier
                     .width(327.dp)
             )
+            Box(
+                modifier = Modifier
+                    .width(327.dp)
+                    .padding(8.dp, 0.dp)
+            ){
+                Text(text = "")
+            }
+            OutlinedTextField(
+                value = username,
+                onValueChange = { username = it },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { localFocusManager.moveFocus(FocusDirection.Down) }
+                ),
+                singleLine = true,
+                placeholder = {
+                    Text(
+                        text = "Username",
+                        color = Color(0xFF86888D)
+                    )
+                },
+                label = {
+                    Text(
+                        text = "Username",
+                        color = Color(0xFF86888D)
+                    )
+                },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0xFF323645),
+                    unfocusedBorderColor = Color(0xFF323645),
+                    containerColor = Color(0xFF323645),
+                    focusedTextColor = Color(0xFFFFFFFF),
+                    unfocusedTextColor = Color(0xFFFFFFFF),
+                ),
+                shape = RoundedCornerShape(10.dp),
+                modifier = Modifier
+                    .width(327.dp)
+            )
+            Box(
+                modifier = Modifier
+                    .width(327.dp)
+                    .padding(8.dp, 0.dp)
+            ){
+                Text(text = "")
+            }
             OutlinedTextField(
                 value = email,
-                onValueChange = { email = it },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                onValueChange = {input ->
+                    email = input
+                    isValidEmpty = input.isNotEmpty()
+                    isValidEmail = isValidEmail(input)
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { localFocusManager.moveFocus(FocusDirection.Down) }
+                ),
+                singleLine = true,
                 placeholder = {
                     Text(
                         text = "Email",
@@ -123,16 +202,44 @@ fun RegisterScreen(
                     containerColor = Color(0xFF323645),
                     focusedTextColor = Color(0xFFFFFFFF),
                     unfocusedTextColor = Color(0xFFFFFFFF),
+                    errorTextColor = Color(0xFFFFFFFF),
                 ),
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
-                    .width(327.dp)
+                    .width(327.dp),
             )
+            Box(
+                modifier = Modifier
+                    .width(327.dp)
+                    .padding(8.dp, 0.dp)
+            ){
+                when {
+                    !isValidEmpty ->  Text(
+                        text = "Please input email",
+                        color = Color.Red
+                    )
+                    !isValidEmail ->  Text(
+                        text = "Please enter valid email",
+                        color = Color.Red
+                    )
+                    else -> Text(text = "")
+                }
+            }
             OutlinedTextField(
                 value = passwordRegister,
-                onValueChange = { passwordRegister = it },
+                onValueChange = { input ->
+                    passwordRegister = input
+                    isValidEmptyPassword = input.isNotEmpty()
+                    isValidPassword = isValidPassword(input) },
                 visualTransformation = if (showPasswordRegister) VisualTransformation.None else PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { localFocusManager.clearFocus() }
+                ),
+                singleLine = true,
                 trailingIcon = {
                     if(showPasswordRegister){
                         IconButton(onClick = { showPasswordRegister = false }) {
@@ -170,58 +277,30 @@ fun RegisterScreen(
                     containerColor = Color(0xFF323645),
                     focusedTextColor = Color(0xFFFFFFFF),
                     unfocusedTextColor = Color(0xFFFFFFFF),
+                    errorTextColor = Color(0xFFFFFFFF),
                 ),
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
                     .width(327.dp)
             )
-            OutlinedTextField(
-                value = reTypePasswordRegister,
-                onValueChange = { reTypePasswordRegister = it },
-                visualTransformation = if (showReTypePasswordRegister) VisualTransformation.None else PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                trailingIcon = {
-                    if(showReTypePasswordRegister){
-                        IconButton(onClick = { showReTypePasswordRegister = false }) {
-                            Icon(
-                                imageVector = Icons.Filled.Visibility,
-                                contentDescription = "Hide Password",
-                                tint = Color(0xFFFFFFFF)
-                            )
-                        }
-                    } else{
-                        IconButton(onClick = { showReTypePasswordRegister = true }) {
-                            Icon(
-                                imageVector = Icons.Filled.VisibilityOff,
-                                contentDescription = "Hide Password",
-                                tint = Color(0xFFFFFFFF)
-                            )
-                        }
-                    }
-                },
-                placeholder = {
-                    Text(
-                        text = "Re-Password",
-                        color = Color(0xFF86888D)
-                    )
-                },
-                label = {
-                    Text(
-                        text = "Re-Password",
-                        color = Color(0xFF86888D)
-                    )
-                },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color(0xFF323645),
-                    unfocusedBorderColor = Color(0xFF323645),
-                    containerColor = Color(0xFF323645),
-                    focusedTextColor = Color(0xFFFFFFFF),
-                    unfocusedTextColor = Color(0xFFFFFFFF),
-                ),
-                shape = RoundedCornerShape(10.dp),
+            Box(
                 modifier = Modifier
                     .width(327.dp)
-            )
+                    .padding(8.dp, 0.dp)
+            ) {
+                when {
+                    !isValidEmpty ->  Text(
+                        text = "Please input password",
+                        color = Color.Red,
+
+                        )
+                    !isValidEmail ->  Text(
+                        text = "Password minimum 8 character",
+                        color = Color.Red
+                    )
+                    else -> Text(text = "")
+                }
+            }
             Button(
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(Color(0xFF1D90F4)),
@@ -239,9 +318,17 @@ fun RegisterScreen(
     }
 }
 
+fun isValidEmail(text: String): Boolean{
+    return Patterns.EMAIL_ADDRESS.matcher(text).matches()
+}
+
+fun isValidPassword(text: String): Boolean{
+    return text.matches(Regex(".{8,}"))
+}
+
 @Preview
 @Composable
-fun PreviewLoginScreen(){
+fun PreviewSignupScreen(){
     AmbatikTheme {
         RegisterScreen()
     }
