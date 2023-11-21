@@ -40,12 +40,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
 ){
     var username by remember { mutableStateOf("") }
     var passwordLogin by remember { mutableStateOf("") }
@@ -170,7 +174,7 @@ fun LoginScreen(
             Button(
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(Color(0xFF1D90F4)),
-                onClick = { /*Ke halaman Home dan kirim data*/ },
+                onClick = { navController.navigate(Screen.Home.route) },
                 modifier = Modifier
                     .size(327.dp, 55.dp)
                     .padding(0.dp, 8.dp, 0.dp, 0.dp)

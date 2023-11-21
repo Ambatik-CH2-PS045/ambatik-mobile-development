@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.ambatik.AmbatikApp
+import com.example.ambatik.ui.screen.home.HomeScreen
 import com.example.ambatik.ui.screen.login.LoginScreen
 import com.example.ambatik.ui.screen.register.RegisterScreen
 
@@ -16,10 +17,13 @@ fun Navigation(navController: NavHostController) {
             AmbatikApp(navController = navController)
         }
         composable(Screen.Login.route){
-            LoginScreen()
+            LoginScreen(navController = navController)
         }
         composable(Screen.Register.route){
             RegisterScreen()
+        }
+        composable(Screen.Home.route){
+            HomeScreen()
         }
     }
 }
