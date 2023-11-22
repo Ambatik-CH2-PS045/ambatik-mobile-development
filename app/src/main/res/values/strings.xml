@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Ambatik</string>
     <string name="home_screen">Home</string>
-    <string name="profile_screen">profile</string>
-    <string name="quiz_screen">quiz</string>
-    <string name="scan_screen">scan</string>
-    <string name="shop_screen">shop</string>
-    <string name="articel_screen">articel</string>
+    <string name="profile_screen">Profile</string>
+    <string name="quiz_screen">Quiz</string>
+    <string name="scan_screen">Scan</string>
+    <string name="shop_screen">Shop</string>
+    <string name="articel_screen">Home</string>
 </resources>

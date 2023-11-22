@@ -1,6 +1,8 @@
 package com.example.ambatik.ui.screen.home
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -16,8 +18,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -69,9 +73,6 @@ fun HomeScreen(
                 ProfileScreen()
             }
         }
-        Surface {
-
-        }
     }
 }
 
@@ -82,6 +83,9 @@ private fun BottomBar(
 ){
     NavigationBar(
         modifier = modifier
+            .clip(
+                RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+            )
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route

@@ -58,6 +58,7 @@ fun RegisterScreen(
         modifier = modifier
     ) {
         var fullname by remember { mutableStateOf("") }
+        var numberHandphone by remember { mutableStateOf("") }
         var username by remember { mutableStateOf("") }
         var email by remember { mutableStateOf("") }
         var passwordRegister by remember { mutableStateOf("") }
@@ -108,6 +109,47 @@ fun RegisterScreen(
                 label = {
                     Text(
                         text = "Fullname",
+                        color = Color(0xFF86888D)
+                    )
+                },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0xFF323645),
+                    unfocusedBorderColor = Color(0xFF323645),
+                    containerColor = Color(0xFF323645),
+                    focusedTextColor = Color(0xFFFFFFFF),
+                    unfocusedTextColor = Color(0xFFFFFFFF),
+                ),
+                shape = RoundedCornerShape(10.dp),
+                modifier = Modifier
+                    .width(327.dp)
+            )
+            Box(
+                modifier = Modifier
+                    .width(327.dp)
+                    .padding(8.dp, 0.dp)
+            ){
+                Text(text = "")
+            }
+            OutlinedTextField(
+                value = numberHandphone,
+                onValueChange = { numberHandphone = it },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { localFocusManager.moveFocus(FocusDirection.Down) }
+                ),
+                singleLine = true,
+                placeholder = {
+                    Text(
+                        text = "No Handphone",
+                        color = Color(0xFF86888D)
+                    )
+                },
+                label = {
+                    Text(
+                        text = "No Handphone",
                         color = Color(0xFF86888D)
                     )
                 },
