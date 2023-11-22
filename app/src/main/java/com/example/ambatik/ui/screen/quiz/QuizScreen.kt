@@ -9,6 +9,7 @@ fun QuizScreen(
 
 ){
     Surface {
-        Text(text = "Profile Screen")
+        Text(text = "Quiz Screen")
     }
 }
+
