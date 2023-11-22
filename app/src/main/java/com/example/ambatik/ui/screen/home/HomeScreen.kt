@@ -1,22 +1,31 @@
 package com.example.ambatik.ui.screen.home
 
+import android.view.RoundedCorner
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Scanner
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Task
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -47,10 +56,27 @@ fun HomeScreen(
     val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
+        floatingActionButton = {
+            Box {
+                FloatingActionButton(
+                    shape = CircleShape,
+                    onClick = { navController.navigate(Screen.Scan.route) },
+                    modifier = modifier
+                        .size(75.dp)
+                        .align(Alignment.Center)
+                        .offset(y = 80.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = "FAB SCAN"
+                    )
+                }
+            }
+        },
+        floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {
             BottomBar(navController)
         },
-        modifier = modifier
     ) { innerPadding ->
         NavHost(
             navController = navController,
@@ -79,13 +105,13 @@ fun HomeScreen(
 @Composable
 private fun BottomBar(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ){
     NavigationBar(
         modifier = modifier
             .clip(
                 RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
-            )
+            ),
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -102,8 +128,8 @@ private fun BottomBar(
                 screen = Screen.Quiz
             ),
             NavigationItem(
-                title = stringResource(R.string.scan_screen),
-                icon = Icons.Default.Scanner,
+                title = "",
+                icon = null,
                 screen = Screen.Scan
             ),
             NavigationItem(
@@ -120,10 +146,12 @@ private fun BottomBar(
         navigationItems.map { item ->
             NavigationBarItem(
                 icon = {
-                    Icon(
-                        imageVector = item.icon,
-                        contentDescription = item.title
-                    )
+                    item.icon?.let {
+                        Icon(
+                            imageVector = it,
+                            contentDescription = item.title
+                        )
+                    }
                 },
                 label = { Text(item.title) },
                 selected = currentRoute == item.screen.route,

@@ -9,6 +9,7 @@ import com.example.ambatik.AmbatikApp
 import com.example.ambatik.ui.screen.home.HomeScreen
 import com.example.ambatik.ui.screen.login.LoginScreen
 import com.example.ambatik.ui.screen.register.RegisterScreen
+import com.example.ambatik.ui.screen.scan.ScanScreen
 
 @Composable
 fun Navigation(navController: NavHostController) {
@@ -24,6 +25,9 @@ fun Navigation(navController: NavHostController) {
         }
         composable(Screen.Home.route){
             HomeScreen()
+        }
+        composable(Screen.Scan.route){
+            ScanScreen()
         }
     }
 }
