@@ -1,17 +1,20 @@
 package com.example.ambatik.api.retrofit
 
+import com.example.ambatik.api.response.ResponseLogin
+import com.example.ambatik.api.response.ResponseRegister
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 interface ApiService{
-    @FormUrlEncoded
-    @POST("/user/register")
+    @POST("users/register")
     suspend fun register(
-        @Field("name") name: String,
-        @Field("email") email: String,
-        @Field("username") username: String,
-        @Field("password") password: String,
-        @Field("phone") phone: String,
-    )
+        @Body request: HashMap<String, String>
+    ): ResponseRegister
+
+    @POST("users/login")
+    suspend fun login(
+        @Body request: HashMap<String, String>
+    ): ResponseLogin
 }

@@ -1,6 +1,8 @@
 package com.example.ambatik.ui.screen.register
 
+import android.util.Log
 import android.util.Patterns
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +28,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -37,6 +41,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -48,11 +53,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ambatik.ui.theme.AmbatikTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.ambatik.data.factory.UserModelFactory
+import com.example.ambatik.di.Injection
+import com.example.ambatik.ui.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
-    modifier: Modifier = Modifier
+    navController: NavHostController = rememberNavController(),
+    modifier: Modifier = Modifier,
+    viewModel: RegisterViewModel = viewModel(
+        factory = UserModelFactory.getInstance(LocalContext.current)
+    )
 ){
     Surface(
         color = MaterialTheme.colorScheme.background,
@@ -72,6 +87,13 @@ fun RegisterScreen(
         var isValidPassword by remember { mutableStateOf(false) }
 
         val localFocusManager = LocalFocusManager.current
+
+        val context = LocalContext.current
+        val statusState by viewModel.status.observeAsState(false)
+        val errorState by viewModel.error.observeAsState(null)
+
+
+
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -347,7 +369,13 @@ fun RegisterScreen(
             Button(
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(Color(0xFF1D90F4)),
-                onClick = { /*Ke halaman Home dan kirim data*/ },
+                onClick = {
+                    if(!isValidEmail || !isValidPassword){
+                        Toast.makeText(context, "Masukan Format email dan password yang benar", Toast.LENGTH_SHORT).show()
+                    }else{
+                        viewModel.register(fullname, email, username, passwordRegister, numberHandphone)
+                    }
+                },
                 modifier = Modifier
                     .size(327.dp, 55.dp)
                     .padding(0.dp, 8.dp, 0.dp, 0.dp)
@@ -356,6 +384,14 @@ fun RegisterScreen(
                     text = "Create Account",
                     color = Color(0xFFFFFFFF),
                 )
+            }
+            LaunchedEffect(statusState) {
+                if (statusState) {
+                    navController.navigate(Screen.Login.route)
+                }
+            }
+            errorState?.let { errorMsg ->
+                Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
             }
         }
     }

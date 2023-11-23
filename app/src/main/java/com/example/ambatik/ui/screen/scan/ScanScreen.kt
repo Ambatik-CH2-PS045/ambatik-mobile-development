@@ -76,7 +76,6 @@ fun ScanScreen(
                     .border(2.dp, color = Color.White, RoundedCornerShape(20.dp))
             )
             Box(
-                contentAlignment = Alignment.Center,
                 modifier = modifier
                     .padding(0.dp, 25.dp, 0.dp, 0.dp)
                     .fillMaxWidth()
@@ -84,7 +83,11 @@ fun ScanScreen(
                     .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
                     .background(Color.White)
             ) {
-                Column{
+                Column(
+                    modifier = modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.Center
+                ){
                     Text(
                         text = "Take a picture or upload image to scan",
                         textAlign = TextAlign.Center,
@@ -147,36 +150,6 @@ fun ScanScreen(
                 }
 
             }
-//            Box{
-//                Column(
-//                    horizontalAlignment = Alignment.CenterHorizontally,
-//                    modifier = modifier
-//                        .padding(0.dp, 150.dp, 0.dp, 0.dp)
-//                        .fillMaxSize()
-//                        .clip(RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp))
-//                        .background(Color.White)
-//                ) {
-//                    Box(
-//                        modifier = modifier
-//                            .padding(35.dp, 35.dp)
-//                            .fillMaxSize(),
-//                        contentAlignment = Alignment.BottomCenter
-//                    ) {
-//                        Row(
-//                            horizontalArrangement = Arrangement
-//                                .spacedBy(
-//                                    space = 25.dp,
-//                                    alignment = Alignment.CenterHorizontally
-//                                ),
-//                            verticalAlignment = Alignment.CenterVertically,
-//                            modifier = modifier
-//                                .fillMaxSize(),
-//                        ){
-//
-//                        }
-//                    }
-//                }
-//            }
         }
     }
 }

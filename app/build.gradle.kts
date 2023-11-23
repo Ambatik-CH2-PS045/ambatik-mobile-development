@@ -16,7 +16,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL", "\"https://express-playground-cm5c2u3jnq-as.a.run.app/\"")
+        buildConfigField("String", "BASE_URL", "\"https://ambatik-backend-deploy-gypd3wj2zq-as.a.run.app/\"")
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -82,4 +82,5 @@ dependencies {
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.5.4")
 }
