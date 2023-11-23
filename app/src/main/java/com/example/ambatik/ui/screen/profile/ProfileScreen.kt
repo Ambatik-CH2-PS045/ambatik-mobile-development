@@ -26,6 +26,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -51,13 +52,13 @@ fun ProfileScreen(
     modifier: Modifier = Modifier
 ){
     Surface(
-        color = Color(0xFF282A37),
+        color = MaterialTheme.colorScheme.background,
         modifier = modifier
+            .fillMaxSize()
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxSize()
         ) {
             Text(
                 text = "Profile",
@@ -260,7 +261,7 @@ fun ProfileScreen(
             )
             Box(
                 modifier = modifier
-                    .padding(20.dp, 20.dp)
+                    .padding(20.dp, 25.dp)
                     .fillMaxWidth()
                     .fillMaxHeight(),
                 contentAlignment = Alignment.BottomEnd

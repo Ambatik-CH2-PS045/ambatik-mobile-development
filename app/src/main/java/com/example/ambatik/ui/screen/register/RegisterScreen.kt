@@ -20,6 +20,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -54,8 +55,9 @@ fun RegisterScreen(
     modifier: Modifier = Modifier
 ){
     Surface(
-        color = Color(0xFF282A37),
+        color = MaterialTheme.colorScheme.background,
         modifier = modifier
+            .fillMaxSize()
     ) {
         var fullname by remember { mutableStateOf("") }
         var numberHandphone by remember { mutableStateOf("") }
@@ -73,8 +75,7 @@ fun RegisterScreen(
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = modifier
         ){
             Text(
                 text = "Sign up Account",

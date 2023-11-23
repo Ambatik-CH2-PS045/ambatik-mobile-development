@@ -3,6 +3,7 @@ package com.example.ambatik
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -79,13 +80,12 @@ fun AmbatikApp(
                 Text(text = "Login")
             }
             Button(
-                shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(Color(0xFF282A37)),
-                border = BorderStroke(1.dp, Color(0xFF1D90F4)),
                 onClick = { navController.navigate(Screen.Register.route) },
                 modifier = Modifier
-                    .size(327.dp, 55.dp)
                     .padding(0.dp, 8.dp, 0.dp, 0.dp)
+                    .size(327.dp, 55.dp)
+                    .border(2.dp, color = Color(0xFF1D90F4), RoundedCornerShape(10.dp))
             ) {
                 Text(
                     text = "Register",
