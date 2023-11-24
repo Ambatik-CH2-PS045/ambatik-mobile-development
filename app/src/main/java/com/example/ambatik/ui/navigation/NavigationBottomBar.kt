@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,22 +18,22 @@ import com.example.ambatik.ui.screen.welcome.AmbatikApp
 fun NavigationBottomBar(navController: NavHostController, innerPadding: PaddingValues) {
     NavHost(
         navController = navController,
-        startDestination = ScreenHomePage.Articel.route,
+        startDestination = Screen.Articel.route,
         modifier = Modifier.padding(innerPadding)
     ){
-        composable(ScreenHomePage.Articel.route){
+        composable(Screen.Articel.route){
             ArticelScreen()
         }
-        composable(ScreenHomePage.Quiz.route){
+        composable(Screen.Quiz.route){
             QuizScreen()
         }
-        composable(ScreenHomePage.Scan.route){
+        composable(Screen.Scan.route){
             ScanScreen()
         }
-        composable(ScreenHomePage.Shopping.route){
+        composable(Screen.Shopping.route){
             ShoppingScreen()
         }
-        composable(ScreenHomePage.Profile.route){
+        composable(Screen.Profile.route){
             ProfileScreen(navController)
         }
     }

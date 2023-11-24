@@ -1,9 +1,7 @@
 package com.example.ambatik.ui.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,22 +16,37 @@ import com.example.ambatik.ui.screen.scan.ScanScreen
 import com.example.ambatik.ui.screen.shopping.ShoppingScreen
 
 @Composable
-fun Navigation(navController: NavHostController) {
+fun Navigation(navController: NavHostController, paddingValues: PaddingValues) {
     NavHost(
         navController = navController,
-        startDestination = ScreenLandingPage.Welcome.route,
+        startDestination = Screen.Welcome.route,
     ){
-        composable(ScreenLandingPage.Welcome.route){
-            AmbatikApp(navController = navController)
+        composable(Screen.Welcome.route){
+            AmbatikApp(navController)
         }
-        composable(ScreenLandingPage.Login.route){
-            LoginScreen(navController = navController)
+        composable(Screen.Login.route){
+            LoginScreen(navController)
         }
-        composable(ScreenLandingPage.Register.route){
-            RegisterScreen(navController = navController)
+        composable(Screen.Register.route){
+            RegisterScreen(navController)
         }
-        composable(ScreenLandingPage.Home.route){
+        composable(Screen.Home.route){
             HomeScreen()
+        }
+        composable(Screen.Articel.route){
+            ArticelScreen(navController)
+        }
+        composable(Screen.Quiz.route){
+            QuizScreen(navController)
+        }
+        composable(Screen.Scan.route){
+            ScanScreen(navController)
+        }
+        composable(Screen.Shopping.route){
+            ShoppingScreen(navController)
+        }
+        composable(Screen.Profile.route){
+            ProfileScreen(navController)
         }
     }
 }

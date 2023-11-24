@@ -33,7 +33,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.R
 import com.example.ambatik.data.factory.UserModelFactory
-import com.example.ambatik.ui.navigation.ScreenLandingPage
+import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.screen.login.LoginViewModel
 import com.example.ambatik.ui.theme.AmbatikTheme
 
@@ -47,13 +47,12 @@ fun AmbatikApp(
     ),
 ){
     val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
+
     viewModel.getSession().observe(lifecycleOwner) { session ->
         if (session.isLogin){
-            navController.navigate(ScreenLandingPage.Home.route)
+            navController.navigate(Screen.Home.route)
         }
     }
-
     Surface(
         color = Color(0xFF282A37),
         modifier = modifier
@@ -89,7 +88,7 @@ fun AmbatikApp(
             Button(
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(Color(0xFF1D90F4)),
-                onClick = { navController.navigate(ScreenLandingPage.Login.route)},
+                onClick = { navController.navigate(Screen.Login.route)},
                 modifier = Modifier
                     .size(327.dp, 55.dp)
             ) {
@@ -97,7 +96,7 @@ fun AmbatikApp(
             }
             Button(
                 colors = ButtonDefaults.buttonColors(Color(0xFF282A37)),
-                onClick = { navController.navigate(ScreenLandingPage.Register.route) },
+                onClick = { navController.navigate(Screen.Register.route) },
                 modifier = Modifier
                     .padding(0.dp, 8.dp, 0.dp, 0.dp)
                     .size(327.dp, 55.dp)

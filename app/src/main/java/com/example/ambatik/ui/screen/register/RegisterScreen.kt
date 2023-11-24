@@ -59,7 +59,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.data.factory.UserModelFactory
 import com.example.ambatik.di.Injection
-import com.example.ambatik.ui.navigation.ScreenLandingPage
+import com.example.ambatik.ui.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -385,7 +385,7 @@ fun RegisterScreen(
             }
             LaunchedEffect(statusState) {
                 if (statusState) {
-                    navController.navigate(ScreenLandingPage.Login.route)
+                    navController.navigate(Screen.Login.route)
                 }
             }
             errorState?.let { errorMsg ->

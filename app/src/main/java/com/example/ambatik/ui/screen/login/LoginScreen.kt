@@ -51,7 +51,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.data.factory.UserModelFactory
-import com.example.ambatik.ui.navigation.ScreenLandingPage
+import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.screen.register.RegisterViewModel
 import com.example.ambatik.ui.theme.AmbatikTheme
 
@@ -203,7 +203,7 @@ fun LoginScreen(
             }
             LaunchedEffect(statusState) {
                 if (statusState) {
-                    navController.navigate(ScreenLandingPage.Home.route)
+                    navController.navigate(Screen.Home.route)
                 }
             }
             errorState?.let { errorMsg ->

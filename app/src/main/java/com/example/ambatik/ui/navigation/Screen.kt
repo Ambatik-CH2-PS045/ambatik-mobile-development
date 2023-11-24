@@ -1,16 +1,13 @@
 package com.example.ambatik.ui.navigation
 
-sealed class ScreenLandingPage(val route: String) {
-    object Welcome: ScreenLandingPage("welcome")
-    object Login: ScreenLandingPage("login")
-    object Register: ScreenLandingPage("register")
-    object Home: ScreenHomePage("home")
+sealed class Screen(val route: String) {
+    object Welcome: Screen("welcome")
+    object Login: Screen("login")
+    object Register: Screen("register")
+    object Home: Screen("home")
+    object Profile: Screen("profile")
+    object Quiz: Screen("quiz")
+    object Scan: Screen("scan")
+    object Shopping: Screen("shopping")
+    object Articel: Screen("articel")
 }
-sealed class ScreenHomePage(val route: String){
-    object Profile: ScreenHomePage("profile")
-    object Quiz: ScreenHomePage("quiz")
-    object Scan: ScreenHomePage("scan")
-    object Shopping: ScreenHomePage("shopping")
-    object Articel: ScreenHomePage("articel")
-}
-

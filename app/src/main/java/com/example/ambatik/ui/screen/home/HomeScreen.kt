@@ -1,83 +1,70 @@
 package com.example.ambatik.ui.screen.home
 
-import android.util.Log
-import android.view.RoundedCorner
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Scanner
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.Task
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.R
+import com.example.ambatik.data.factory.UserModelFactory
 import com.example.ambatik.ui.navigation.Navigation
 import com.example.ambatik.ui.navigation.NavigationBottomBar
 import com.example.ambatik.ui.navigation.NavigationItem
-import com.example.ambatik.ui.navigation.ScreenHomePage
+import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
+    modifier: Modifier = Modifier,
+//    viewModel: HomeViewModel = viewModel(
+//        factory = UserModelFactory.getInstance(LocalContext.current)
+//    )
 ){
+//    val lifecycleOwner = LocalLifecycleOwner.current
+//
+//    viewModel.getSession().observe(lifecycleOwner) { session ->
+//        if (!session.isLogin){
+//            navController.navigate(Screen.Welcome.route)
+//        }
+//    }
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
         floatingActionButton = {
-            if (currentRoute != ScreenHomePage.Scan.route){
+            if (currentRoute != Screen.Scan.route ){
                 FAB(navController)
             }else{
                 FAB(
@@ -88,13 +75,13 @@ fun HomeScreen(
         },
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {
-            if (currentRoute != ScreenHomePage.Scan.route){
+            if (currentRoute != Screen.Scan.route){
                 BottomBar(navController)
             }
         },
         modifier = modifier
     ) { innerPadding ->
-        NavigationBottomBar(navController, innerPadding)
+        Navigation(navController, innerPadding )
     }
 }
 @Composable
@@ -109,8 +96,8 @@ private fun FAB(
     if (isVisible){
         FloatingActionButton(
             onClick = {
-                if (currentRoute != ScreenHomePage.Scan.route){
-                    navController.navigate(ScreenHomePage.Scan.route)
+                if (currentRoute != Screen.Scan.route){
+                    navController.navigate(Screen.Scan.route)
                 }
             },
             shape = CircleShape,
@@ -147,12 +134,12 @@ private fun BottomBar(
             NavigationItem(
                 title = stringResource(R.string.articel_screen),
                 icon = Icons.Default.Home,
-                screen = ScreenHomePage.Articel
+                screen = Screen.Articel
             ),
             NavigationItem(
                 title = stringResource(R.string.quiz_screen),
                 icon = Icons.Default.MenuBook,
-                screen = ScreenHomePage.Quiz
+                screen = Screen.Quiz
             ),
             NavigationItem(
                 title = "Scan",
@@ -162,12 +149,12 @@ private fun BottomBar(
             NavigationItem(
                 title = stringResource(R.string.shop_screen),
                 icon = Icons.Default.ShoppingCart,
-                screen = ScreenHomePage.Shopping
+                screen = Screen.Shopping
             ),
             NavigationItem(
                 title = stringResource(R.string.profile_screen),
                 icon = Icons.Default.Person,
-                screen = ScreenHomePage.Profile
+                screen = Screen.Profile
             )
         )
 
