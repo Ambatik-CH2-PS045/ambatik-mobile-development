@@ -1,7 +1,7 @@
-package com.example.ambatik
+package com.example.ambatik.ui.screen.welcome
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -15,29 +15,45 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.ambatik.ui.navigation.Screen
-import com.example.ambatik.ui.screen.login.LoginScreen
+import com.example.ambatik.R
+import com.example.ambatik.data.factory.UserModelFactory
+import com.example.ambatik.ui.navigation.ScreenLandingPage
+import com.example.ambatik.ui.screen.login.LoginViewModel
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AmbatikApp(
-    modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
+    modifier: Modifier = Modifier,
+    viewModel: WelcomeViewModel = viewModel(
+        factory = UserModelFactory.getInstance(LocalContext.current)
+    ),
 ){
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+    viewModel.getSession().observe(lifecycleOwner) { session ->
+        if (session.isLogin){
+            navController.navigate(ScreenLandingPage.Home.route)
+        }
+    }
+
     Surface(
         color = Color(0xFF282A37),
         modifier = modifier
@@ -73,7 +89,7 @@ fun AmbatikApp(
             Button(
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(Color(0xFF1D90F4)),
-                onClick = { navController.navigate(Screen.Login.route)},
+                onClick = { navController.navigate(ScreenLandingPage.Login.route)},
                 modifier = Modifier
                     .size(327.dp, 55.dp)
             ) {
@@ -81,7 +97,7 @@ fun AmbatikApp(
             }
             Button(
                 colors = ButtonDefaults.buttonColors(Color(0xFF282A37)),
-                onClick = { navController.navigate(Screen.Register.route) },
+                onClick = { navController.navigate(ScreenLandingPage.Register.route) },
                 modifier = Modifier
                     .padding(0.dp, 8.dp, 0.dp, 0.dp)
                     .size(327.dp, 55.dp)

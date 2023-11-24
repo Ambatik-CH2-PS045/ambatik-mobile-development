@@ -31,10 +31,16 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,15 +48,30 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.dataStore
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.R
+import com.example.ambatik.data.factory.UserModelFactory
+import com.example.ambatik.data.pref.UserPreference
+import com.example.ambatik.ui.navigation.ScreenLandingPage
+import com.example.ambatik.ui.screen.login.LoginViewModel
 import com.example.ambatik.ui.theme.AmbatikTheme
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
 @Composable
 fun ProfileScreen(
-    modifier: Modifier = Modifier
+    navController: NavHostController = rememberNavController(),
+    modifier: Modifier = Modifier,
+    viewModel: ProfileViewModel = viewModel(
+        factory = UserModelFactory.getInstance(LocalContext.current)
+    ),
 ){
+    val statusState by viewModel.status.observeAsState(false)
     Surface(
         color = MaterialTheme.colorScheme.background,
         modifier = modifier
@@ -269,7 +290,9 @@ fun ProfileScreen(
                 OutlinedButton(
                     shape = RoundedCornerShape(10.dp),
                     border = BorderStroke(2.dp, Color.Red),
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        viewModel.logout()
+                    },
                     modifier = modifier
                         .fillMaxWidth()
                 ) {
@@ -277,6 +300,16 @@ fun ProfileScreen(
                         text = "Logout",
                         color = Color.Red
                     )
+                }
+                LaunchedEffect(statusState){
+                    if (statusState){
+                        navController.navigate(ScreenLandingPage.Welcome.route){
+                            popUpTo(ScreenLandingPage.Welcome.route){
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                    }
                 }
             }
         }

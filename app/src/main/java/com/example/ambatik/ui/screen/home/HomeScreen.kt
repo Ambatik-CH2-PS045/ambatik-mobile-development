@@ -58,18 +58,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.R
+import com.example.ambatik.ui.navigation.Navigation
+import com.example.ambatik.ui.navigation.NavigationBottomBar
 import com.example.ambatik.ui.navigation.NavigationItem
-import com.example.ambatik.ui.navigation.Screen
-import com.example.ambatik.ui.screen.articel.ArticelScreen
-import com.example.ambatik.ui.screen.profile.ProfileScreen
-import com.example.ambatik.ui.screen.quiz.QuizScreen
-import com.example.ambatik.ui.screen.scan.ScanScreen
-import com.example.ambatik.ui.screen.shopping.ShoppingScreen
+import com.example.ambatik.ui.navigation.ScreenHomePage
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 @Composable
@@ -82,7 +77,7 @@ fun HomeScreen(
 
     Scaffold(
         floatingActionButton = {
-            if (currentRoute != Screen.Scan.route) {
+            if (currentRoute != ScreenHomePage.Scan.route){
                 FAB(navController)
             }else{
                 FAB(
@@ -93,33 +88,13 @@ fun HomeScreen(
         },
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {
-            if (currentRoute != Screen.Scan.route){
+            if (currentRoute != ScreenHomePage.Scan.route){
                 BottomBar(navController)
             }
         },
         modifier = modifier
     ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = Screen.Articel.route,
-            modifier = Modifier.padding(innerPadding)
-        ){
-            composable(Screen.Articel.route){
-                ArticelScreen()
-            }
-            composable(Screen.Quiz.route){
-                QuizScreen()
-            }
-            composable(Screen.Scan.route){
-                ScanScreen()
-            }
-            composable(Screen.Shopping.route){
-                ShoppingScreen()
-            }
-            composable(Screen.Profile.route){
-                ProfileScreen()
-            }
-        }
+        NavigationBottomBar(navController, innerPadding)
     }
 }
 @Composable
@@ -134,8 +109,8 @@ private fun FAB(
     if (isVisible){
         FloatingActionButton(
             onClick = {
-                if (currentRoute != Screen.Scan.route){
-                    navController.navigate(Screen.Scan.route)
+                if (currentRoute != ScreenHomePage.Scan.route){
+                    navController.navigate(ScreenHomePage.Scan.route)
                 }
             },
             shape = CircleShape,
@@ -172,12 +147,12 @@ private fun BottomBar(
             NavigationItem(
                 title = stringResource(R.string.articel_screen),
                 icon = Icons.Default.Home,
-                screen = Screen.Articel
+                screen = ScreenHomePage.Articel
             ),
             NavigationItem(
                 title = stringResource(R.string.quiz_screen),
                 icon = Icons.Default.MenuBook,
-                screen = Screen.Quiz
+                screen = ScreenHomePage.Quiz
             ),
             NavigationItem(
                 title = "Scan",
@@ -187,15 +162,15 @@ private fun BottomBar(
             NavigationItem(
                 title = stringResource(R.string.shop_screen),
                 icon = Icons.Default.ShoppingCart,
-                screen = Screen.Shopping
+                screen = ScreenHomePage.Shopping
             ),
             NavigationItem(
                 title = stringResource(R.string.profile_screen),
                 icon = Icons.Default.Person,
-                screen = Screen.Profile
+                screen = ScreenHomePage.Profile
             )
         )
-        
+
         navigationItems.map { item ->
             NavigationBarItem(
                 icon = {

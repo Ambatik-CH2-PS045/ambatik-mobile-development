@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -58,7 +59,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.data.factory.UserModelFactory
 import com.example.ambatik.di.Injection
-import com.example.ambatik.ui.navigation.Screen
+import com.example.ambatik.ui.navigation.ScreenLandingPage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,31 +70,28 @@ fun RegisterScreen(
         factory = UserModelFactory.getInstance(LocalContext.current)
     )
 ){
+    var fullname by remember { mutableStateOf("") }
+    var numberHandphone by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var passwordRegister by remember { mutableStateOf("") }
+    var showPasswordRegister by remember { mutableStateOf(value = false) }
+
+    var isValidEmpty by remember { mutableStateOf(false) }
+    var isValidEmail by remember { mutableStateOf(false) }
+    var isValidEmptyPassword by remember { mutableStateOf(value = false) }
+    var isValidPassword by remember { mutableStateOf(false) }
+
+    val localFocusManager = LocalFocusManager.current
+
+    val context = LocalContext.current
+    val statusState by viewModel.status.observeAsState(false)
+    val errorState by viewModel.error.observeAsState(null)
     Surface(
         color = MaterialTheme.colorScheme.background,
         modifier = modifier
             .fillMaxSize()
     ) {
-        var fullname by remember { mutableStateOf("") }
-        var numberHandphone by remember { mutableStateOf("") }
-        var username by remember { mutableStateOf("") }
-        var email by remember { mutableStateOf("") }
-        var passwordRegister by remember { mutableStateOf("") }
-        var showPasswordRegister by remember { mutableStateOf(value = false) }
-
-        var isValidEmpty by remember { mutableStateOf(false) }
-        var isValidEmail by remember { mutableStateOf(false) }
-        var isValidEmptyPassword by remember { mutableStateOf(value = false) }
-        var isValidPassword by remember { mutableStateOf(false) }
-
-        val localFocusManager = LocalFocusManager.current
-
-        val context = LocalContext.current
-        val statusState by viewModel.status.observeAsState(false)
-        val errorState by viewModel.error.observeAsState(null)
-
-
-
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -387,11 +385,18 @@ fun RegisterScreen(
             }
             LaunchedEffect(statusState) {
                 if (statusState) {
-                    navController.navigate(Screen.Login.route)
+                    navController.navigate(ScreenLandingPage.Login.route)
                 }
             }
             errorState?.let { errorMsg ->
                 Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+            }
+        }
+        Box(
+            contentAlignment = Alignment.Center,
+        ){
+            if (viewModel.loading.value == true){
+                CircularProgressIndicator()
             }
         }
     }

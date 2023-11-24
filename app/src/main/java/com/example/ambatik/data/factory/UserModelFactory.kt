@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.ambatik.data.repository.UserRepository
 import com.example.ambatik.di.Injection
 import com.example.ambatik.ui.screen.login.LoginViewModel
+import com.example.ambatik.ui.screen.profile.ProfileViewModel
 import com.example.ambatik.ui.screen.register.RegisterViewModel
+import com.example.ambatik.ui.screen.welcome.WelcomeViewModel
 
 class UserModelFactory(private val repository: UserRepository): ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T{
@@ -16,6 +18,12 @@ class UserModelFactory(private val repository: UserRepository): ViewModelProvide
             }
             modelClass.isAssignableFrom(LoginViewModel::class.java) ->{
                 LoginViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(WelcomeViewModel::class.java) ->{
+                WelcomeViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
+                ProfileViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unkown ViewModel class: " + modelClass.name)
         }

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ambatik.api.response.ResponseLogin
+import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.repository.UserRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
@@ -25,6 +26,8 @@ class LoginViewModel(private val repository: UserRepository): ViewModel() {
                 _loading.value = true
                 val loginResponse = repository.login(username, password)
                 status.postValue(true)
+                val token = loginResponse.data?.accessToken
+                repository.saveSession(UserModel(username, token ?: "", true))
                 Log.d("LOGIN", "$loginResponse")
             } catch (e: HttpException) {
                 _loading.value = false
