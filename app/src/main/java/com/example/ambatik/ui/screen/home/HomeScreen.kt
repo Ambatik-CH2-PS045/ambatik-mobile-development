@@ -20,6 +20,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +30,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -47,17 +50,17 @@ import com.example.ambatik.ui.theme.AmbatikTheme
 fun HomeScreen(
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
-//    viewModel: HomeViewModel = viewModel(
-//        factory = UserModelFactory.getInstance(LocalContext.current)
-//    )
+    viewModel: HomeViewModel = viewModel(
+        factory = UserModelFactory.getInstance(LocalContext.current)
+    )
 ){
-//    val lifecycleOwner = LocalLifecycleOwner.current
-//
-//    viewModel.getSession().observe(lifecycleOwner) { session ->
-//        if (!session.isLogin){
-//            navController.navigate(Screen.Welcome.route)
-//        }
-//    }
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    viewModel.getSession().observe(lifecycleOwner) { session ->
+        if (!session.isLogin){
+            navController.navigate(Screen.Welcome.route)
+        }
+    }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -81,9 +84,10 @@ fun HomeScreen(
         },
         modifier = modifier
     ) { innerPadding ->
-        Navigation(navController, innerPadding )
+        NavigationBottomBar(navController, innerPadding )
     }
 }
+
 @Composable
 private fun FAB(
     navController: NavHostController,

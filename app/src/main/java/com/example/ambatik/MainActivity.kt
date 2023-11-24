@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.ui.navigation.Navigation
+import com.example.ambatik.ui.navigation.NavigationBottomBar
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,7 +28,7 @@ class MainActivity : ComponentActivity() {
 
                 ) {
                     val navController = rememberNavController()
-                    Navigation(navController, paddingValues = PaddingValues())
+                    NavigationBottomBar(navController, innerPadding = PaddingValues())
                 }
             }
         }

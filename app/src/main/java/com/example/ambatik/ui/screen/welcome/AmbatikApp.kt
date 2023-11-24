@@ -1,6 +1,7 @@
 package com.example.ambatik.ui.screen.welcome
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -16,6 +17,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +38,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.R
 import com.example.ambatik.data.factory.UserModelFactory
+import com.example.ambatik.data.pref.UserModel
+import com.example.ambatik.data.pref.UserPreference
+import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.screen.login.LoginViewModel
 import com.example.ambatik.ui.theme.AmbatikTheme
@@ -42,17 +50,35 @@ import com.example.ambatik.ui.theme.AmbatikTheme
 fun AmbatikApp(
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
-    viewModel: WelcomeViewModel = viewModel(
-        factory = UserModelFactory.getInstance(LocalContext.current)
-    ),
+//    viewModel: WelcomeViewModel = viewModel(
+//        factory = UserModelFactory.getInstance(LocalContext.current)
+//    ),
 ){
-    val lifecycleOwner = LocalLifecycleOwner.current
+//    val lifecycleOwner = LocalLifecycleOwner.current
+//
+//    viewModel.getSession().observe(lifecycleOwner) { session ->
+//        if (session.isLogin){
+//            navController.navigate(Screen.Home.route)
+//        }
+//    }
+    val context = LocalContext.current
 
-    viewModel.getSession().observe(lifecycleOwner) { session ->
-        if (session.isLogin){
-            navController.navigate(Screen.Home.route)
+    val userPreference = remember { UserPreference (context.dataStore) }
+    val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false))
+
+    LaunchedEffect(key1 = userModel.isLogin){
+        if (userModel.isLogin) {
+            navController.navigate(Screen.Home.route){
+                popUpTo(Screen.Home.route){
+                    inclusive = true
+                }
+                restoreState = true
+                launchSingleTop = true
+            }
         }
     }
+
+
     Surface(
         color = Color(0xFF282A37),
         modifier = modifier

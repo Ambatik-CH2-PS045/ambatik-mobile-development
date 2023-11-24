@@ -36,6 +36,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -44,6 +45,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.R
 import com.example.ambatik.data.factory.UserModelFactory
 import com.example.ambatik.ui.navigation.Screen
+import com.example.ambatik.ui.theme.AmbatikTheme
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
@@ -294,11 +296,11 @@ fun ProfileScreen(
         }
     }
 }
-//
-//@Preview
-//@Composable
-//fun PreviewProfileScreen(){
-//    AmbatikTheme {
-//        ProfileScreen()
-//    }
-//}
+
+@Preview
+@Composable
+fun PreviewProfileScreen(){
+    AmbatikTheme {
+        ProfileScreen()
+    }
+}
