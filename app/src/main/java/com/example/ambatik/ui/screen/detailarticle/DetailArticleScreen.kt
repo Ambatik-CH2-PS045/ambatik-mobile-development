@@ -1,5 +1,7 @@
 package com.example.ambatik.ui.screen.detailarticle
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ThumbUp
@@ -18,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -73,29 +78,26 @@ fun DetailArticleContent(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
             )
-        }
-        Box(
-            modifier = modifier
-                .padding(15.dp)
-                .fillMaxWidth()
-        ) {
-            Column {
-                Text(
-                    text = author,
-                    color = Color.Gray
-                )
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 20.sp
-                    ),
-                    color = Color.White
+            Box(
+                modifier = modifier
+                    .height(250.dp)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.BottomEnd
+            ){
+                Box(
+                    modifier = modifier
+                        .padding(15.dp, 15.dp)
+                        .size(75.dp, 50.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .alpha(0.5f)
+                        .background(Color.Black)
                 )
                 Box(
                     modifier = modifier
-                        .padding(0.dp, 15.dp)
-                ) {
+                        .padding(25.dp, 15.dp)
+                        .size(50.dp),
+                    contentAlignment = Alignment.Center
+                ){
                     Row{
                         Icon(
                             imageVector = Icons.Default.ThumbUp,
@@ -108,6 +110,24 @@ fun DetailArticleContent(
                             modifier = modifier
                                 .padding(5.dp, 0.dp, 0.dp, 0.dp)
                         )
+
+                    }
+                }
+
+            }
+        }
+        Box(
+            modifier = modifier
+                .padding(15.dp)
+                .fillMaxWidth()
+        ) {
+            Column {
+                Box {
+                    Row {
+                        Text(
+                            text = author,
+                            color = Color.Gray
+                        )
                         Box(
                             modifier = modifier
                                 .fillMaxWidth(),
@@ -115,15 +135,25 @@ fun DetailArticleContent(
                         ) {
                             Text(
                                 text = createAt,
-                                color = Color.White,
+                                color = Color.Gray,
                                 textAlign = TextAlign.Right,
                             )
                         }
                     }
                 }
                 Text(
+                    text = title,
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 20.sp
+                    ),
+                    color = Color.White,
+                    modifier = modifier
+                        .padding(0.dp, 12.dp, 0.dp, 20.dp)
+                )
+                Text(
                     text = description,
-                    color = Color.White
+                    color = Color.White,
                 )
             }
         }
