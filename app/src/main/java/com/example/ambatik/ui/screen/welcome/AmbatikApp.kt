@@ -1,8 +1,14 @@
 package com.example.ambatik.ui.screen.welcome
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.SharedPreferences
+import android.os.Build
 import android.widget.Toast
+import androidx.activity.OnBackPressedDispatcher
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +27,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,6 +51,7 @@ import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.screen.login.LoginViewModel
 import com.example.ambatik.ui.theme.AmbatikTheme
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -54,6 +62,16 @@ fun AmbatikApp(
         factory = UserModelFactory.getInstance(LocalContext.current)
     ),
 ){
+    val scope = rememberCoroutineScope()
+
+    val context = LocalContext.current
+
+    BackHandler(enabled = true) {
+        scope.launch {
+            (context as? Activity)?.finish()
+        }
+    }
+
     val lifecycleOwner = LocalLifecycleOwner.current
 
     viewModel.getSession().observe(lifecycleOwner) { session ->
@@ -119,13 +137,10 @@ fun AmbatikApp(
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun AmbatikAppPreview(){
     AmbatikTheme {
-        AmbatikApp(
-//            navigateToHome = {}
-        )
+        AmbatikApp()
     }
 }
