@@ -47,7 +47,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.R
 import com.example.ambatik.data.factory.UserModelFactory
 import com.example.ambatik.ui.navigation.Navigation
-import com.example.ambatik.ui.navigation.NavigationBottomBar
+import com.example.ambatik.ui.navigation.NavigationBottom
 import com.example.ambatik.ui.navigation.NavigationItem
 import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.screen.articel.ArticelScreen
@@ -100,53 +100,7 @@ fun HomeScreen(
         },
         modifier = modifier
     ) { innerPadding ->
-//        NavigationBottomBar(navController, innerPadding 
-        NavHost(
-            navController = navController,
-            startDestination = Screen.Articel.route,
-            modifier = modifier
-                .padding(innerPadding)
-            ){
-            composable(Screen.Articel.route){
-                ArticelScreen()
-            }
-            composable(Screen.Quiz.route){
-                QuizScreen()
-            }
-            composable(Screen.Shopping.route){
-                ShoppingScreen()
-            }
-            composable(Screen.Profile.route){
-                ProfileScreen(navController)
-            }
-            composable(Screen.Welcome.route){
-                AmbatikApp(
-                    navController,
-                    navigateToHome = {
-                        navController.popBackStack()
-                        navController.navigate(Screen.Home.route){
-                            popUpTo(navController.graph.findStartDestination().id){
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                )
-            }
-            composable(Screen.Login.route){
-                LoginScreen(navController)
-            }
-            composable(Screen.Register.route){
-                RegisterScreen(navController)
-            }
-            composable(Screen.Home.route){
-                HomeScreen()
-            }
-            composable(Screen.Scan.route){
-                ScanScreen()
-            }
-        }
+        NavigationBottom(navController = navController, innerPadding = innerPadding)
     }
 }
 

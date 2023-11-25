@@ -53,34 +53,14 @@ fun AmbatikApp(
     viewModel: WelcomeViewModel = viewModel(
         factory = UserModelFactory.getInstance(LocalContext.current)
     ),
-    navigateToHome: () -> Unit
 ){
-//    val lifecycleOwner = LocalLifecycleOwner.current
-//
-//    viewModel.getSession().observe(lifecycleOwner) { session ->
-//        if (session.isLogin){
-//            navController.navigate(Screen.Home.route)
-//        }
-//    }
-    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    val userPreference = remember { UserPreference (context.dataStore) }
-    val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false))
-
-    LaunchedEffect(key1 = userModel.isLogin){
-        if (userModel.isLogin) {
-//            navController.navigate(Screen.Home.route){
-//                popUpTo(Screen.Home.route){
-//                    inclusive = true
-//                }
-//                restoreState = true
-//                launchSingleTop = true
-//            }
-            navigateToHome()
+    viewModel.getSession().observe(lifecycleOwner) { session ->
+        if (session.isLogin){
+            navController.navigate(Screen.Home.route)
         }
     }
-
-
     Surface(
         color = Color(0xFF282A37),
         modifier = modifier
@@ -144,6 +124,8 @@ fun AmbatikApp(
 @Composable
 fun AmbatikAppPreview(){
     AmbatikTheme {
-        AmbatikApp(navigateToHome = {})
+        AmbatikApp(
+//            navigateToHome = {}
+        )
     }
 }
