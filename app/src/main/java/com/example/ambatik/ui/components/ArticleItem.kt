@@ -46,14 +46,15 @@ fun ArticleItem(
                 contentDescription = "Article Image",
                 contentScale = ContentScale.Crop,
                 modifier = modifier
-                    .padding(15.dp, 15.dp, 0.dp, 0.dp)
-                    .size(115.dp)
+                    .padding(15.dp, 15.dp, 0.dp, 15.dp)
+                    .size(115.dp, 170.dp)
                     .clip(Shapes.medium)
             )
             Column {
                 Text(
                     text = title,
                     color = Color.White,
+                    fontSize = 14.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.titleMedium.copy(
@@ -69,12 +70,13 @@ fun ArticleItem(
                 ){
                     Box(
                         modifier = modifier
+                            .padding(15.dp, 0.dp)
                             .fillMaxWidth(),
                         contentAlignment = Alignment.Center
                     ) {
                         Divider(
                             modifier = modifier
-                                .padding(15.dp, 15.dp, 120.dp, 15.dp),
+                                .padding(0.dp, 15.dp, 100.dp, 15.dp),
                             color = Color.White
                         )
                         Box(
@@ -84,6 +86,7 @@ fun ArticleItem(
                         ) {
                             Text(
                                 text = createAt,
+                                fontSize = 10.sp,
                                 color = Color.White,
                                 textAlign = TextAlign.Right,
                                 modifier = modifier
@@ -93,17 +96,17 @@ fun ArticleItem(
 
                     }
                 }
+                Text(
+                    text = description,
+                    color = Color.White,
+                    fontSize = 12.sp,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = modifier
+                        .padding(15.dp, 0.dp, 15.dp, 0.dp)
+                )
             }
         }
-        Text(
-            text = description,
-            color = Color.White,
-            fontSize = 14.sp,
-            maxLines = 3,
-            overflow = TextOverflow.Ellipsis,
-            modifier = modifier
-                .padding(15.dp, 5.dp, 15.dp, 15.dp)
-        )
     }
 }
 
