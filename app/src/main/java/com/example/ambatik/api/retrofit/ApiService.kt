@@ -1,6 +1,7 @@
 package com.example.ambatik.api.retrofit
 
 import com.example.ambatik.api.response.ResponseArticle
+import com.example.ambatik.api.response.ResponseDetailArticle
 import com.example.ambatik.api.response.ResponseLogin
 import com.example.ambatik.api.response.ResponseRegister
 import retrofit2.http.Body
@@ -8,6 +9,7 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService{
     @POST("users/register")
@@ -22,4 +24,9 @@ interface ApiService{
 
     @GET("article")
     suspend fun getArticle(): ResponseArticle
+
+    @GET("article/{id}")
+    suspend fun getDetailArticle(
+        @Path("id") id: Int
+    ): ResponseDetailArticle
 }

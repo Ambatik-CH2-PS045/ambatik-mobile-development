@@ -7,9 +7,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.ambatik.ui.screen.articel.ArticelScreen
+import com.example.ambatik.ui.screen.detailarticle.DetailArticleScreen
 import com.example.ambatik.ui.screen.home.HomeScreen
 import com.example.ambatik.ui.screen.login.LoginScreen
 import com.example.ambatik.ui.screen.profile.ProfileScreen
@@ -28,7 +31,11 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
             .padding(innerPadding)
     ){
         composable(Screen.Articel.route){
-            ArticelScreen()
+            ArticelScreen(
+                navigateToDetail = {articleId ->
+                    navController.navigate(Screen.DetailArticle.createRoute(articleId))
+                }
+            )
         }
         composable(Screen.Quiz.route){
             QuizScreen()
@@ -53,6 +60,19 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
         }
         composable(Screen.Scan.route){
             ScanScreen()
+        }
+        val articleId = "articleId"
+        composable(
+            route = Screen.DetailArticle.route,
+            arguments = listOf(navArgument(articleId){ type = NavType.IntType})
+            ){
+            val id = it.arguments?.getInt(articleId) ?: 0
+            DetailArticleScreen(
+                articleId = id,
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }

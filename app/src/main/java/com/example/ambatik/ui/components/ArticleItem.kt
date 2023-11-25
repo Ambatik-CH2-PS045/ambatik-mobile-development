@@ -1,5 +1,6 @@
 package com.example.ambatik.ui.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,7 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
@@ -32,7 +36,7 @@ fun ArticleItem(
     image: String,
     title: String,
     createAt: String,
-    description: String,
+    totalLike: String,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -46,66 +50,62 @@ fun ArticleItem(
                 contentDescription = "Article Image",
                 contentScale = ContentScale.Crop,
                 modifier = modifier
-                    .padding(15.dp, 15.dp, 0.dp, 15.dp)
-                    .size(115.dp, 170.dp)
+                    .padding(15.dp, 15.dp, 15.dp, 15.dp)
+                    .size(95.dp)
                     .clip(Shapes.medium)
             )
-            Column {
-                Text(
-                    text = title,
-                    color = Color.White,
-                    fontSize = 14.sp,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
-                    modifier = modifier
-                        .padding(15.dp, 15.dp, 15.dp, 0.dp)
-                )
-                Row (
-                    verticalAlignment = Alignment.Bottom,
-                    modifier = modifier
-                        .fillMaxWidth()
-                ){
+            Box(
+                contentAlignment = Alignment.TopCenter,
+                modifier = modifier
+                    .padding(0.dp, 15.dp, 15.dp, 0.dp)
+            ) {
+                Column {
+                    Text(
+                        text = title,
+                        color = Color.White,
+                        fontSize = 14.sp,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                    )
                     Box(
                         modifier = modifier
-                            .padding(15.dp, 0.dp)
-                            .fillMaxWidth(),
-                        contentAlignment = Alignment.Center
+                            .padding(0.dp, 30.dp, 0.dp, 0.dp)
                     ) {
-                        Divider(
-                            modifier = modifier
-                                .padding(0.dp, 15.dp, 100.dp, 15.dp),
-                            color = Color.White
-                        )
-                        Box(
-                            modifier = modifier
-                                .fillMaxWidth(),
-                            contentAlignment = Alignment.TopEnd
-                        ) {
-                            Text(
-                                text = createAt,
-                                fontSize = 10.sp,
-                                color = Color.White,
-                                textAlign = TextAlign.Right,
+                        Row{
+                            Icon(
+                                imageVector = Icons.Default.ThumbUp,
+                                tint = Color.White,
+                                contentDescription = "Icon Like Article",
                                 modifier = modifier
-                                    .padding(15.dp)
+                                    .size(17.dp)
                             )
+                            Text(
+                                text = totalLike.toString(),
+                                fontSize = 12.sp,
+                                color = Color.White,
+                                modifier = modifier
+                                    .padding(5.dp, 0.dp, 0.dp, 0.dp)
+                            )
+                            Box(
+                                modifier = modifier
+                                    .fillMaxWidth(),
+                                contentAlignment = Alignment.CenterEnd
+                            ) {
+                                Text(
+                                    text = createAt,
+                                    fontSize = 12.sp,
+                                    color = Color.White,
+                                    textAlign = TextAlign.Right,
+                                )
+                            }
                         }
-
                     }
                 }
-                Text(
-                    text = description,
-                    color = Color.White,
-                    fontSize = 12.sp,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = modifier
-                        .padding(15.dp, 0.dp, 15.dp, 0.dp)
-                )
             }
+
         }
     }
 }
@@ -118,6 +118,7 @@ fun PreviewArticleItem(){
             image = "",
             title = "Yuk, Rayakan Hari Batik Nasional dalam Rangkaian Acara Keren GANTARI!",
             createAt = "2023-11-23",
-            description = "Dalam penyelenggaraan kali ini, LAKON Indonesia akan mempresentasikan koleksi yang lebih matang dan lebih dalam, berupa 125 koleksi pakaian siap pakai yang akan diperagakan oleh 100 orang model.")
+            totalLike = "1"
+        )
     }
 }

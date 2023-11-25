@@ -1,6 +1,7 @@
 package com.example.ambatik.ui.screen.articel
 
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -45,7 +46,8 @@ fun ArticelScreen(
     modifier: Modifier = Modifier,
     viewModel: ArticleViewModel = viewModel(
         factory = ArticleModelFactory.getInstance(LocalContext.current)
-    )
+    ),
+    navigateToDetail: (Int) -> Unit
 ){
     val articleListState = viewModel.articleList.observeAsState()
     val statusState by viewModel.status.observeAsState(false)
@@ -68,13 +70,17 @@ fun ArticelScreen(
             ){
                 items(articleListState.value ?: emptyList()){ data ->
                     Card(
-                        colors = CardDefaults.cardColors(Color.Gray)
+                        colors = CardDefaults.cardColors(Color.Gray),
+                        modifier = modifier
+                            .clickable {
+                                navigateToDetail(data.id)
+                            }
                     ){
                         ArticleItem(
                             image = data.urlBanner,
                             title = data.title,
                             createAt = "20-20-2023",
-                            description = data.content,
+                            totalLike = data.totalLike.toString(),
                         )
                     }
                 }
@@ -88,6 +94,6 @@ fun ArticelScreen(
 @Composable
 fun PreviewArticleScreen(){
     AmbatikTheme {
-        ArticelScreen()
+        ArticelScreen(navigateToDetail = {})
     }
 }

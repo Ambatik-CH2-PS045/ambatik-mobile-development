@@ -1,6 +1,7 @@
 package com.example.ambatik.data.repository
 
 import com.example.ambatik.api.response.ResponseArticle
+import com.example.ambatik.api.response.ResponseDetailArticle
 import com.example.ambatik.api.retrofit.ApiService
 import com.example.ambatik.data.pref.UserPreference
 
@@ -8,6 +9,10 @@ class ArticleRepository(private val apiService: ApiService, private val userPref
 
     suspend fun getArticle(): ResponseArticle{
         return apiService.getArticle()
+    }
+
+    suspend fun getDetailArticle(id: Int): ResponseDetailArticle{
+        return apiService.getDetailArticle(id)
     }
 
     companion object{
