@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.ambatik.ui.theme.AmbatikTheme
 import com.example.ambatik.ui.theme.Shapes
@@ -46,7 +47,7 @@ fun ArticleItem(
                 contentScale = ContentScale.Crop,
                 modifier = modifier
                     .padding(15.dp, 15.dp, 0.dp, 0.dp)
-                    .size(100.dp)
+                    .size(115.dp)
                     .clip(Shapes.medium)
             )
             Column {
@@ -59,7 +60,7 @@ fun ArticleItem(
                         fontWeight = FontWeight.Bold
                     ),
                     modifier = modifier
-                        .padding(15.dp)
+                        .padding(15.dp, 15.dp, 15.dp, 0.dp)
                 )
                 Row (
                     verticalAlignment = Alignment.Bottom,
@@ -97,7 +98,8 @@ fun ArticleItem(
         Text(
             text = description,
             color = Color.White,
-            maxLines = 4,
+            fontSize = 14.sp,
+            maxLines = 3,
             overflow = TextOverflow.Ellipsis,
             modifier = modifier
                 .padding(15.dp, 5.dp, 15.dp, 15.dp)
