@@ -50,9 +50,10 @@ import com.example.ambatik.ui.theme.AmbatikTheme
 fun AmbatikApp(
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
-//    viewModel: WelcomeViewModel = viewModel(
-//        factory = UserModelFactory.getInstance(LocalContext.current)
-//    ),
+    viewModel: WelcomeViewModel = viewModel(
+        factory = UserModelFactory.getInstance(LocalContext.current)
+    ),
+    navigateToHome: () -> Unit
 ){
 //    val lifecycleOwner = LocalLifecycleOwner.current
 //
@@ -68,13 +69,14 @@ fun AmbatikApp(
 
     LaunchedEffect(key1 = userModel.isLogin){
         if (userModel.isLogin) {
-            navController.navigate(Screen.Home.route){
-                popUpTo(Screen.Home.route){
-                    inclusive = true
-                }
-                restoreState = true
-                launchSingleTop = true
-            }
+//            navController.navigate(Screen.Home.route){
+//                popUpTo(Screen.Home.route){
+//                    inclusive = true
+//                }
+//                restoreState = true
+//                launchSingleTop = true
+//            }
+            navigateToHome()
         }
     }
 
@@ -142,6 +144,6 @@ fun AmbatikApp(
 @Composable
 fun AmbatikAppPreview(){
     AmbatikTheme {
-        AmbatikApp()
+        AmbatikApp(navigateToHome = {})
     }
 }

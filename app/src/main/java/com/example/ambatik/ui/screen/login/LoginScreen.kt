@@ -201,11 +201,11 @@ fun LoginScreen(
                     color = Color(0xFFFFFFFF),
                 )
             }
-//            LaunchedEffect(statusState) {
-//                if (statusState) {
-//                    navController.navigate(Screen.Home.route)
-//                }
-//            }
+            LaunchedEffect(statusState) {
+                if (statusState) {
+                    navController.navigate(Screen.Home.route)
+                }
+            }
             errorState?.let { errorMsg ->
                 Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
             }
