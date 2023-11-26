@@ -18,6 +18,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
@@ -36,7 +37,11 @@ import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.screen.welcome.WelcomeViewModel
 import com.example.ambatik.ui.theme.AmbatikTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.ambatik.data.factory.ArticleModelFactory
+import com.example.ambatik.data.pref.UserModel
+import com.example.ambatik.data.pref.UserPreference
+import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.di.Injection
 import com.example.ambatik.ui.components.ArticleItem
 
@@ -47,7 +52,7 @@ fun ArticelScreen(
     viewModel: ArticleViewModel = viewModel(
         factory = ArticleModelFactory.getInstance(LocalContext.current)
     ),
-    navigateToDetail: (Int) -> Unit
+    navigateToDetail: (Int) -> Unit,
 ){
     val articleListState = viewModel.articleList.observeAsState()
     val statusState by viewModel.status.observeAsState(false)
@@ -86,7 +91,6 @@ fun ArticelScreen(
                 }
             }
         }
-
     }
 }
 

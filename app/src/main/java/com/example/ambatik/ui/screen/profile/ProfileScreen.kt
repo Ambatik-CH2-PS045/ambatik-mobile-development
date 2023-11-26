@@ -27,6 +27,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -45,6 +46,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.R
 import com.example.ambatik.data.factory.UserModelFactory
+import com.example.ambatik.data.pref.UserModel
+import com.example.ambatik.data.pref.UserPreference
+import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.theme.AmbatikTheme
 import kotlinx.coroutines.withContext
@@ -279,6 +283,8 @@ fun ProfileScreen(
                     border = BorderStroke(2.dp, Color.Red),
                     onClick = {
                         viewModel.logout()
+
+
                     },
                     modifier = modifier
                         .fillMaxWidth()

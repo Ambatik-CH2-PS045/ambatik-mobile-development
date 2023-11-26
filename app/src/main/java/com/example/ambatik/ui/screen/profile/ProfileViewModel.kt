@@ -14,6 +14,7 @@ class ProfileViewModel(private val repository: UserRepository): ViewModel() {
         viewModelScope.launch {
             try {
                 repository.logout()
+                val userModelAfterLogout = repository.getSession()
                 status.postValue(true)
                 Log.d("LOGOUT", "LOGOUT BERHASIL")
             }catch (e: HttpException){

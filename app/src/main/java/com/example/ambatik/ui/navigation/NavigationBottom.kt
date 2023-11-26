@@ -32,6 +32,7 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
     ){
         composable(Screen.Articel.route){
             ArticelScreen(
+                navController,
                 navigateToDetail = {articleId ->
                     navController.navigate(Screen.DetailArticle.createRoute(articleId))
                 }
