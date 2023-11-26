@@ -83,7 +83,7 @@ fun HomeScreen(
 
     Scaffold(
         floatingActionButton = {
-            if (!logoutStatus.value && currentRoute != Screen.Scan.route || currentRoute != Screen.DetailArticle.route){
+            if (!logoutStatus.value && currentRoute != Screen.Scan.route && currentRoute != Screen.DetailArticle.route){
                 FAB(navController)
             }else{
                 FAB(
@@ -94,7 +94,7 @@ fun HomeScreen(
         },
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {
-            if (!logoutStatus.value && currentRoute != Screen.Scan.route || currentRoute != Screen.DetailArticle.route){
+            if (!logoutStatus.value && currentRoute != Screen.Scan.route && currentRoute != Screen.DetailArticle.route){
                 BottomBar(navController)
             }
         },
