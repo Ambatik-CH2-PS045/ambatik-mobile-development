@@ -11,8 +11,8 @@ class ArticleRepository(private val apiService: ApiService, private val userPref
         return apiService.getArticle()
     }
 
-    suspend fun getDetailArticle(id: Int): ResponseDetailArticle{
-        return apiService.getDetailArticle(id)
+    suspend fun getDetailArticle(id: Int, idUser: Int): ResponseDetailArticle{
+        return apiService.getDetailArticle(id, idUser)
     }
 
     companion object{

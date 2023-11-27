@@ -25,8 +25,9 @@ interface ApiService{
     @GET("article")
     suspend fun getArticle(): ResponseArticle
 
-    @GET("article/details/{id}")
+    @GET("article/details/{id}/{idUser}")
     suspend fun getDetailArticle(
-        @Path("id") id: Int
+        @Path("id") id: Int,
+        @Path("idUser") idUser: Int
     ): ResponseDetailArticle
 }

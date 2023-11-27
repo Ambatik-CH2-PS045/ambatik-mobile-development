@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -19,6 +20,7 @@ class UserPreference constructor(private val dataStore: DataStore<Preferences>){
             preferences[USERNAME_KEY] = user.username
             preferences[TOKEN_KEY] = user.token
             preferences[IS_LOGIN_KEY] = true
+            preferences[ID_KEY] = user.id
         }
     }
 
@@ -27,7 +29,8 @@ class UserPreference constructor(private val dataStore: DataStore<Preferences>){
             UserModel(
                 preferences[USERNAME_KEY] ?: "",
                 preferences[TOKEN_KEY] ?: "",
-                preferences[IS_LOGIN_KEY] ?: false
+                preferences[IS_LOGIN_KEY] ?: false,
+                preferences[ID_KEY] ?: 0
             )
         }
     }
@@ -45,6 +48,7 @@ class UserPreference constructor(private val dataStore: DataStore<Preferences>){
         private val USERNAME_KEY = stringPreferencesKey("username")
         private val TOKEN_KEY = stringPreferencesKey("token")
         private val IS_LOGIN_KEY = booleanPreferencesKey("isLogin")
+        private val ID_KEY = intPreferencesKey("id")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this) {

@@ -17,10 +17,10 @@ class DetailArticleViewModel(private val repository: ArticleRepository): ViewMod
     val status: MutableLiveData<Boolean> = MutableLiveData()
     val detailArticle = MutableLiveData<DataItemArticle>()
 
-    fun getDetailStory(id: Int){
+    fun getDetailStory(id: Int, idUser: Int){
         viewModelScope.launch {
             try {
-                val articleDetailResponse = repository.getDetailArticle(id)
+                val articleDetailResponse = repository.getDetailArticle(id, idUser)
                 status.postValue(true)
                 detailArticle.postValue(articleDetailResponse.data)
                 Log.d("Article", "$articleDetailResponse")

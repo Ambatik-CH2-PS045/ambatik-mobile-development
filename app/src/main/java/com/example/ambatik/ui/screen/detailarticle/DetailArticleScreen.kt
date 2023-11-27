@@ -1,7 +1,6 @@
 package com.example.ambatik.ui.screen.detailarticle
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,41 +19,67 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.ambatik.data.factory.ArticleModelFactory
+import com.example.ambatik.data.pref.UserModel
+import com.example.ambatik.data.pref.UserPreference
+import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 @Composable
 fun DetailArticleScreen(
     articleId: Int,
     navigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: DetailArticleViewModel = viewModel(
+        factory = ArticleModelFactory.getInstance(LocalContext.current)
+    ),
+    userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore)
 ) {
+    val articleListState = viewModel.detailArticle.observeAsState()
+    val statusState by viewModel.status.observeAsState(false)
+    val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
+    val userId = userModel.id
+
+
+    LaunchedEffect(Unit){
+        viewModel.getDetailStory(articleId, userId)
+    }
+
     Surface(
+        color = MaterialTheme.colorScheme.background,
         modifier = modifier
             .fillMaxWidth()
     ) {
-//        DetailArticleContent(
-//            image = ,
-//            title = ,
-//            author = ,
-//            createAt = ,
-//            totalLike = ,
-//            description = ,
-//            modifier =
-//        )
+        articleListState.value?.let { detailArticle ->
+            DetailArticleContent(
+                image = detailArticle.urlBanner ?: "",
+                title = detailArticle.title ?: "",
+                author = detailArticle.author ?: "",
+                createAt = detailArticle.createdAt ?: "",
+                totalLike = detailArticle.totalLike.toString(),
+                description = detailArticle.content ?: "",
+                modifier = Modifier
+            )
+        }
     }
-
 }
 
 @Composable
@@ -76,7 +101,7 @@ fun DetailArticleContent(
                 modifier = modifier
                     .height(250.dp)
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
+                    .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp))
             )
             Box(
                 modifier = modifier

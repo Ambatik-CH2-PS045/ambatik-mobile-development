@@ -27,7 +27,8 @@ class LoginViewModel(private val repository: UserRepository): ViewModel() {
                 val loginResponse = repository.login(username, password)
                 status.postValue(true)
                 val token = loginResponse.data?.accessToken
-                repository.saveSession(UserModel(username, token ?: "", true))
+                val idUser = loginResponse.data?.id
+                repository.saveSession(UserModel(username, token ?: "", true, idUser ?: 0) )
                 Log.d("LOGIN", "$loginResponse")
             } catch (e: HttpException) {
                 _loading.value = false
