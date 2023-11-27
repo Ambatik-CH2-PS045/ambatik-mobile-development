@@ -69,10 +69,7 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
             ){
             val id = it.arguments?.getInt(articleId) ?: 0
             DetailArticleScreen(
-                articleId = id,
-                navigateBack = {
-                    navController.navigateUp()
-                }
+                articleId = id
             )
         }
     }
