@@ -46,7 +46,6 @@ import com.example.ambatik.ui.theme.AmbatikTheme
 @Composable
 fun DetailArticleScreen(
     articleId: Int,
-    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailArticleViewModel = viewModel(
         factory = ArticleModelFactory.getInstance(LocalContext.current)
@@ -57,7 +56,6 @@ fun DetailArticleScreen(
     val statusState by viewModel.status.observeAsState(false)
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
     val userId = userModel.id
-
 
     LaunchedEffect(Unit){
         viewModel.getDetailStory(articleId, userId)
