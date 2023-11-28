@@ -6,4 +6,9 @@
     <string name="scan_screen">Scan</string>
     <string name="shop_screen">Shop</string>
     <string name="articel_screen">Home</string>
+    <string name="back">Back</string>
+    <string name="like">Like</string>
+    <string name="rating_product">%d/5</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </string>
 </resources>
