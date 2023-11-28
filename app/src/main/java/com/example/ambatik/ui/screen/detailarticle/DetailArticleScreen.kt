@@ -21,6 +21,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -74,7 +75,7 @@ fun DetailArticleScreen(
                 title = detailArticle.title ?: "",
                 author = detailArticle.author ?: "",
                 createAt = detailArticle.createdAt ?: "",
-                totalLike = detailArticle.totalLike.toString(),
+                totalLike = detailArticle.totalLike,
                 description = detailArticle.content ?: "",
                 isLiked = detailArticle.likes[0].statusLike,
                 onLikeClick = { viewModel.likeArticle(userModel.id, articleId) },
@@ -91,12 +92,14 @@ fun DetailArticleContent(
     title: String,
     author: String,
     createAt: String,
-    totalLike: String,
+    totalLike: Int,
     description: String,
     isLiked: String,
     onLikeClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
+    var liked by remember { mutableStateOf(isLiked == "1") }
+    var totalLikeCount by remember { mutableStateOf(totalLike) }
     Column {
         Box {
             AsyncImage(
@@ -121,6 +124,11 @@ fun DetailArticleContent(
                         .clip(RoundedCornerShape(20.dp))
                         .alpha(0.5f)
                         .background(Color.Black)
+                        .clickable {
+                            liked = !liked
+                            totalLikeCount += if (liked) 1 else -1
+                            onLikeClick()
+                        }
                 )
                 Box(
                     modifier = modifier
@@ -130,16 +138,13 @@ fun DetailArticleContent(
                 ){
                     Row{
                         Icon(
-                            imageVector = if (isLiked == "1") Icons.Outlined.Favorite else Icons.Filled.FavoriteBorder,
+                            imageVector = if (liked) Icons.Outlined.Favorite else Icons.Filled.FavoriteBorder,
                             tint = Color.White,
                             contentDescription = "Icon Like Article",
                             modifier = modifier
-                                .clickable {
-                                    onLikeClick()
-                                }
                         )
                         Text(
-                            text = totalLike,
+                            text = totalLikeCount.toString(),
                             color = Color.White,
                             modifier = modifier
                                 .padding(5.dp, 0.dp, 0.dp, 0.dp)
@@ -202,7 +207,7 @@ fun PreviewDetailArticle(){
             image = "",
             title = "Yuk, Rayakan Hari Batik Nasional dalam Rangkaian Acara Keren GANTARI!",
             createAt = "2023-11-23",
-            totalLike = "1",
+            totalLike = 1,
             author = "Wiguna Wijaya",
             description = "Dalam penyelenggaraan kali ini, LAKON Indonesia akan mempresentasikan koleksi yang lebih matang dan lebih dalam, berupa 125 koleksi pakaian siap pakai yang akan diperagakan oleh 100 orang model.",
             isLiked = "1",
