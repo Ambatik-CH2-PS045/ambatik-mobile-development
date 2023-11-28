@@ -2,6 +2,8 @@ package com.example.ambatik.ui.screen.login
 
 
 import android.util.Log
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +12,7 @@ import com.example.ambatik.api.response.ResponseLogin
 import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.repository.UserRepository
 import com.google.gson.Gson
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 

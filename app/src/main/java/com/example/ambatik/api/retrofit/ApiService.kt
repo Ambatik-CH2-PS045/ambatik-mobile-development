@@ -2,6 +2,7 @@ package com.example.ambatik.api.retrofit
 
 import com.example.ambatik.api.response.ResponseArticle
 import com.example.ambatik.api.response.ResponseDetailArticle
+import com.example.ambatik.api.response.ResponseLikeArticle
 import com.example.ambatik.api.response.ResponseLogin
 import com.example.ambatik.api.response.ResponseRegister
 import retrofit2.http.Body
@@ -30,4 +31,9 @@ interface ApiService{
         @Path("id") id: Int,
         @Path("idUser") idUser: Int
     ): ResponseDetailArticle
+
+    @POST("article/like")
+    suspend fun likeArticle(
+        @Body request: HashMap<String, String>
+    ): ResponseLikeArticle
 }

@@ -1,4 +1,4 @@
-package com.example.ambatik.ui.screen.detailShopping
+package com.example.ambatik.ui.screen.detailshopping
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -87,7 +87,7 @@ fun DetailShopContent(
                     contentDescription = stringResource(R.string.back),
                     modifier = Modifier
                         .padding(16.dp)
-                      .clickable { onBackClick() }
+                        .clickable { onBackClick() }
                 )
             }
             Box(

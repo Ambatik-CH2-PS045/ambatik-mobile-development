@@ -1,6 +1,9 @@
 package com.example.ambatik.ui.screen.detailarticle
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,12 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.material3.Divider
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -23,6 +24,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -53,12 +57,10 @@ fun DetailArticleScreen(
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore)
 ) {
     val articleListState = viewModel.detailArticle.observeAsState()
-    val statusState by viewModel.status.observeAsState(false)
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
-    val userId = userModel.id
 
     LaunchedEffect(Unit){
-        viewModel.getDetailStory(articleId, userId)
+        viewModel.getDetailStory(articleId, userModel.id)
     }
 
     Surface(
@@ -74,11 +76,14 @@ fun DetailArticleScreen(
                 createAt = detailArticle.createdAt ?: "",
                 totalLike = detailArticle.totalLike.toString(),
                 description = detailArticle.content ?: "",
+                isLiked = detailArticle.likes[0].statusLike,
+                onLikeClick = { viewModel.likeArticle(userModel.id, articleId) },
                 modifier = Modifier
             )
         }
     }
 }
+
 
 @Composable
 fun DetailArticleContent(
@@ -88,6 +93,8 @@ fun DetailArticleContent(
     createAt: String,
     totalLike: String,
     description: String,
+    isLiked: String,
+    onLikeClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
     Column {
@@ -123,12 +130,16 @@ fun DetailArticleContent(
                 ){
                     Row{
                         Icon(
-                            imageVector = Icons.Default.ThumbUp,
+                            imageVector = if (isLiked == "1") Icons.Outlined.Favorite else Icons.Filled.FavoriteBorder,
                             tint = Color.White,
                             contentDescription = "Icon Like Article",
+                            modifier = modifier
+                                .clickable {
+                                    onLikeClick()
+                                }
                         )
                         Text(
-                            text = totalLike.toString(),
+                            text = totalLike,
                             color = Color.White,
                             modifier = modifier
                                 .padding(5.dp, 0.dp, 0.dp, 0.dp)
@@ -194,6 +205,8 @@ fun PreviewDetailArticle(){
             totalLike = "1",
             author = "Wiguna Wijaya",
             description = "Dalam penyelenggaraan kali ini, LAKON Indonesia akan mempresentasikan koleksi yang lebih matang dan lebih dalam, berupa 125 koleksi pakaian siap pakai yang akan diperagakan oleh 100 orang model.",
+            isLiked = "1",
+            onLikeClick = {}
         )
     }
 }

@@ -13,6 +13,9 @@ data class ResponseDetailArticle(
 	@field:SerializedName("error")
 	val error: Boolean,
 
+	@field:SerializedName("liked")
+	val liked: Boolean,
+
 	@field:SerializedName("message")
 	val message: String
 ) : Parcelable
@@ -42,5 +45,14 @@ data class DataItemArticle(
 	val content: String,
 
 	@field:SerializedName("updatedAt")
-	val updatedAt: String
+	val updatedAt: String,
+
+	@SerializedName("likes")
+	val likes: List<LikeItem>
+) : Parcelable
+
+@Parcelize
+data class LikeItem(
+	@field:SerializedName("status_like")
+	val statusLike: String
 ) : Parcelable
