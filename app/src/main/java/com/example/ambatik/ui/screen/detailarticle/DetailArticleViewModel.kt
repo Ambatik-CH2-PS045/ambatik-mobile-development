@@ -28,19 +28,19 @@ class DetailArticleViewModel(private val repository: ArticleRepository): ViewMod
                 status.postValue(true)
                 statusLike.postValue(articleDetailResponse.liked)
                 detailArticle.postValue(articleDetailResponse.data)
-                Log.e("ARTICLE", "$articleDetailResponse")
-                Log.d("ARTICLE LIKES", "${articleDetailResponse.data.likes[0].statusLike}")
+                Log.e("DETAIL ARTICLE", "$detailArticle")
+                Log.d("DETAIL ARTICLE", "${articleDetailResponse.data.likes[0].statusLike}")
             }catch (e: HttpException){
                 val jsonInString = e.response()?.errorBody()?.string()
-                Log.e("ARTICLE", "Error response: $jsonInString")
+                Log.e("DETAIL ARTICLE", "Error response: $jsonInString")
                 val errorBody = Gson().fromJson(jsonInString, ResponseArticle::class.java)
                 error.postValue(errorBody.message)
                 status.postValue(false)
-                Log.d("ARTICLE", "$e")
+                Log.d("DETAIL ARTICLE", "$e")
             }catch (e: Exception) {
                 error.postValue("Terjadi kesalahan saat membuat data")
                 status.postValue(false)
-                Log.d("ARTICLE", "$e")
+                Log.d("DETAIL ARTICLE", "$e")
             }
         }
     }

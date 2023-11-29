@@ -57,6 +57,7 @@ fun CountItem(
         }
         Text(
             text = orderCount.toString(),
+            color = Color.White,
             modifier = Modifier
                 .weight(1f),
             fontSize = 20.sp,
@@ -71,7 +72,7 @@ fun CountItem(
             modifier = Modifier.size(30.dp)
         ) {
             Text(
-                text = "＋",
+                text = "+",
                 fontSize = 22.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier

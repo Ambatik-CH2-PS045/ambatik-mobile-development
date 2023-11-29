@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -76,7 +77,7 @@ fun ArticleItem(
                     ) {
                         Row{
                             Icon(
-                                imageVector = Icons.Default.ThumbUp,
+                                imageVector = Icons.Default.Favorite ,
                                 tint = Color.White,
                                 contentDescription = "Icon Like Article",
                                 modifier = modifier

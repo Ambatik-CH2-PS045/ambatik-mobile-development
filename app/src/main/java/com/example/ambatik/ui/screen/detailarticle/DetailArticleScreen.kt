@@ -47,6 +47,9 @@ import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.ui.theme.AmbatikTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 
 @Composable
 fun DetailArticleScreen(
@@ -64,12 +67,19 @@ fun DetailArticleScreen(
         viewModel.getDetailStory(articleId, userModel.id)
     }
 
+
     Surface(
         color = MaterialTheme.colorScheme.background,
         modifier = modifier
             .fillMaxWidth()
     ) {
         articleListState.value?.let { detailArticle ->
+            var holdLike = ""
+            if (detailArticle.likes.size == 0){
+                holdLike = "0"
+            }else{
+                holdLike = detailArticle.likes[0].statusLike
+            }
             DetailArticleContent(
                 image = detailArticle.urlBanner ?: "",
                 title = detailArticle.title ?: "",
@@ -77,7 +87,7 @@ fun DetailArticleScreen(
                 createAt = detailArticle.createdAt ?: "",
                 totalLike = detailArticle.totalLike,
                 description = detailArticle.content ?: "",
-                isLiked = detailArticle.likes[0].statusLike,
+                isLiked = holdLike,
                 onLikeClick = { viewModel.likeArticle(userModel.id, articleId) },
                 modifier = Modifier
             )
