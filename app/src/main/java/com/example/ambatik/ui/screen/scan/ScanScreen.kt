@@ -1,5 +1,11 @@
 package com.example.ambatik.ui.screen.scan
 
+import android.content.Context
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,27 +34,68 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
+import com.example.ambatik.BuildConfig
 import com.example.ambatik.R
 import com.example.ambatik.ui.theme.AmbatikTheme
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Objects
 
 @Composable
 fun ScanScreen(
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier
 ){
+    val context = LocalContext.current
+    val file = context.createImageFile()
+    val uri = FileProvider.getUriForFile(
+        Objects.requireNonNull(context),
+        BuildConfig.APPLICATION_ID + ".provider", file
+    )
+
+    var capturedImageUri by remember {
+        mutableStateOf<Uri>(Uri.EMPTY)
+    }
+
+    val cameraLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()){
+        capturedImageUri = uri
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) {
+        if (it) {
+            Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show()
+            cameraLauncher.launch(uri)
+        } else {
+            Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     Surface(
         color = MaterialTheme.colorScheme.background,
         modifier = Modifier
@@ -69,8 +116,9 @@ fun ScanScreen(
                     .fillMaxWidth()
             )
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+//                painter = painterResource(id = R.drawable.ic_launcher_foreground),
                 contentDescription = "Image Scan Batik",
+                painter = rememberImagePainter(capturedImageUri),
                 modifier = modifier
                     .size(300.dp, 400.dp)
                     .border(2.dp, color = Color.White, RoundedCornerShape(20.dp))
@@ -108,7 +156,16 @@ fun ScanScreen(
                     ) {
                         FloatingActionButton(
                             shape = CircleShape,
-                            onClick = { /*TODO*/ },
+                            onClick = {
+                                val permissionCheckResult =
+                                    ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA)
+                                if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                                    cameraLauncher.launch(uri)
+                                } else {
+                                    // Request a permission
+                                    permissionLauncher.launch(android.Manifest.permission.CAMERA)
+                                }
+                            },
                             modifier = Modifier
                                 .size(65.dp)
                                 .alpha(0.7f),
@@ -116,7 +173,7 @@ fun ScanScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.CameraAlt,
-                                contentDescription =""
+                                contentDescription ="Capture Image From Camera"
                             )
                         }
                         FloatingActionButton(
@@ -152,6 +209,18 @@ fun ScanScreen(
             }
         }
     }
+}
+
+
+fun Context.createImageFile(): File {
+    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+    val imageFileName = "JPEG_" + timeStamp + "_"
+    val image = File.createTempFile(
+        imageFileName,
+        ".jpg",
+        externalCacheDir
+    )
+    return image
 }
 
 @Preview
