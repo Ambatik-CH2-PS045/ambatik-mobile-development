@@ -54,7 +54,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.ambatik.BuildConfig
 import com.example.ambatik.R
@@ -115,14 +114,14 @@ fun ScanScreen(
                     .padding(50.dp)
                     .fillMaxWidth()
             )
-            Image(
-//                painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                contentDescription = "Image Scan Batik",
-                painter = rememberImagePainter(capturedImageUri),
-                modifier = modifier
-                    .size(300.dp, 400.dp)
-                    .border(2.dp, color = Color.White, RoundedCornerShape(20.dp))
-            )
+                Image(
+//                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    contentDescription = "Image Scan Batik",
+                    painter = rememberImagePainter(capturedImageUri),
+                    modifier = modifier
+                        .size(300.dp, 400.dp)
+                        .border(2.dp, color = Color.White, RoundedCornerShape(20.dp))
+                )
             Box(
                 modifier = modifier
                     .padding(0.dp, 25.dp, 0.dp, 0.dp)
@@ -210,7 +209,6 @@ fun ScanScreen(
         }
     }
 }
-
 
 fun Context.createImageFile(): File {
     val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
