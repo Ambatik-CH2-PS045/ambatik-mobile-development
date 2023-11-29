@@ -3,7 +3,9 @@ package com.example.ambatik.ui.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,16 +45,22 @@ fun CountItem(
             contentColor = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(30.dp)
         ) {
-            Text(
-                text = "—",
-                fontSize = 22.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable {
-                        onProductDecreased(orderId)
-                    }
-            )
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = modifier
+                    .fillMaxSize(1.0f)
+            ){
+                Text(
+                    text = "—",
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .clickable {
+                            onProductDecreased(orderId)
+                        },
+                )
+            }
         }
         Text(
             text = orderCount.toString(),
@@ -60,7 +68,8 @@ fun CountItem(
                 .weight(1f),
             fontSize = 20.sp,
             textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
         )
         Surface(
             shape = RoundedCornerShape(size = 5.dp),
@@ -69,16 +78,21 @@ fun CountItem(
             contentColor = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(30.dp)
         ) {
-            Text(
-                text = "＋",
-                fontSize = 22.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable {
-                        onProductIncreased(orderId)
-                    }
-            )
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = modifier
+                    .fillMaxSize(1.0f)
+            ) {
+                Text(
+                    text = "＋",
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .clickable {
+                            onProductIncreased(orderId)
+                        },
+                    )
+            }
         }
     }
 }

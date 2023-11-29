@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.ambatik.ui.screen.articel.ArticelScreen
 import com.example.ambatik.ui.screen.detailarticle.DetailArticleScreen
+import com.example.ambatik.ui.screen.detailshopping.DetailShopScreen
 import com.example.ambatik.ui.screen.home.HomeScreen
 import com.example.ambatik.ui.screen.login.LoginScreen
 import com.example.ambatik.ui.screen.profile.ProfileScreen
@@ -42,7 +43,12 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
             QuizScreen()
         }
         composable(Screen.Shopping.route){
-            ShoppingScreen()
+            ShoppingScreen(
+                navController,
+                navigateToDetailShop = {shopId ->
+                    navController.navigate(Screen.DetailShop.createRoute(shopId))
+                }
+            )
         }
         composable(Screen.Profile.route){
             ProfileScreen(navController)
@@ -70,6 +76,16 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
             val id = it.arguments?.getInt(articleId) ?: 0
             DetailArticleScreen(
                 articleId = id
+            )
+        }
+        val shopId = "shoppingId"
+        composable(
+            route = Screen.DetailShop.route,
+            arguments = listOf(navArgument(shopId){ type = NavType.IntType })
+        ){
+            val id = it.arguments?.getInt(shopId) ?: 0
+            DetailShopScreen(
+                shopId = id
             )
         }
     }

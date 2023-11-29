@@ -5,6 +5,8 @@ import com.example.ambatik.api.response.ResponseDetailArticle
 import com.example.ambatik.api.response.ResponseLikeArticle
 import com.example.ambatik.api.response.ResponseLogin
 import com.example.ambatik.api.response.ResponseRegister
+import com.example.ambatik.api.response.ResponseShop
+import com.example.ambatik.api.response.ResponseShopDetail
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -36,4 +38,12 @@ interface ApiService{
     suspend fun likeArticle(
         @Body request: HashMap<String, String>
     ): ResponseLikeArticle
+
+    @GET("product")
+    suspend fun getShop(): ResponseShop
+
+    @GET("product/details/{id}")
+    suspend fun getDetailShop(
+        @Path("id") id: Int
+    ): ResponseShopDetail
 }

@@ -49,17 +49,17 @@ fun ProductBatikItem(
                 contentDescription = "Image Product",
                 modifier = modifier
                     .fillMaxWidth()
-                    .height(185.dp)
+                    .height(180.dp)
             )
             Text(
                 text = nameProduct,
                 color = Color.White,
-                fontSize = 12.sp,
+                fontSize = 14.sp,
                 lineHeight = 16.sp,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = modifier
-                    .padding(12.dp, 12.dp, 12.dp, 4.dp)
+                    .padding(12.dp, 8.dp, 12.dp, 4.dp)
             )
             Text(
                 text = "Rp. $price",
@@ -75,12 +75,12 @@ fun ProductBatikItem(
             Text(
                 text = store,
                 color = Color.White,
-                fontSize = 8.sp,
+                fontSize = 10.sp,
                 lineHeight = 16.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = modifier
-                    .padding(12.dp, 0.dp, 12.dp, 4.dp)
+                    .padding(12.dp, 0.dp, 12.dp, 6.dp)
             )
             Box(
                 modifier = modifier
