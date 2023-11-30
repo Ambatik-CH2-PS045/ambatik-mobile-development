@@ -58,7 +58,6 @@ fun CartScreen(
             .fillMaxSize()
     ) {
         LazyColumn(
-//            contentPadding = PaddingValues(top = 8.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ){
             items(dataCartListState.value?.data ?: emptyList()){data ->
@@ -69,22 +68,6 @@ fun CartScreen(
                     totalQuantity = data?.totalQty ?: "",
                     storeName = data?.storeName ?: ""
                 )
-
-//                if (dataCartListState.value?.data?.size != null){
-//                    cartState.value?.forEach { data ->
-//                        if (data != null) {
-//                            CartItem(
-//                                name = data.name ?: "",
-//                                image = data.urlProduct ?: "",
-//                                totalPrice = data.totalPrice ?: "",
-//                                totalQuantity = data.totalQty ?: "",
-//                                storeName = data.storeName ?: ""
-//                            )
-//                        }
-//                    }
-//                }else{
-//
-//                }
             }
         }
     }
