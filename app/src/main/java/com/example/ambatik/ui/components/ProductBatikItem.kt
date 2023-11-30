@@ -59,7 +59,7 @@ fun ProductBatikItem(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = modifier
-                    .padding(12.dp, 8.dp, 12.dp, 4.dp)
+                    .padding(12.dp, 8.dp, 12.dp, 0.dp)
             )
             Text(
                 text = "Rp. $price",
@@ -75,7 +75,7 @@ fun ProductBatikItem(
             Text(
                 text = store,
                 color = Color.White,
-                fontSize = 10.sp,
+                fontSize = 12.sp,
                 lineHeight = 16.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -85,7 +85,7 @@ fun ProductBatikItem(
             Box(
                 modifier = modifier
                     .padding(12.dp, 0.dp, 12.dp, 4.dp)
-                    .height(12.dp)
+                    .height(15.dp)
             ) {
                 Row {
                     Icon(
@@ -93,12 +93,14 @@ fun ProductBatikItem(
                         contentDescription = "Icon Rating",
                         tint = Color.Yellow,
                         modifier = modifier
-                            .size(11.dp)
+                            .size(15.dp)
                     )
                     Text(
                         text = rating.toString(),
                         color = Color.White,
-                        fontSize = 8.sp,
+                        fontSize = 10.sp,
+                        modifier = modifier
+
                     )
                     Divider(
                         color = Color.White,
@@ -110,7 +112,7 @@ fun ProductBatikItem(
                     Text(
                         text = "$productSold terjual",
                         color = Color.White,
-                        fontSize = 8.sp,
+                        fontSize = 10.sp,
                     )
                 }
             }

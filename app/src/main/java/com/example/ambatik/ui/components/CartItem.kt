@@ -1,17 +1,13 @@
 package com.example.ambatik.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -22,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -36,96 +33,76 @@ import com.example.ambatik.ui.theme.AmbatikTheme
 fun CartItem(
     image: String,
     nameProduct: String,
-    price: Int,
-    count: Int,
-    rating: Double,
-    countPrice: Int,
+    count: String,
+    countPrice: String,
     modifier: Modifier = Modifier
 ) {
 
-//    var orderCount by rememberSaveable { mutableStateOf(count) }
+    var orderCount by rememberSaveable { mutableStateOf(count.toInt()) }
 
     Card(
-        colors = CardDefaults.cardColors(Color.LightGray),
+        colors = CardDefaults.cardColors(Color.Black),
         modifier = modifier
-            .width(336.dp)
-            .height(109.dp)
+            .fillMaxWidth()
+            .height(115.dp)
     ) {
         Box(modifier = modifier
             .padding(8.dp)
-            .width(320.dp))
+            .fillMaxWidth()
+        )
         {
             Row {
                 Box(modifier = modifier
-                    .width(112.dp)) {
+                    .width(112.dp)
+                ) {
                     AsyncImage(
                         model = image,
                         contentDescription = "Image Product"
                     )
                 }
                 Box (modifier = modifier
-                    .padding(16.dp, 0.dp, 16.dp, 0.dp)
+                    .padding(16.dp, 0.dp, 12.dp, 0.dp)
                     .fillMaxHeight()
                 ){
                     Column{
                         Text(
                             text = nameProduct,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = Color.Black,
-                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            fontSize = 16.sp,
                             lineHeight = 16.sp,
                             overflow = TextOverflow.Ellipsis,
-                            maxLines = 2,
+                            maxLines = 1,
                             modifier = modifier
-                                .padding(0.dp, 0.dp, 0.dp, 8.dp)
+                                .padding(5.dp, 0.dp, 0.dp, 8.dp)
                         )
-                        Box (
+                        Text(
+                            text = "Rp. $countPrice",
+                            fontSize = 14.sp,
+                            color = Color.White,
                             modifier = modifier
-                                .padding(0.dp, 0.dp, 12.dp, 4.dp)
-                                .height(17.dp)
-                        ) {
+                                .padding(start = 5.dp)
+                        )
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = modifier
+                                .fillMaxHeight()
+                        ){
                             Row {
-                                Icon(
-                                    imageVector = Icons.Default.Star,
-                                    contentDescription = "Icon Rating",
-                                    tint = Color.Yellow,
-                                    modifier = modifier
-                                        .size(16.dp)
-                                )
                                 Text(
-                                    text = rating.toString(),
-                                    color = Color.Black,
-                                    fontSize = 12.sp
+                                    text = ""
+                                )
+                                CountItem(
+                                    orderId = 1,
+                                    orderCount = orderCount,
+                                    onProductIncreased = { orderCount++ },
+                                    onProductDecreased = { if (orderCount > 0) orderCount-- }
                                 )
                             }
                         }
-                        Text(
-                            text = "Rp. $countPrice",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp
-                        )
                     }
                 }
-//                Box(
-//                    modifier = modifier
-//                        .fillMaxHeight()
-//                ){
-//                    Column {
-//                        Icon(
-//                            imageVector = Icons.Default.Delete,
-//                            contentDescription = "Delete Cart",
-//                            tint = Color.White,
-//                            modifier = modifier
-//                                .size(16.dp)
-//                        )
-//                        CountItem(
-//                            orderId = 1,
-//                            orderCount = orderCount,
-//                            onProductIncreased = { orderCount++ },
-//                            onProductDecreased = { if (orderCount > 0) orderCount-- }
-//                        )
-//                    }
-//                }
             }
         }
     }
@@ -138,10 +115,8 @@ fun PreviewCartItem(){
         CartItem(
             "",
             "Batik Baru Motif Megamendung",
-            1,
-            1,
-            1.0,
-            10000,
+            "1",
+            "100000",
         )
     }
 }

@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.ambatik.ui.screen.articel.ArticelScreen
+import com.example.ambatik.ui.screen.cart.CartScreen
 import com.example.ambatik.ui.screen.detailarticle.DetailArticleScreen
 import com.example.ambatik.ui.screen.detailshopping.DetailShopScreen
 import com.example.ambatik.ui.screen.home.HomeScreen
@@ -85,8 +86,12 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
         ){
             val id = it.arguments?.getInt(shopId) ?: 0
             DetailShopScreen(
+                navController,
                 shopId = id
             )
+        }
+        composable(Screen.Cart.route){
+            CartScreen(navController)
         }
     }
 }

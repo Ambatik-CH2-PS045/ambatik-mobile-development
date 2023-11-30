@@ -39,7 +39,7 @@ fun CountItem(
     ) {
         Surface(
             shape = RoundedCornerShape(size = 5.dp),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+            border = BorderStroke(1.dp, Color.White),
             color = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(30.dp)
@@ -47,6 +47,7 @@ fun CountItem(
             Text(
                 text = "—",
                 fontSize = 22.sp,
+                color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .weight(1f)
@@ -66,7 +67,7 @@ fun CountItem(
         )
         Surface(
             shape = RoundedCornerShape(size = 5.dp),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+            border = BorderStroke(1.dp, Color.White),
             color = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(30.dp)
@@ -74,6 +75,7 @@ fun CountItem(
             Text(
                 text = "+",
                 fontSize = 22.sp,
+                color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .weight(1f)

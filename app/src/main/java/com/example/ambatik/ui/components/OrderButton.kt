@@ -2,6 +2,7 @@ package com.example.ambatik.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +22,7 @@ fun OrderButton(
     Button(
         onClick = onClick,
         enabled = enabled,
+        shape = RoundedCornerShape(10.dp),
         modifier = modifier
             .fillMaxWidth()
             .height(52.dp)

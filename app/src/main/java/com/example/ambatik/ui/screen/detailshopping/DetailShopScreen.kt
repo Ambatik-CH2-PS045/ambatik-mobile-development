@@ -1,5 +1,6 @@
 package com.example.ambatik.ui.screen.detailshopping
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -42,22 +44,37 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.ambatik.R
+import com.example.ambatik.data.factory.CartModelFactory
 import com.example.ambatik.data.factory.ShopModelFactory
+import com.example.ambatik.data.pref.UserModel
+import com.example.ambatik.data.pref.UserPreference
+import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.ui.components.CountItem
 import com.example.ambatik.ui.components.OrderButton
+import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 @Composable
 fun DetailShopScreen(
+    navController: NavHostController = rememberNavController(),
     shopId: Int,
     modifier: Modifier = Modifier,
     viewModel: DetailShopViewModel = viewModel(
         factory = ShopModelFactory.getInstance(LocalContext.current)
-    )
+    ),
+    viewModelCart: AddToCartViewModel = viewModel(
+        factory = CartModelFactory.getInstance(LocalContext.current)
+    ),
+    userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore)
 ) {
     val shopListState = viewModel.detailShop.observeAsState()
+    val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
+    val command = "add"
+    val context = LocalContext.current
 
     LaunchedEffect(Unit){
         viewModel.getDetailShop(shopId)
@@ -78,7 +95,11 @@ fun DetailShopScreen(
                 description = detailShop.description ?: "",
                 count = 1,
 //                onBackClick = { /*TODO*/ },
-                onAddToCart = {}
+                onAddToCart = {
+                        viewModelCart.addToCart(userModel.id, shopId, command)
+                        Toast.makeText(context, "Berhasil menambahkan product ke cart", Toast.LENGTH_SHORT).show()
+                        navController.navigate(Screen.Cart.route)
+                }
             )
         }
     }
@@ -95,7 +116,7 @@ fun DetailShopContent(
     description: String,
     count: Int,
 //    onBackClick: () -> Unit,
-    onAddToCart: (count: Int) -> Unit,
+    onAddToCart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -144,19 +165,6 @@ fun DetailShopContent(
                                 ),
                                 color = Color.White,
                             )
-                            Box (
-                                modifier = modifier
-                                    .fillMaxWidth(),
-                                contentAlignment = Alignment.CenterEnd
-                            ){
-                                Icon(
-                                    imageVector = Icons.Default.ThumbUp,
-                                    contentDescription = stringResource(R.string.like),
-                                    tint = Color.White,
-                                    modifier = Modifier
-                                        .padding(16.dp)
-                                )
-                            }
                         }
                     }
                     Box(
@@ -215,15 +223,15 @@ fun DetailShopContent(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(16.dp)
         ){
-            CountItem(
-                orderId = 1,
-                orderCount = orderCount,
-                onProductIncreased = { orderCount++ },
-                onProductDecreased = { if (orderCount > 0) orderCount-- },
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
+//            CountItem(
+//                orderId = 1,
+//                orderCount = orderCount,
+//                onProductIncreased = { orderCount++ },
+//                onProductDecreased = { if (orderCount > 0) orderCount-- },
+//                modifier = Modifier
+//                    .align(Alignment.CenterVertically)
 //                    .padding(bottom = 16.dp)
-            )
+//            )
             Box(
                 modifier = modifier
                     .fillMaxWidth(),
@@ -233,7 +241,7 @@ fun DetailShopContent(
                     text = stringResource(R.string.add_to_cart),
                     enabled = orderCount > 0,
                     onClick = {
-                        onAddToCart(orderCount)
+                        onAddToCart()
                     },
                     modifier = Modifier
                         .width(200.dp)

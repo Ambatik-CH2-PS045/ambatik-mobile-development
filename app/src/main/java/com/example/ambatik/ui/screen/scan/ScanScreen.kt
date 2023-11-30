@@ -3,6 +3,7 @@ package com.example.ambatik.ui.screen.scan
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -86,9 +87,11 @@ fun ScanScreen(
         capturedImage = uri
     }
 
-    val galleryLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
-        capturedImage = uri
+    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri1 ->
+        if (uri1 != null) {
+            capturedImage = uri1
+        }
+        Log.d("GalleryURI", "URI from gallery: $uri")
     }
 
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -194,7 +197,7 @@ fun ScanScreen(
                         FloatingActionButton(
                             shape = CircleShape,
                             onClick = {
-                                      galleryLauncher.launch("image/*")
+                                galleryLauncher.launch("image/*")
                             },
                             modifier = Modifier
                                 .size(65.dp)
@@ -219,7 +222,6 @@ fun ImageContent(
     modifier: Modifier = Modifier,
     capturedImageUri: Uri? = null
 ){
-
         if (capturedImageUri?.path?.isNotEmpty() == true) {
             Image(
                 contentDescription = "Image Scan Batik",
@@ -228,7 +230,8 @@ fun ImageContent(
                     .size(300.dp, 400.dp)
                     .border(2.dp, color = Color.White, RoundedCornerShape(20.dp))
             )
-        } else {
+        }
+        else {
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher_foreground),
                 contentDescription = "Image Scan Batik",
