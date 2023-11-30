@@ -31,6 +31,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,6 +55,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.ambatik.BuildConfig
 import com.example.ambatik.R
@@ -75,13 +77,18 @@ fun ScanScreen(
         BuildConfig.APPLICATION_ID + ".provider", file
     )
 
-    var capturedImageUri by remember {
+    var capturedImage by remember {
         mutableStateOf<Uri>(Uri.EMPTY)
     }
 
     val cameraLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()){
-        capturedImageUri = uri
+        capturedImage = uri
+    }
+
+    val galleryLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+        capturedImage = uri
     }
 
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -114,14 +121,10 @@ fun ScanScreen(
                     .padding(50.dp)
                     .fillMaxWidth()
             )
-                Image(
-//                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                    contentDescription = "Image Scan Batik",
-                    painter = rememberImagePainter(capturedImageUri),
-                    modifier = modifier
-                        .size(300.dp, 400.dp)
-                        .border(2.dp, color = Color.White, RoundedCornerShape(20.dp))
-                )
+            ImageContent(
+                modifier = modifier,
+                capturedImageUri = capturedImage
+            )
             Box(
                 modifier = modifier
                     .padding(0.dp, 25.dp, 0.dp, 0.dp)
@@ -161,7 +164,6 @@ fun ScanScreen(
                                 if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
                                     cameraLauncher.launch(uri)
                                 } else {
-                                    // Request a permission
                                     permissionLauncher.launch(android.Manifest.permission.CAMERA)
                                 }
                             },
@@ -191,7 +193,9 @@ fun ScanScreen(
                         }
                         FloatingActionButton(
                             shape = CircleShape,
-                            onClick = { /*TODO*/ },
+                            onClick = {
+                                      galleryLauncher.launch("image/*")
+                            },
                             modifier = Modifier
                                 .size(65.dp)
                                 .alpha(0.7f),
@@ -208,6 +212,32 @@ fun ScanScreen(
             }
         }
     }
+}
+
+@Composable
+fun ImageContent(
+    modifier: Modifier = Modifier,
+    capturedImageUri: Uri? = null
+){
+
+        if (capturedImageUri?.path?.isNotEmpty() == true) {
+            Image(
+                contentDescription = "Image Scan Batik",
+                painter = rememberImagePainter(capturedImageUri),
+                modifier = modifier
+                    .size(300.dp, 400.dp)
+                    .border(2.dp, color = Color.White, RoundedCornerShape(20.dp))
+            )
+        } else {
+            Image(
+                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                contentDescription = "Image Scan Batik",
+                modifier = modifier
+                    .size(300.dp, 400.dp)
+                    .border(2.dp, color = Color.White, RoundedCornerShape(20.dp))
+            )
+        }
+
 }
 
 fun Context.createImageFile(): File {
