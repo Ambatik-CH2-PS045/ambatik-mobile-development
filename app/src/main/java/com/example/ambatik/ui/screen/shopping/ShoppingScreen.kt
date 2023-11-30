@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,16 +31,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.data.factory.ShopModelFactory
 import com.example.ambatik.ui.components.ProductBatikItem
+import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,28 +70,52 @@ fun ShoppingScreen(
             .fillMaxSize()
     ) {
         Column {
-            SearchBar(
-                query = "",
-                onQueryChange = {},
-                onSearch = {},
-                active = false,
-                onActiveChange = {},
-                shape = RoundedCornerShape(10.dp),
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = ""
-                    )
-                },
-                placeholder = {
-                    Text(
-                        text = "Cari batik pilihanmu"
-                    )
-                },
-                modifier = modifier
-                    .padding(16.dp)
-            ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                SearchBar(
+                    query = "",
+                    onQueryChange = {},
+                    onSearch = {},
+                    active = false,
+                    onActiveChange = {},
+                    shape = RoundedCornerShape(10.dp),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = ""
+                        )
+                    },
+                    placeholder = {
+                        Text(
+                            text = "Cari batik",
+                            fontSize = 14.sp,
+                            modifier = modifier
+                                .padding(0.dp)
+                        )
+                    },
+                    modifier = modifier
+                        .padding(16.dp, 16.dp, 0.dp, 16.dp)
+                        .fillMaxWidth(0.85f)
+                        .height(48.dp)
+                ) {
+                }
+                Icon(
+                    imageVector = Icons.Default.ShoppingCart,
+                    contentDescription = "Shopping Cart",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .size(40.dp)
+                        .clickable {
+                            navController.navigate(Screen.Cart.route)
+                        }
+                )
             }
+
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(160.dp),
                 contentPadding = PaddingValues(16.dp),

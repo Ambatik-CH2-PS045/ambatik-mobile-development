@@ -41,7 +41,7 @@ fun ProductBatikItem(
         colors = CardDefaults.cardColors(Color.Black),
         modifier = modifier
             .width(185.dp)
-            .height(300.dp)
+            .height(280.dp)
     ) {
         Column {
             AsyncImage(
@@ -56,7 +56,7 @@ fun ProductBatikItem(
                 color = Color.White,
                 fontSize = 14.sp,
                 lineHeight = 16.sp,
-                maxLines = 2,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = modifier
                     .padding(12.dp, 8.dp, 12.dp, 0.dp)

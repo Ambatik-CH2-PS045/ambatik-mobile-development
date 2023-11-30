@@ -35,7 +35,7 @@ fun CountItem(
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.size(width = 110.dp, height = 40.dp).padding(4.dp)
+        modifier = modifier.size(width = 110.dp, height = 40.dp)
     ) {
         Surface(
             shape = RoundedCornerShape(size = 5.dp),
@@ -46,7 +46,7 @@ fun CountItem(
         ) {
             Text(
                 text = "—",
-                fontSize = 22.sp,
+                fontSize = 20.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -74,10 +74,11 @@ fun CountItem(
         ) {
             Text(
                 text = "+",
-                fontSize = 22.sp,
+                fontSize = 20.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
+                    .align(Alignment.CenterVertically)
                     .weight(1f)
                     .clickable {
                         onProductIncreased(orderId)

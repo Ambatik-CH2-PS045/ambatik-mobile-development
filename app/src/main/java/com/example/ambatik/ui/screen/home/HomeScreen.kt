@@ -86,7 +86,8 @@ fun HomeScreen(
             if (!logoutStatus.value &&
                 currentRoute != Screen.Scan.route &&
                 currentRoute != Screen.DetailArticle.route &&
-                currentRoute != Screen.DetailShop.route){
+                currentRoute != Screen.DetailShop.route &&
+                currentRoute != Screen.Cart.route){
                 FAB(navController)
             }else{
                 FAB(
@@ -100,7 +101,8 @@ fun HomeScreen(
             if (!logoutStatus.value &&
                 currentRoute != Screen.Scan.route &&
                 currentRoute != Screen.DetailArticle.route &&
-                currentRoute != Screen.DetailShop.route){
+                currentRoute != Screen.DetailShop.route &&
+                currentRoute != Screen.Cart.route){
                 BottomBar(navController)
             }
         },

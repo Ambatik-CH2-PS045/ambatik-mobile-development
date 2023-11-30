@@ -98,7 +98,6 @@ fun DetailShopScreen(
                 onAddToCart = {
                         viewModelCart.addToCart(userModel.id, shopId, command)
                         Toast.makeText(context, "Berhasil menambahkan product ke cart", Toast.LENGTH_SHORT).show()
-                        navController.navigate(Screen.Cart.route)
                 }
             )
         }

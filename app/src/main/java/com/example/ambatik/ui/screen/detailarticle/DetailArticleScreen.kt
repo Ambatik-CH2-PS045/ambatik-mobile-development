@@ -61,7 +61,8 @@ fun DetailArticleScreen(
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore)
 ) {
     val articleListState = viewModel.detailArticle.observeAsState()
-    val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false))
+    val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
+
 
     LaunchedEffect(Unit){
         viewModel.getDetailStory(articleId, userModel.id)
