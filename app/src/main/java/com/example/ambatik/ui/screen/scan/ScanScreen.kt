@@ -82,8 +82,7 @@ fun ScanScreen(
         mutableStateOf<Uri>(Uri.EMPTY)
     }
 
-    val cameraLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()){
+    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()){
         capturedImage = uri
     }
 
