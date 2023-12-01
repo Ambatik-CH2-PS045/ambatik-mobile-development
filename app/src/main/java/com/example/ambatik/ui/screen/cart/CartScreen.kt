@@ -1,6 +1,7 @@
 package com.example.ambatik.ui.screen.cart
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
