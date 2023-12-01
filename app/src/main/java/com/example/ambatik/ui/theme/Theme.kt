@@ -16,33 +16,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80,
-    background = Color(0xFF282A37)
-)
-
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
-    background = Color(0xFF282A37)
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+private val CustomLightColorScheme = lightColorScheme(
+    surface = Color(0xFFF7F7F9),
+    onSurface = Color(0xFF191C1C),
+    primary = Color(0xFFA63F03),
+    onPrimary = Color(0xFFFFFFFF),
+    secondary = Color(0xFFD97014),
+    onSecondary = Color(0xFFFFFFFF),
+    outline = Color(0xFFBEC9C7)
 )
 
 @Composable
 fun AmbatikTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = false,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
@@ -53,8 +39,7 @@ fun AmbatikTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        else -> CustomLightColorScheme
     }
     val view = LocalView.current
     if (!view.isInEditMode) {

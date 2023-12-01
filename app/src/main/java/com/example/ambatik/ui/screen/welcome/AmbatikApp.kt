@@ -19,6 +19,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -80,7 +83,7 @@ fun AmbatikApp(
         }
     }
     Surface(
-        color = Color(0xFF282A37),
+        color = colorScheme.surface,
         modifier = modifier
     ){
         Column(
@@ -98,39 +101,44 @@ fun AmbatikApp(
             )
             Text(
                 text = "Selamat datang di Ambatik",
-                color = Color.White,
+                color = colorScheme.onSurface,
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
+//                fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .padding(8.dp)
             )
             Text(
                 text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ipsum orci, aliquam non leo non, laoreet blandit sem. Nunc nec.",
-                color = Color(0xFF79869F),
+                color = colorScheme.onSurface,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(10.dp, 0.dp, 10.dp, 8.dp)
             )
             Button(
                 shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(Color(0xFF1D90F4)),
+                colors = ButtonDefaults.buttonColors(colorScheme.primary),
                 onClick = { navController.navigate(Screen.Login.route)},
                 modifier = Modifier
                     .size(327.dp, 55.dp)
             ) {
-                Text(text = "Login")
+                Text(
+                    text = "Login",
+                    color = colorScheme.onPrimary,
+                    fontSize = 16.sp
+                )
             }
             Button(
-                colors = ButtonDefaults.buttonColors(Color(0xFF282A37)),
+                colors = ButtonDefaults.buttonColors(Color.Transparent),
                 onClick = { navController.navigate(Screen.Register.route) },
                 modifier = Modifier
                     .padding(0.dp, 8.dp, 0.dp, 0.dp)
                     .size(327.dp, 55.dp)
-                    .border(2.dp, color = Color(0xFF1D90F4), RoundedCornerShape(10.dp))
+                    .border(2.dp, color = colorScheme.primary, RoundedCornerShape(10.dp))
             ) {
                 Text(
                     text = "Register",
-                    color = Color(0xFF1D90F4),
+                    color = colorScheme.primary,
+                    fontSize = 16.sp
                 )
             }
         }

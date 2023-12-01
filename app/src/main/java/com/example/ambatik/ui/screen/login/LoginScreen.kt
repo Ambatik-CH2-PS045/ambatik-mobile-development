@@ -21,6 +21,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -75,7 +76,7 @@ fun LoginScreen(
     val errorState by viewModel.error.observeAsState(null)
 
     Surface(
-        color = MaterialTheme.colorScheme.background,
+        color = colorScheme.surface,
         modifier = modifier
             .fillMaxSize()
     ) {
@@ -86,13 +87,13 @@ fun LoginScreen(
         ) {
             Text(
                 text = "Login To Your Account",
-                color = Color.White,
+                color = colorScheme.onSurface,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
             Text(
                 text = "Lorem ipsum dolor sit amet",
-                color = Color(0xFF79869F),
+                color = colorScheme.onSurface,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -121,11 +122,11 @@ fun LoginScreen(
                     )
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color(0xFF323645),
-                    unfocusedBorderColor = Color(0xFF323645),
-                    containerColor = Color(0xFF323645),
-                    focusedTextColor = Color(0xFFFFFFFF),
-                    unfocusedTextColor = Color(0xFFFFFFFF),
+                    focusedBorderColor = colorScheme.outline,
+                    unfocusedBorderColor = colorScheme.outline,
+                    containerColor = Color.White,
+                    focusedTextColor = colorScheme.onSurface,
+                    unfocusedTextColor = colorScheme.onSurface,
                 ),
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
@@ -157,7 +158,7 @@ fun LoginScreen(
                             Icon(
                                 imageVector = Icons.Filled.VisibilityOff,
                                 contentDescription = "Hide Password",
-                                tint = Color(0xFFFFFFFF)
+                                tint = colorScheme.onSurface
                             )
                         }
                     }
@@ -175,11 +176,11 @@ fun LoginScreen(
                     )
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color(0xFF323645),
-                    unfocusedBorderColor = Color(0xFF323645),
-                    containerColor = Color(0xFF323645),
-                    focusedTextColor = Color(0xFFFFFFFF),
-                    unfocusedTextColor = Color(0xFFFFFFFF),
+                    focusedBorderColor = colorScheme.outline,
+                    unfocusedBorderColor = colorScheme.outline,
+                    containerColor = Color.White,
+                    focusedTextColor = colorScheme.onSurface,
+                    unfocusedTextColor = colorScheme.onSurface,
                 ),
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
@@ -188,7 +189,7 @@ fun LoginScreen(
             )
             Button(
                 shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(Color(0xFF1D90F4)),
+                colors = ButtonDefaults.buttonColors(colorScheme.primary),
                 onClick = {
                     viewModel.login(username, passwordLogin)
                 },
@@ -198,7 +199,7 @@ fun LoginScreen(
             ) {
                 Text(
                     text = "Login",
-                    color = Color(0xFFFFFFFF),
+                    color = colorScheme.onPrimary,
                 )
             }
             LaunchedEffect(statusState) {

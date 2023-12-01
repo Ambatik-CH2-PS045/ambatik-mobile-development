@@ -24,6 +24,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -87,8 +88,9 @@ fun RegisterScreen(
     val context = LocalContext.current
     val statusState by viewModel.status.observeAsState(false)
     val errorState by viewModel.error.observeAsState(null)
+
     Surface(
-        color = MaterialTheme.colorScheme.background,
+        color = MaterialTheme.colorScheme.surface,
         modifier = modifier
             .fillMaxSize()
     ) {
@@ -98,14 +100,14 @@ fun RegisterScreen(
             modifier = modifier
         ){
             Text(
-                text = "Sign up Account",
-                color = Color.White,
+                text = "Sign up",
+                color = colorScheme.onSurface,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
             )
             Text(
-                text = "Lorem ipsum dolor sit amet",
-                color = Color(0xFF79869F),
+                text = "Please input your data",
+                color = colorScheme.onSurface,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -134,11 +136,11 @@ fun RegisterScreen(
                     )
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color(0xFF323645),
-                    unfocusedBorderColor = Color(0xFF323645),
-                    containerColor = Color(0xFF323645),
-                    focusedTextColor = Color(0xFFFFFFFF),
-                    unfocusedTextColor = Color(0xFFFFFFFF),
+                    focusedBorderColor = colorScheme.outline,
+                    unfocusedBorderColor = colorScheme.outline,
+                    containerColor = Color.White,
+                    focusedTextColor = colorScheme.onSurface,
+                    unfocusedTextColor = colorScheme.onSurface,
                 ),
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
@@ -149,7 +151,10 @@ fun RegisterScreen(
                     .width(327.dp)
                     .padding(8.dp, 0.dp)
             ){
-                Text(text = "")
+                Text(
+                    text = "",
+                    fontSize = 12.sp
+                )
             }
             OutlinedTextField(
                 value = numberHandphone,
@@ -175,11 +180,11 @@ fun RegisterScreen(
                     )
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color(0xFF323645),
-                    unfocusedBorderColor = Color(0xFF323645),
-                    containerColor = Color(0xFF323645),
-                    focusedTextColor = Color(0xFFFFFFFF),
-                    unfocusedTextColor = Color(0xFFFFFFFF),
+                    focusedBorderColor = colorScheme.outline,
+                    unfocusedBorderColor = colorScheme.outline,
+                    containerColor = Color.White,
+                    focusedTextColor = colorScheme.onSurface,
+                    unfocusedTextColor = colorScheme.onSurface,
                 ),
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
@@ -190,7 +195,10 @@ fun RegisterScreen(
                     .width(327.dp)
                     .padding(8.dp, 0.dp)
             ){
-                Text(text = "")
+                Text(
+                    text = "",
+                    fontSize = 12.sp
+                )
             }
             OutlinedTextField(
                 value = username,
@@ -215,11 +223,11 @@ fun RegisterScreen(
                     )
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color(0xFF323645),
-                    unfocusedBorderColor = Color(0xFF323645),
-                    containerColor = Color(0xFF323645),
-                    focusedTextColor = Color(0xFFFFFFFF),
-                    unfocusedTextColor = Color(0xFFFFFFFF),
+                    focusedBorderColor = colorScheme.outline,
+                    unfocusedBorderColor = colorScheme.outline,
+                    containerColor = Color.White,
+                    focusedTextColor = colorScheme.onSurface,
+                    unfocusedTextColor = colorScheme.onSurface,
                 ),
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
@@ -230,7 +238,10 @@ fun RegisterScreen(
                     .width(327.dp)
                     .padding(8.dp, 0.dp)
             ){
-                Text(text = "")
+                Text(
+                    text = "",
+                    fontSize = 12.sp
+                )
             }
             OutlinedTextField(
                 value = email,
@@ -260,12 +271,11 @@ fun RegisterScreen(
                     )
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color(0xFF323645),
-                    unfocusedBorderColor = Color(0xFF323645),
-                    containerColor = Color(0xFF323645),
-                    focusedTextColor = Color(0xFFFFFFFF),
-                    unfocusedTextColor = Color(0xFFFFFFFF),
-                    errorTextColor = Color(0xFFFFFFFF),
+                    focusedBorderColor = colorScheme.outline,
+                    unfocusedBorderColor = colorScheme.outline,
+                    containerColor = Color.White,
+                    focusedTextColor = colorScheme.onSurface,
+                    unfocusedTextColor = colorScheme.onSurface,
                 ),
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
@@ -279,11 +289,13 @@ fun RegisterScreen(
                 when {
                     !isValidEmpty ->  Text(
                         text = "Please input email",
-                        color = Color.Red
+                        color = Color.Red,
+                        fontSize = 12.sp
                     )
                     !isValidEmail ->  Text(
                         text = "Please enter valid email",
-                        color = Color.Red
+                        color = Color.Red,
+                        fontSize = 12.sp
                     )
                     else -> Text(text = "")
                 }
@@ -335,12 +347,11 @@ fun RegisterScreen(
                     )
                 },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Color(0xFF323645),
-                    unfocusedBorderColor = Color(0xFF323645),
-                    containerColor = Color(0xFF323645),
-                    focusedTextColor = Color(0xFFFFFFFF),
-                    unfocusedTextColor = Color(0xFFFFFFFF),
-                    errorTextColor = Color(0xFFFFFFFF),
+                    focusedBorderColor = colorScheme.outline,
+                    unfocusedBorderColor = colorScheme.outline,
+                    containerColor = Color.White,
+                    focusedTextColor = colorScheme.onSurface,
+                    unfocusedTextColor = colorScheme.onSurface,
                 ),
                 shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
@@ -355,18 +366,19 @@ fun RegisterScreen(
                     !isValidEmpty ->  Text(
                         text = "Please input password",
                         color = Color.Red,
-
+                        fontSize = 12.sp
                         )
                     !isValidEmail ->  Text(
                         text = "Password minimum 8 character",
-                        color = Color.Red
+                        color = Color.Red,
+                        fontSize = 12.sp
                     )
                     else -> Text(text = "")
                 }
             }
             Button(
                 shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(Color(0xFF1D90F4)),
+                colors = ButtonDefaults.buttonColors(colorScheme.primary),
                 onClick = {
                     if(!isValidEmail || !isValidPassword){
                         Toast.makeText(context, "Masukan Format email dan password yang benar", Toast.LENGTH_SHORT).show()
@@ -379,8 +391,8 @@ fun RegisterScreen(
                     .padding(0.dp, 8.dp, 0.dp, 0.dp)
             ) {
                 Text(
-                    text = "Create Account",
-                    color = Color(0xFFFFFFFF),
+                    text = "Sign up",
+                    color = colorScheme.onPrimary,
                 )
             }
             LaunchedEffect(statusState) {

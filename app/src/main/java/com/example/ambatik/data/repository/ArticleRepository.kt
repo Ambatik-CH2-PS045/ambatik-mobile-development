@@ -3,6 +3,7 @@ package com.example.ambatik.data.repository
 import com.example.ambatik.api.response.ResponseArticle
 import com.example.ambatik.api.response.ResponseDetailArticle
 import com.example.ambatik.api.response.ResponseLikeArticle
+import com.example.ambatik.api.response.ResponseListLikeArticle
 import com.example.ambatik.api.retrofit.ApiService
 import com.example.ambatik.data.pref.UserPreference
 
@@ -21,6 +22,10 @@ class ArticleRepository(private val apiService: ApiService, private val userPref
         requestBody["userId"] = userId.toString()
         requestBody["articleId"] = articleId.toString()
         return apiService.likeArticle(requestBody)
+    }
+
+    suspend fun getListLikeArticle(userId: Int): ResponseListLikeArticle{
+        return apiService.getLikeArticle(userId)
     }
 
     companion object{

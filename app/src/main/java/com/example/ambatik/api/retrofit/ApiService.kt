@@ -5,6 +5,7 @@ import com.example.ambatik.api.response.ResponseArticle
 import com.example.ambatik.api.response.ResponseCart
 import com.example.ambatik.api.response.ResponseDetailArticle
 import com.example.ambatik.api.response.ResponseLikeArticle
+import com.example.ambatik.api.response.ResponseListLikeArticle
 import com.example.ambatik.api.response.ResponseLogin
 import com.example.ambatik.api.response.ResponseRegister
 import com.example.ambatik.api.response.ResponseShop
@@ -35,6 +36,11 @@ interface ApiService{
         @Path("id") id: Int,
         @Path("idUser") idUser: Int
     ): ResponseDetailArticle
+
+    @GET("article/like/{idUser}")
+    suspend fun getLikeArticle(
+        @Path("idUser") idUser: Int
+    ): ResponseListLikeArticle
 
     @POST("article/like")
     suspend fun likeArticle(

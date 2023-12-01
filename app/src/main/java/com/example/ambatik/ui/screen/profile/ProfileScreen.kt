@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -72,47 +73,39 @@ fun ProfileScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
         ) {
-            Text(
-                text = "Profile",
-                color = Color.White,
-                fontSize = 32.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(15.dp, 15.dp, 15.dp, 30.dp)
-                    .fillMaxWidth()
-            )
             Box{
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                        contentDescription = "Profile Image",
-                        modifier = Modifier
-                            .size(100.dp, 100.dp)
-                    )
-                    Text(
-                        text = "Full Name",
-                        color = Color.White,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .padding(8.dp)
-                    )
-                    Text(
-                        text = "username",
-                        color = Color.White,
-                        fontSize = 18.sp,
+                    Row(
                         modifier = modifier
-                            .padding(0.dp, 0.dp, 0.dp, 10.dp)
-                    )
+                            .padding(20.dp, 20.dp, 0.dp, 0.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                            contentDescription = "Profile Image",
+                            modifier = Modifier
+                                .size(100.dp, 100.dp)
+                        )
+                        Column {
+                            Text(
+                                text = "Full Name",
+                                color = Color.White,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = modifier
+                                    .padding(bottom = 8.dp)
+                            )
+                            Text(
+                                text = "username",
+                                color = Color.White,
+                                fontSize = 18.sp,
+                            )
+                        }
+                    }
                 }
             }
-            Divider(
-                modifier = modifier
-                    .padding(15.dp, 5.dp, 15.dp, 0.dp),
-                color = Color.White
-            )
             Box(
                 modifier = modifier
                     .padding(20.dp, 10.dp)
@@ -161,21 +154,19 @@ fun ProfileScreen(
                             .padding(5.dp)
                             .fillMaxWidth()
                             .clickable {
-                                Toast
-                                    .makeText(context, "Acticel", Toast.LENGTH_SHORT)
-                                    .show()
+                                navController.navigate(Screen.LikeArticle.route)
                             },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
                             imageVector = Icons.Filled.Bookmark,
-                            contentDescription = "Icon Bookmark Articel",
+                            contentDescription = "Icon Bookmark Article",
                             tint = Color(0xFFFFFFFF),
                             modifier = modifier
                                 .padding(0.dp, 10.dp)
                         )
                         Text(
-                            text = "Bookmark Articel",
+                            text = "Bookmark Article",
                             color = Color(0xFFFFFFFF),
                             modifier = modifier
                                 .padding(8.dp, 0.dp, 8.dp, 0.dp)
@@ -187,7 +178,7 @@ fun ProfileScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.NavigateNext,
-                                contentDescription = "Navigate to Bookmark Articel",
+                                contentDescription = "Navigate to Bookmark Article",
                                 tint = Color(0xFFFFFFFF),
                             )
                         }
@@ -266,11 +257,6 @@ fun ProfileScreen(
                     }
                 }
             }
-            Divider(
-                modifier = modifier
-                    .padding(15.dp, 0.dp, 15.dp, 5.dp),
-                color = Color.White
-            )
             Box(
                 modifier = modifier
                     .padding(20.dp, 25.dp)
@@ -283,11 +269,10 @@ fun ProfileScreen(
                     border = BorderStroke(2.dp, Color.Red),
                     onClick = {
                         viewModel.logout()
-
-
                     },
                     modifier = modifier
                         .fillMaxWidth()
+                        .fillMaxHeight(0.120f)
                 ) {
                     Text(
                         text = "Logout",

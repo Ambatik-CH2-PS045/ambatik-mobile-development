@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.ambatik.ui.screen.articel.ArticelScreen
+import com.example.ambatik.ui.screen.articlelike.ArticleLikeScreen
 import com.example.ambatik.ui.screen.cart.CartScreen
 import com.example.ambatik.ui.screen.detailarticle.DetailArticleScreen
 import com.example.ambatik.ui.screen.detailshopping.DetailShopScreen
@@ -92,6 +93,11 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
         }
         composable(Screen.Cart.route){
             CartScreen(navController)
+        }
+        composable(Screen.LikeArticle.route){
+            ArticleLikeScreen(navigateToDetail = {articleId ->
+                navController.navigate(Screen.DetailArticle.createRoute(articleId))
+            })
         }
     }
 }

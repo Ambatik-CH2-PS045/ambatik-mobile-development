@@ -7,6 +7,7 @@ import com.example.ambatik.data.repository.ArticleRepository
 import com.example.ambatik.data.repository.UserRepository
 import com.example.ambatik.di.Injection
 import com.example.ambatik.ui.screen.articel.ArticleViewModel
+import com.example.ambatik.ui.screen.articlelike.ArticleLikeViewModel
 import com.example.ambatik.ui.screen.detailarticle.DetailArticleViewModel
 import com.example.ambatik.ui.screen.login.LoginViewModel
 import com.example.ambatik.ui.screen.profile.ProfileViewModel
@@ -22,6 +23,9 @@ class ArticleModelFactory(private val repository: ArticleRepository): ViewModelP
             }
             modelClass.isAssignableFrom(DetailArticleViewModel::class.java) -> {
                 DetailArticleViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(ArticleLikeViewModel::class.java) -> {
+                ArticleLikeViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unkown ViewModel class: " + modelClass.name)
         }
