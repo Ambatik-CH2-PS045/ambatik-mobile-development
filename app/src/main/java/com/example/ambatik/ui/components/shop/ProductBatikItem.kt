@@ -1,4 +1,4 @@
-package com.example.ambatik.ui.components
+package com.example.ambatik.ui.components.shop
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

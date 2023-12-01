@@ -1,4 +1,4 @@
-package com.example.ambatik.ui.components
+package com.example.ambatik.ui.components.shop
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

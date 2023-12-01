@@ -2,7 +2,6 @@ package com.example.ambatik.ui.screen.detailshopping
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,9 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -40,7 +37,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -53,9 +49,7 @@ import com.example.ambatik.data.factory.ShopModelFactory
 import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
-import com.example.ambatik.ui.components.CountItem
-import com.example.ambatik.ui.components.OrderButton
-import com.example.ambatik.ui.navigation.Screen
+import com.example.ambatik.ui.components.shop.OrderButton
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 @Composable

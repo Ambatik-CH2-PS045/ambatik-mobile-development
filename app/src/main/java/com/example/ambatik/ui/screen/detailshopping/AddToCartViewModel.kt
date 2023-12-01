@@ -34,7 +34,7 @@ class AddToCartViewModel(private val repository: CartRepository): ViewModel() {
             }catch (e: HttpException){
                 _statusAddtoCart.value = false
                 errorAddToCart.postValue("Terjadi kesalahan saat menambah cart")
-                Log.d("LIKE ARTICLE", "$e")
+                Log.d("ADD TO CART", "$e")
             }
         }
     }
