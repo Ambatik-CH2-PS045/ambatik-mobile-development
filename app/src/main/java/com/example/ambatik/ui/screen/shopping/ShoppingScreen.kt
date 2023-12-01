@@ -93,8 +93,6 @@ fun ShoppingScreen(
                         Text(
                             text = "Cari batik",
                             fontSize = 14.sp,
-                            modifier = modifier
-                                .padding(0.dp)
                         )
                     },
                     modifier = modifier
@@ -108,7 +106,7 @@ fun ShoppingScreen(
                     contentDescription = "Shopping Cart",
                     tint = Color.White,
                     modifier = Modifier
-                        .padding(12.dp)
+                        .padding(16.dp)
                         .size(40.dp)
                         .clickable {
                             navController.navigate(Screen.Cart.route)
