@@ -16,7 +16,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -79,7 +81,7 @@ fun CartScreen(
         }
     ) {
         Surface(
-            color = MaterialTheme.colorScheme.background,
+            color = colorScheme.surface,
             modifier = modifier
                 .fillMaxSize()
         ) {
@@ -127,13 +129,13 @@ fun BottomContent(
             Column{
                 Text(
                     text = "Total Price",
-                    color = Color.White,
+                    color = colorScheme.onSurface,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp
                 )
                 Text(
                     text = "Rp. $totalPrice",
-                    color = Color.White,
+                    color = colorScheme.onSurface,
                 )
             }
         }
@@ -145,12 +147,14 @@ fun BottomContent(
             Button(
                 onClick = { /*TODO*/ },
                 shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(colorScheme.primary),
                 modifier = modifier
                     .fillMaxWidth()
                     .height(52.dp)
             ) {
                 Text(
-                    text = "Order Now"
+                    text = "Order Now",
+                    color = colorScheme.onPrimary
                 )
             }
         }

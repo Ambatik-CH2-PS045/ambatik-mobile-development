@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -69,7 +70,7 @@ fun DetailArticleScreen(
     }
 
     Surface(
-        color = MaterialTheme.colorScheme.background,
+        color = colorScheme.surface,
         modifier = modifier
             .fillMaxWidth()
     ) {
@@ -149,13 +150,13 @@ fun DetailArticleContent(
                     Row{
                         Icon(
                             imageVector = if (liked) Icons.Outlined.Favorite else Icons.Filled.FavoriteBorder,
-                            tint = Color.White,
+                            tint = Color.Red,
                             contentDescription = "Icon Like Article",
                             modifier = modifier
                         )
                         Text(
                             text = totalLikeCount.toString(),
-                            color = Color.White,
+                            color = colorScheme.onPrimary,
                             modifier = modifier
                                 .padding(5.dp, 0.dp, 0.dp, 0.dp)
                         )
@@ -175,7 +176,7 @@ fun DetailArticleContent(
                     Row {
                         Text(
                             text = author,
-                            color = Color.Gray
+                            color = colorScheme.onSurface
                         )
                         Box(
                             modifier = modifier
@@ -184,7 +185,7 @@ fun DetailArticleContent(
                         ) {
                             Text(
                                 text = createAt,
-                                color = Color.Gray,
+                                color = colorScheme.onSurface,
                                 textAlign = TextAlign.Right,
                             )
                         }
@@ -196,13 +197,13 @@ fun DetailArticleContent(
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 20.sp
                     ),
-                    color = Color.White,
+                    color = colorScheme.onSurface,
                     modifier = modifier
                         .padding(0.dp, 12.dp, 0.dp, 20.dp)
                 )
                 Text(
                     text = description,
-                    color = Color.White,
+                    color = colorScheme.onSurface,
                 )
             }
         }

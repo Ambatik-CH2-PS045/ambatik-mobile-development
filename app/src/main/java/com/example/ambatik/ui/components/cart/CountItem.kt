@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +36,7 @@ fun CountItem(
     ) {
         Surface(
             shape = RoundedCornerShape(size = 5.dp),
-            border = BorderStroke(1.dp, Color.White),
+            border = BorderStroke(1.dp, colorScheme.onSurface),
             color = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(30.dp)
@@ -43,7 +44,7 @@ fun CountItem(
             Text(
                 text = "—",
                 fontSize = 20.sp,
-                color = Color.White,
+                color = colorScheme.onSurface,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .weight(1f)
@@ -54,7 +55,7 @@ fun CountItem(
         }
         Text(
             text = orderCount.toString(),
-            color = Color.White,
+            color = colorScheme.onSurface,
             modifier = Modifier
                 .weight(1f),
             fontSize = 20.sp,
@@ -63,7 +64,7 @@ fun CountItem(
         )
         Surface(
             shape = RoundedCornerShape(size = 5.dp),
-            border = BorderStroke(1.dp, Color.White),
+            border = BorderStroke(1.dp, colorScheme.onSurface),
             color = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(30.dp)
@@ -71,7 +72,7 @@ fun CountItem(
             Text(
                 text = "+",
                 fontSize = 20.sp,
-                color = Color.White,
+                color = colorScheme.onSurface,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .align(Alignment.CenterVertically)

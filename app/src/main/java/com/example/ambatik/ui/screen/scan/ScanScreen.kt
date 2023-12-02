@@ -32,6 +32,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -105,7 +106,7 @@ fun ScanScreen(
     }
 
     Surface(
-        color = MaterialTheme.colorScheme.background,
+        color = colorScheme.surface,
         modifier = Modifier
             .fillMaxSize()
     ) {
@@ -115,7 +116,7 @@ fun ScanScreen(
         ) {
             Text(
                 text = "Know Your Batik",
-                color = Color.White,
+                color = colorScheme.onSurface,
                 fontSize = 32.sp,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
@@ -144,6 +145,7 @@ fun ScanScreen(
                         text = "Take a picture or upload image to scan",
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold,
+                        color = colorScheme.onSurface,
                         modifier = modifier
                             .padding(0.dp, 20.dp)
                             .fillMaxWidth()
@@ -160,6 +162,8 @@ fun ScanScreen(
                     ) {
                         FloatingActionButton(
                             shape = CircleShape,
+                            containerColor = colorScheme.primary,
+                            contentColor = colorScheme.onPrimary,
                             onClick = {
                                 val permissionCheckResult =
                                     ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA)
@@ -170,7 +174,7 @@ fun ScanScreen(
                                 }
                             },
                             modifier = Modifier
-                                .size(65.dp)
+                                .size(60.dp)
                                 .alpha(0.7f),
                             elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 0.dp, 0.dp)
                         ) {
@@ -181,6 +185,8 @@ fun ScanScreen(
                         }
                         FloatingActionButton(
                             shape = CircleShape,
+                            containerColor = colorScheme.primary,
+                            contentColor = colorScheme.onPrimary,
                             onClick = { /*TODO*/ },
                             modifier = Modifier
                                 .size(85.dp)
@@ -195,11 +201,13 @@ fun ScanScreen(
                         }
                         FloatingActionButton(
                             shape = CircleShape,
+                            containerColor = colorScheme.primary,
+                            contentColor = colorScheme.onPrimary,
                             onClick = {
                                 galleryLauncher.launch("image/*")
                             },
                             modifier = Modifier
-                                .size(65.dp)
+                                .size(60.dp)
                                 .alpha(0.7f),
                             elevation = FloatingActionButtonDefaults.elevation(defaultElevation = 0.dp, 0.dp)
                         ) {
@@ -227,7 +235,7 @@ fun ImageContent(
                 painter = rememberImagePainter(capturedImageUri),
                 modifier = modifier
                     .size(300.dp, 400.dp)
-                    .border(2.dp, color = Color.White, RoundedCornerShape(20.dp))
+                    .border(2.dp, color = colorScheme.onSurface, RoundedCornerShape(20.dp))
             )
         }
         else {
@@ -236,7 +244,7 @@ fun ImageContent(
                 contentDescription = "Image Scan Batik",
                 modifier = modifier
                     .size(300.dp, 400.dp)
-                    .border(2.dp, color = Color.White, RoundedCornerShape(20.dp))
+                    .border(2.dp, color = colorScheme.onSurface, RoundedCornerShape(20.dp))
             )
         }
 

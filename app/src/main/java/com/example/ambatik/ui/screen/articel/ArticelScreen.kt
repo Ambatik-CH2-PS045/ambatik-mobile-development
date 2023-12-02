@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -50,7 +52,7 @@ fun ArticelScreen(
     }
 
     Surface(
-        color = MaterialTheme.colorScheme.background,
+        color = MaterialTheme.colorScheme.surface,
         modifier = modifier
             .fillMaxSize()
     ) {
@@ -59,7 +61,7 @@ fun ArticelScreen(
                 text = "Article",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
+                color = colorScheme.onSurface,
                 modifier = modifier
                     .padding(16.dp, 16.dp, 16.dp, 0.dp)
             )
@@ -70,7 +72,7 @@ fun ArticelScreen(
                 ){
                     items(articleListState.value ?: emptyList()){ data ->
                         Card(
-                            colors = CardDefaults.cardColors(Color.Gray),
+                            colors = CardDefaults.cardColors(colorScheme.onPrimary),
                             modifier = modifier
                                 .clickable {
                                     navigateToDetail(data.id)

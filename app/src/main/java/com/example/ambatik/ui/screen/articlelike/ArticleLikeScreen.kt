@@ -51,7 +51,7 @@ fun ArticleLikeScreen(
     }
 
     Surface(
-        color = MaterialTheme.colorScheme.background,
+        color = MaterialTheme.colorScheme.surface,
         modifier = modifier
             .fillMaxSize()
     ) {
@@ -62,7 +62,7 @@ fun ArticleLikeScreen(
             ){
                 items(likeListArticleState.value ?: emptyList()){data ->
                     Card(
-                        colors = CardDefaults.cardColors(Color.Gray),
+                        colors = CardDefaults.cardColors(Color.White),
                         modifier = modifier
                             .clickable {
                                 data?.id?.let { navigateToDetail(it) }

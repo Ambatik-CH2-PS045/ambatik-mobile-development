@@ -1,6 +1,7 @@
 package com.example.ambatik.ui.screen.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -13,10 +14,15 @@ import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.BottomAppBarDefaults
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +34,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
@@ -125,6 +133,7 @@ private fun FAB(
 
     if (isVisible){
         FloatingActionButton(
+            containerColor = Color.White,
             onClick = {
                 if (currentRoute != Screen.Scan.route){
                     navController.navigate(Screen.Scan.route)
@@ -152,7 +161,9 @@ private fun BottomBar(
     modifier: Modifier = Modifier,
 ){
     BottomAppBar(
+        containerColor = Color.White,
         modifier = modifier
+            .shadow(10.dp, RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp), true)
             .clip(
                 RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
             ),
@@ -194,11 +205,17 @@ private fun BottomBar(
                     item.icon?.let {
                         Icon(
                             imageVector = it,
-                            contentDescription = item.title
+                            contentDescription = item.title,
+                            tint = colorScheme.onSurface
                         )
                     }
                 },
-                label = { Text(item.title) },
+                label = {
+                    Text(
+                        text = item.title,
+                        color = colorScheme.onSurface
+                    )
+                },
                 selected = currentRoute == item.screen?.route,
                 onClick = {
                     item.screen?.let {
@@ -211,6 +228,7 @@ private fun BottomBar(
                         }
                     }
                 },
+                colors = NavigationBarItemDefaults.colors(indicatorColor = colorScheme.secondary)
             )
         }
     }

@@ -15,6 +15,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -38,7 +40,7 @@ fun ProductBatikItem(
     modifier: Modifier = Modifier
 ){
     Card(
-        colors = CardDefaults.cardColors(Color.Black),
+        colors = CardDefaults.cardColors(colorScheme.onPrimary),
         modifier = modifier
             .width(185.dp)
             .height(280.dp)
@@ -53,7 +55,7 @@ fun ProductBatikItem(
             )
             Text(
                 text = nameProduct,
-                color = Color.White,
+                color = colorScheme.onSurface,
                 fontSize = 14.sp,
                 lineHeight = 16.sp,
                 maxLines = 1,
@@ -63,7 +65,7 @@ fun ProductBatikItem(
             )
             Text(
                 text = "Rp. $price",
-                color = Color.White,
+                color = colorScheme.onSurface,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 lineHeight = 16.sp,
@@ -74,7 +76,7 @@ fun ProductBatikItem(
             )
             Text(
                 text = store,
-                color = Color.White,
+                color = colorScheme.onSurface,
                 fontSize = 12.sp,
                 lineHeight = 16.sp,
                 maxLines = 1,
@@ -91,19 +93,19 @@ fun ProductBatikItem(
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = "Icon Rating",
-                        tint = Color.Yellow,
+                        tint = Color(0xFFFF9529),
                         modifier = modifier
                             .size(15.dp)
                     )
                     Text(
                         text = rating.toString(),
-                        color = Color.White,
+                        color = colorScheme.onSurface,
                         fontSize = 10.sp,
                         modifier = modifier
 
                     )
                     Divider(
-                        color = Color.White,
+                        color = colorScheme.onSurface,
                         modifier = modifier
                             .padding(4.dp, 0.dp)
                             .fillMaxHeight()
@@ -111,7 +113,7 @@ fun ProductBatikItem(
                     )
                     Text(
                         text = "$productSold terjual",
-                        color = Color.White,
+                        color = colorScheme.onSurface,
                         fontSize = 10.sp,
                     )
                 }

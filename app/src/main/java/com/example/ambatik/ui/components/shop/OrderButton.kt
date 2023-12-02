@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,13 +25,15 @@ fun OrderButton(
         onClick = onClick,
         enabled = enabled,
         shape = RoundedCornerShape(10.dp),
+        colors = ButtonDefaults.buttonColors(colorScheme.primary),
         modifier = modifier
             .fillMaxWidth()
             .height(52.dp)
     ) {
         Text(
             text = text,
-            modifier = Modifier.align(Alignment.CenterVertically)
+            modifier = Modifier.align(Alignment.CenterVertically),
+            color = colorScheme.onPrimary
         )
     }
 }
@@ -39,7 +43,7 @@ fun OrderButton(
 fun OrderButtonPreview() {
     AmbatikTheme {
         OrderButton(
-            text = "Order",
+            text = "Add to Cart",
             onClick = {}
         )
     }

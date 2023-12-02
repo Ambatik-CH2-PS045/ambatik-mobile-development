@@ -23,7 +23,9 @@ private val CustomLightColorScheme = lightColorScheme(
     onPrimary = Color(0xFFFFFFFF),
     secondary = Color(0xFFD97014),
     onSecondary = Color(0xFFFFFFFF),
-    outline = Color(0xFFBEC9C7)
+    outline = Color(0xFFBEC9C7),
+    background = Color(0xFFF7F7F9),
+    onBackground = Color(0xFF191C1C),
 )
 
 @Composable

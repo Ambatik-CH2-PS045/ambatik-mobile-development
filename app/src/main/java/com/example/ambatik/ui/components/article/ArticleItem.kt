@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -58,7 +59,7 @@ fun ArticleItem(
                 Column {
                     Text(
                         text = title,
-                        color = Color.White,
+                        color = colorScheme.onSurface,
                         fontSize = 14.sp,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
@@ -73,7 +74,7 @@ fun ArticleItem(
                         Row{
                             Icon(
                                 imageVector = Icons.Default.Favorite ,
-                                tint = Color.White,
+                                tint = Color.Red,
                                 contentDescription = "Icon Like Article",
                                 modifier = modifier
                                     .size(17.dp)
@@ -81,7 +82,7 @@ fun ArticleItem(
                             Text(
                                 text = totalLike.toString(),
                                 fontSize = 12.sp,
-                                color = Color.White,
+                                color = colorScheme.onSurface,
                                 modifier = modifier
                                     .padding(5.dp, 0.dp, 0.dp, 0.dp)
                             )
@@ -93,7 +94,7 @@ fun ArticleItem(
                                 Text(
                                     text = createAt,
                                     fontSize = 12.sp,
-                                    color = Color.White,
+                                    color = colorScheme.onSurface,
                                     textAlign = TextAlign.Right,
                                 )
                             }

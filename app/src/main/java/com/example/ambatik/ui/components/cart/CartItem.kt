@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -64,7 +65,7 @@ fun CartItem(
     }
 
     Surface(
-        color = Color.Black,
+        color = Color.White,
         modifier = modifier
             .wrapContentSize()
     ) {
@@ -75,7 +76,7 @@ fun CartItem(
             Text(
                 text = storeName,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
+                color = colorScheme.onSurface,
             )
             Box(
                 modifier = modifier
@@ -97,13 +98,13 @@ fun CartItem(
                             text = name,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            color = Color.White,
+                            color = colorScheme.onSurface,
                         )
                         Text(
                             text = "Rp. $totalPrc",
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            color = Color.White,
+                            color = colorScheme.onSurface,
                             modifier = modifier
                                 .padding(top = 4.dp)
                         )

@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -75,7 +76,7 @@ fun DetailShopScreen(
     }
 
     Surface(
-        color = MaterialTheme.colorScheme.background,
+        color = colorScheme.surface,
         modifier = modifier
             .fillMaxWidth()
     ) {
@@ -88,7 +89,6 @@ fun DetailShopScreen(
                 rating = 5.0,
                 description = detailShop.description ?: "",
                 count = 1,
-//                onBackClick = { /*TODO*/ },
                 onAddToCart = {
                         viewModelCart.addToCart(userModel.id, shopId, command)
                         Toast.makeText(context, "Berhasil menambahkan product ke cart", Toast.LENGTH_SHORT).show()
@@ -105,10 +105,8 @@ fun DetailShopContent(
     price: Int,
     store: String,
     rating: Double,
-//    productSold: Int,
     description: String,
     count: Int,
-//    onBackClick: () -> Unit,
     onAddToCart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -132,13 +130,6 @@ fun DetailShopContent(
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
                 )
-//                Icon(
-//                    imageVector = Icons.Default.ArrowBack,
-//                    contentDescription = stringResource(R.string.back),
-//                    modifier = Modifier
-//                        .padding(16.dp)
-//                        .clickable { onBackClick() }
-//                )
             }
             Box(
                 modifier = modifier
@@ -156,7 +147,7 @@ fun DetailShopContent(
                                 style = MaterialTheme.typography.headlineSmall.copy(
                                     fontWeight = FontWeight.ExtraBold
                                 ),
-                                color = Color.White,
+                                color = colorScheme.onSurface,
                             )
                         }
                     }
@@ -168,12 +159,12 @@ fun DetailShopContent(
                             Text(
                                 text = nameProduct,
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = Color.White,
+                                color = colorScheme.onSurface,
                             )
                             Text(
                                 text = store,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Color.White,
+                                color = colorScheme.onSurface,
                             )
                             Box(
                                 modifier = modifier
@@ -183,7 +174,7 @@ fun DetailShopContent(
                                     Icon(
                                         imageVector = Icons.Default.Star,
                                         contentDescription = null,
-                                        tint = Color.White,
+                                        tint = Color(0xFFFF9529),
                                         modifier = modifier
                                     )
                                     Text(
@@ -191,7 +182,9 @@ fun DetailShopContent(
                                         style = MaterialTheme.typography.titleMedium.copy(
                                             fontWeight = FontWeight.ExtraBold
                                         ),
-                                        color = Color.White,
+                                        color = colorScheme.onSurface,
+                                        modifier = modifier
+                                            .padding(start = 4.dp)
                                     )
                                 }
                             }
@@ -201,7 +194,7 @@ fun DetailShopContent(
                         text = description,
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Justify,
-                        color = Color.White,
+                        color = colorScheme.onSurface,
                     )
                 }
             }
@@ -216,15 +209,6 @@ fun DetailShopContent(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(16.dp)
         ){
-//            CountItem(
-//                orderId = 1,
-//                orderCount = orderCount,
-//                onProductIncreased = { orderCount++ },
-//                onProductDecreased = { if (orderCount > 0) orderCount-- },
-//                modifier = Modifier
-//                    .align(Alignment.CenterVertically)
-//                    .padding(bottom = 16.dp)
-//            )
             Box(
                 modifier = modifier
                     .fillMaxWidth(),
@@ -238,7 +222,7 @@ fun DetailShopContent(
                     },
                     modifier = Modifier
                         .width(200.dp)
-                        .padding(end = 18.dp)
+                        .padding(end = 12.dp)
                 )
             }
         }
@@ -246,7 +230,7 @@ fun DetailShopContent(
 
 }
 
-@Preview()
+@Preview
 @Composable
 fun DetailShopContentPreview() {
     AmbatikTheme {
@@ -256,10 +240,8 @@ fun DetailShopContentPreview() {
             50000,
             "Batik Jaya",
             4.3,
-//            100,
             stringResource(R.string.lorem_ipsum),
             1,
-//            onBackClick = {},
             onAddToCart = {}
         )
     }

@@ -3,6 +3,7 @@ package com.example.ambatik.ui.screen.profile
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,14 +16,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Article
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Bookmarks
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.NavigateNext
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -65,7 +70,7 @@ fun ProfileScreen(
 ){
     val statusState by viewModel.status.observeAsState(false)
     Surface(
-        color = MaterialTheme.colorScheme.background,
+        color = colorScheme.surface,
         modifier = modifier
             .fillMaxSize()
     ) {
@@ -91,7 +96,7 @@ fun ProfileScreen(
                         Column {
                             Text(
                                 text = "Full Name",
-                                color = Color.White,
+                                color = colorScheme.onSurface,
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 modifier = modifier
@@ -99,7 +104,7 @@ fun ProfileScreen(
                             )
                             Text(
                                 text = "username",
-                                color = Color.White,
+                                color = colorScheme.onSurface,
                                 fontSize = 18.sp,
                             )
                         }
@@ -127,13 +132,13 @@ fun ProfileScreen(
                         Icon(
                             imageVector = Icons.Filled.Edit,
                             contentDescription = "Icon Edit Profile",
-                            tint = Color(0xFFFFFFFF),
+                            tint = colorScheme.onSurface,
                             modifier = modifier
                                 .padding(0.dp, 10.dp)
                         )
                         Text(
                             text = "Edit Profile",
-                            color = Color(0xFFFFFFFF),
+                            color = colorScheme.onSurface,
                             modifier = modifier
                                 .padding(8.dp, 0.dp, 8.dp, 0.dp)
                         )
@@ -145,7 +150,7 @@ fun ProfileScreen(
                             Icon(
                                 imageVector = Icons.Filled.NavigateNext,
                                 contentDescription = "Navigate to Edit Profile",
-                                tint = Color(0xFFFFFFFF),
+                                tint = colorScheme.onSurface,
                             )
                         }
                     }
@@ -159,15 +164,15 @@ fun ProfileScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            imageVector = Icons.Filled.Bookmark,
+                            imageVector = Icons.Filled.Article,
                             contentDescription = "Icon Bookmark Article",
-                            tint = Color(0xFFFFFFFF),
+                            tint = colorScheme.onSurface,
                             modifier = modifier
                                 .padding(0.dp, 10.dp)
                         )
                         Text(
-                            text = "Bookmark Article",
-                            color = Color(0xFFFFFFFF),
+                            text = "Like Article",
+                            color = colorScheme.onSurface,
                             modifier = modifier
                                 .padding(8.dp, 0.dp, 8.dp, 0.dp)
                         )
@@ -179,7 +184,7 @@ fun ProfileScreen(
                             Icon(
                                 imageVector = Icons.Filled.NavigateNext,
                                 contentDescription = "Navigate to Bookmark Article",
-                                tint = Color(0xFFFFFFFF),
+                                tint = colorScheme.onSurface,
                             )
                         }
                     }
@@ -197,13 +202,13 @@ fun ProfileScreen(
                         Icon(
                             imageVector = Icons.Filled.Bookmarks,
                             contentDescription = "Icon Bookmark Product",
-                            tint = Color(0xFFFFFFFF),
+                            tint = colorScheme.onSurface,
                             modifier = modifier
                                 .padding(0.dp, 10.dp)
                         )
                         Text(
                             text = "Bookmark Product",
-                            color = Color(0xFFFFFFFF),
+                            color = colorScheme.onSurface,
                             modifier = modifier
                                 .padding(8.dp, 0.dp, 8.dp, 0.dp)
                         )
@@ -215,7 +220,7 @@ fun ProfileScreen(
                             Icon(
                                 imageVector = Icons.Filled.NavigateNext,
                                 contentDescription = "Navigate to Bookmark Product",
-                                tint = Color(0xFFFFFFFF),
+                                tint = colorScheme.onSurface,
                             )
                         }
                     }
@@ -233,13 +238,13 @@ fun ProfileScreen(
                         Icon(
                             imageVector = Icons.Filled.Info,
                             contentDescription = "Icon About",
-                            tint = Color(0xFFFFFFFF),
+                            tint = colorScheme.onSurface,
                             modifier = modifier
                                 .padding(0.dp, 10.dp)
                         )
                         Text(
                             text = "About",
-                            color = Color(0xFFFFFFFF),
+                            color = colorScheme.onSurface,
                             modifier = modifier
                                 .padding(8.dp, 0.dp, 8.dp, 0.dp)
                         )
@@ -251,7 +256,7 @@ fun ProfileScreen(
                             Icon(
                                 imageVector = Icons.Filled.NavigateNext,
                                 contentDescription = "Navigate to About",
-                                tint = Color(0xFFFFFFFF),
+                                tint = colorScheme.onSurface,
                             )
                         }
                     }
@@ -264,19 +269,19 @@ fun ProfileScreen(
                     .fillMaxHeight(),
                 contentAlignment = Alignment.BottomEnd
             ) {
-                OutlinedButton(
-                    shape = RoundedCornerShape(10.dp),
-                    border = BorderStroke(2.dp, Color.Red),
+                Button(
+                    colors = ButtonDefaults.buttonColors(Color.Transparent),
                     onClick = {
                         viewModel.logout()
                     },
                     modifier = modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.120f)
+                        .border(2.dp, color = colorScheme.primary, RoundedCornerShape(10.dp))
                 ) {
                     Text(
                         text = "Logout",
-                        color = Color.Red
+                        color = colorScheme.primary
                     )
                 }
                 LaunchedEffect(statusState){
