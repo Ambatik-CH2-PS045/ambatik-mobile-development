@@ -203,17 +203,27 @@ private fun BottomBar(
             NavigationBarItem(
                 icon = {
                     item.icon?.let {
+                        val color = if (currentRoute == item.screen?.route){
+                            colorScheme.primary
+                        }else{
+                            colorScheme.onSurface
+                        }
                         Icon(
                             imageVector = it,
                             contentDescription = item.title,
-                            tint = colorScheme.onSurface
+                            tint = color
                         )
                     }
                 },
                 label = {
+                    val color = if (currentRoute == item.screen?.route){
+                        colorScheme.primary
+                    }else{
+                        colorScheme.onSurface
+                    }
                     Text(
                         text = item.title,
-                        color = colorScheme.onSurface
+                        color = color
                     )
                 },
                 selected = currentRoute == item.screen?.route,
@@ -228,7 +238,8 @@ private fun BottomBar(
                         }
                     }
                 },
-                colors = NavigationBarItemDefaults.colors(indicatorColor = colorScheme.secondary)
+                colors = NavigationBarItemDefaults.colors(
+                    indicatorColor = Color.White)
             )
         }
     }
