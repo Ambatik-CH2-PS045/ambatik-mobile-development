@@ -59,7 +59,6 @@ fun CartScreen(
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore)
 ){
     val dataCartListState = viewModel.dataCart.observeAsState()
-
     val statusState by viewModel.status.observeAsState(false)
     var grandTotal by remember { mutableStateOf(0) }
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
@@ -67,6 +66,17 @@ fun CartScreen(
     LaunchedEffect(userModel.id){
         Log.d("YourComposable", "LaunchedEffect triggered for userId: ${userModel.id}")
         viewModel.getCart(userModel.id)
+    }
+
+    LaunchedEffect(dataCartListState.value){
+        dataCartListState.value?.data?.let { cartItems ->
+            var total = 0
+            for (item in cartItems) {
+                total += item?.totalPrice?.toIntOrNull() ?: 0
+            }
+            grandTotal = total
+            Log.d("CartScreen","GrandTotal $grandTotal")
+        }
     }
 
     Scaffold(
@@ -105,14 +115,8 @@ fun CartScreen(
                             totalQuantity = data?.totalQty ?: "",
                             storeName = data?.storeName ?: "",
                             calculateTotalPrice = {
-                                var total = 0
-                                for (item in dataCartListState.value?.data ?: emptyList()) {
-                                    total += item?.totalPrice?.toIntOrNull() ?: 0
-                                }
-                                grandTotal = total
-                                Log.d("CartScreen","Total $total")
+                                viewModel.getCart(userModel.id)
                             }
-
                         )
                     }
                 }
@@ -173,10 +177,6 @@ fun BottomContent(
         }
     }
 }
-
-//fun calculateGrandTotal(price: Int, totalQty: Int): Int {
-//    return price * totalQty
-//}
 
 @Preview
 @Composable

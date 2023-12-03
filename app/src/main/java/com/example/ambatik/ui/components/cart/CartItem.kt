@@ -146,7 +146,7 @@ fun PreviewCartItem(){
             "500000",
             "10",
             "BATIK PEDIA",
-            calculateTotalPrice = {}
+            calculateTotalPrice = {},
         )
     }
 }
