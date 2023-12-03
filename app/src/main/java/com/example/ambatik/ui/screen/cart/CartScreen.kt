@@ -59,10 +59,13 @@ fun CartScreen(
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore)
 ){
     val dataCartListState = viewModel.dataCart.observeAsState()
+
     val statusState by viewModel.status.observeAsState(false)
+    var grandTotal by remember { mutableStateOf(0) }
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
 
     LaunchedEffect(userModel.id){
+        Log.d("YourComposable", "LaunchedEffect triggered for userId: ${userModel.id}")
         viewModel.getCart(userModel.id)
     }
 
@@ -75,7 +78,7 @@ fun CartScreen(
             )
             dataCartListState.value?.let { data ->
                 BottomContent(
-                    totalPrice = data.grandTotal.toString()
+                    totalPrice = grandTotal.toString()
                 )
             }
         }
@@ -101,6 +104,15 @@ fun CartScreen(
                             totalPrice = data?.totalPrice ?: "",
                             totalQuantity = data?.totalQty ?: "",
                             storeName = data?.storeName ?: "",
+                            calculateTotalPrice = {
+                                var total = 0
+                                for (item in dataCartListState.value?.data ?: emptyList()) {
+                                    total += item?.totalPrice?.toIntOrNull() ?: 0
+                                }
+                                grandTotal = total
+                                Log.d("CartScreen","Total $total")
+                            }
+
                         )
                     }
                 }
@@ -114,6 +126,7 @@ fun CartScreen(
 @Composable
 fun BottomContent(
     totalPrice: String,
+
     modifier: Modifier = Modifier
 ){
     Row(
@@ -160,6 +173,10 @@ fun BottomContent(
         }
     }
 }
+
+//fun calculateGrandTotal(price: Int, totalQty: Int): Int {
+//    return price * totalQty
+//}
 
 @Preview
 @Composable

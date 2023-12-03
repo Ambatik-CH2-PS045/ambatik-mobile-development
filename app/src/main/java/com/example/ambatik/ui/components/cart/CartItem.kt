@@ -42,6 +42,7 @@ fun CartItem(
     totalPrice: String,
     totalQuantity: String,
     storeName: String,
+    calculateTotalPrice: (Int) -> Unit,
     viewModel: CartViewModel = viewModel(
         factory = CartModelFactory.getInstance(LocalContext.current)
     ),
@@ -115,11 +116,13 @@ fun CartItem(
                                 totalQty = (totalQty.toInt() + 1).toString()
                                 totalPrc = CalculateTotalPriceItem().toString()
                                 viewModel.changeQtyCart(userModel.id, idProduct, commandAdd)
+                                calculateTotalPrice(0)
                             },
                             onProductDecreased = {
                                 totalQty = (totalQty.toInt() - 1).toString()
                                 totalPrc = CalculateTotalPriceItem().toString()
                                 viewModel.changeQtyCart(userModel.id, idProduct, commadDecrease)
+                                calculateTotalPrice(0)
                             },
                             modifier = modifier
                                 .padding(top = 4.dp)
@@ -142,7 +145,8 @@ fun PreviewCartItem(){
             "5",
             "500000",
             "10",
-            "BATIK PEDIA"
+            "BATIK PEDIA",
+            calculateTotalPrice = {}
         )
     }
 }
