@@ -133,9 +133,7 @@ fun ProfileScreen(
                                 .padding(5.dp)
                                 .fillMaxWidth()
                                 .clickable {
-                                    Toast
-                                        .makeText(context, "Edit Profile", Toast.LENGTH_SHORT)
-                                        .show()
+                                    navController.navigate(Screen.EditProfile.route)
                                 },
                             verticalAlignment = Alignment.CenterVertically
                         ) {
