@@ -50,6 +50,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.example.ambatik.R
 import com.example.ambatik.data.factory.UserModelFactory
 import com.example.ambatik.data.pref.UserModel
@@ -67,239 +68,248 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel(
         factory = UserModelFactory.getInstance(LocalContext.current)
     ),
+    userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore)
 ){
     val statusState by viewModel.status.observeAsState(false)
+    val detailUserState = viewModel.detailUser.observeAsState()
+    val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
+
+    LaunchedEffect(userModel.id){
+        viewModel.getDetailUser(userModel.id)
+    }
+
     Surface(
         color = colorScheme.surface,
         modifier = modifier
             .fillMaxSize()
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-        ) {
-            Box{
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Row(
-                        modifier = modifier
-                            .padding(20.dp, 20.dp, 0.dp, 0.dp)
-                            .fillMaxWidth()
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                            contentDescription = "Profile Image",
-                            modifier = Modifier
-                                .size(100.dp, 100.dp)
-                        )
-                        Column {
-                            Text(
-                                text = "Full Name",
-                                color = colorScheme.onSurface,
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = modifier
-                                    .padding(bottom = 8.dp)
-                            )
-                            Text(
-                                text = "username",
-                                color = colorScheme.onSurface,
-                                fontSize = 18.sp,
-                            )
-                        }
-                    }
-                }
-            }
-            Box(
+        detailUserState.value?.let { detailUser ->
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier
-                    .padding(20.dp, 10.dp)
-                    .fillMaxWidth()
             ) {
-                val context = LocalContext.current
-                Column{
-                    Row(
-                        modifier = modifier
-                            .padding(5.dp)
-                            .fillMaxWidth()
-                            .clickable {
-                                Toast
-                                    .makeText(context, "Edit Profile", Toast.LENGTH_SHORT)
-                                    .show()
-                            },
-                        verticalAlignment = Alignment.CenterVertically
+                Box{
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        Icon(
-                            imageVector = Icons.Filled.Edit,
-                            contentDescription = "Icon Edit Profile",
-                            tint = colorScheme.onSurface,
+                        Row(
                             modifier = modifier
-                                .padding(0.dp, 10.dp)
-                        )
-                        Text(
-                            text = "Edit Profile",
-                            color = colorScheme.onSurface,
-                            modifier = modifier
-                                .padding(8.dp, 0.dp, 8.dp, 0.dp)
-                        )
-                        Box(
-                            modifier = modifier
-                                .fillMaxWidth(),
-                            contentAlignment = Alignment.TopEnd
+                                .padding(20.dp, 20.dp, 0.dp, 0.dp)
+                                .fillMaxWidth()
                         ) {
-                            Icon(
-                                imageVector = Icons.Filled.NavigateNext,
-                                contentDescription = "Navigate to Edit Profile",
-                                tint = colorScheme.onSurface,
+                            AsyncImage(
+                                model = detailUser.urlProfile,
+                                contentDescription = "Profile Image",
+                                modifier = Modifier
+                                    .size(100.dp, 100.dp)
                             )
-                        }
-                    }
-                    Row(
-                        modifier = modifier
-                            .padding(5.dp)
-                            .fillMaxWidth()
-                            .clickable {
-                                navController.navigate(Screen.LikeArticle.route)
-                            },
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Article,
-                            contentDescription = "Icon Bookmark Article",
-                            tint = colorScheme.onSurface,
-                            modifier = modifier
-                                .padding(0.dp, 10.dp)
-                        )
-                        Text(
-                            text = "Like Article",
-                            color = colorScheme.onSurface,
-                            modifier = modifier
-                                .padding(8.dp, 0.dp, 8.dp, 0.dp)
-                        )
-                        Box(
-                            modifier = modifier
-                                .fillMaxWidth(),
-                            contentAlignment = Alignment.TopEnd
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.NavigateNext,
-                                contentDescription = "Navigate to Bookmark Article",
-                                tint = colorScheme.onSurface,
-                            )
-                        }
-                    }
-                    Row(
-                        modifier = modifier
-                            .padding(5.dp)
-                            .fillMaxWidth()
-                            .clickable {
-                                Toast
-                                    .makeText(context, "Product", Toast.LENGTH_SHORT)
-                                    .show()
-                            },
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Bookmarks,
-                            contentDescription = "Icon Bookmark Product",
-                            tint = colorScheme.onSurface,
-                            modifier = modifier
-                                .padding(0.dp, 10.dp)
-                        )
-                        Text(
-                            text = "Bookmark Product",
-                            color = colorScheme.onSurface,
-                            modifier = modifier
-                                .padding(8.dp, 0.dp, 8.dp, 0.dp)
-                        )
-                        Box(
-                            modifier = modifier
-                                .fillMaxWidth(),
-                            contentAlignment = Alignment.TopEnd
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.NavigateNext,
-                                contentDescription = "Navigate to Bookmark Product",
-                                tint = colorScheme.onSurface,
-                            )
-                        }
-                    }
-                    Row(
-                        modifier = modifier
-                            .padding(5.dp)
-                            .fillMaxWidth()
-                            .clickable {
-                                Toast
-                                    .makeText(context, "About", Toast.LENGTH_SHORT)
-                                    .show()
-                            },
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Info,
-                            contentDescription = "Icon About",
-                            tint = colorScheme.onSurface,
-                            modifier = modifier
-                                .padding(0.dp, 10.dp)
-                        )
-                        Text(
-                            text = "About",
-                            color = colorScheme.onSurface,
-                            modifier = modifier
-                                .padding(8.dp, 0.dp, 8.dp, 0.dp)
-                        )
-                        Box(
-                            modifier = modifier
-                                .fillMaxWidth(),
-                            contentAlignment = Alignment.TopEnd
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.NavigateNext,
-                                contentDescription = "Navigate to About",
-                                tint = colorScheme.onSurface,
-                            )
-                        }
-                    }
-                }
-            }
-            Box(
-                modifier = modifier
-                    .padding(20.dp, 25.dp)
-                    .fillMaxWidth()
-                    .fillMaxHeight(),
-                contentAlignment = Alignment.BottomEnd
-            ) {
-                Button(
-                    colors = ButtonDefaults.buttonColors(Color.Transparent),
-                    onClick = {
-                        viewModel.logout()
-                    },
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.120f)
-                        .border(2.dp, color = colorScheme.primary, RoundedCornerShape(10.dp))
-                ) {
-                    Text(
-                        text = "Logout",
-                        color = colorScheme.primary
-                    )
-                }
-                LaunchedEffect(statusState){
-                    if (statusState){
-                        navController.previousBackStackEntry?.arguments?.putBoolean("logout", true)
-                        navController.popBackStack()
-                        navController.navigate(Screen.Welcome.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                            Column {
+                                Text(
+                                    text = detailUser.name ?: "",
+                                    color = colorScheme.onSurface,
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = modifier
+                                        .padding(bottom = 8.dp)
+                                )
+                                Text(
+                                    text = detailUser.username ?: "",
+                                    color = colorScheme.onSurface,
+                                    fontSize = 18.sp,
+                                )
                             }
-                            launchSingleTop = true
-                            restoreState = true
                         }
+                    }
+                }
+                Box(
+                    modifier = modifier
+                        .padding(20.dp, 10.dp)
+                        .fillMaxWidth()
+                ) {
+                    val context = LocalContext.current
+                    Column{
+                        Row(
+                            modifier = modifier
+                                .padding(5.dp)
+                                .fillMaxWidth()
+                                .clickable {
+                                    Toast
+                                        .makeText(context, "Edit Profile", Toast.LENGTH_SHORT)
+                                        .show()
+                                },
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Edit,
+                                contentDescription = "Icon Edit Profile",
+                                tint = colorScheme.onSurface,
+                                modifier = modifier
+                                    .padding(0.dp, 10.dp)
+                            )
+                            Text(
+                                text = "Edit Profile",
+                                color = colorScheme.onSurface,
+                                modifier = modifier
+                                    .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                            )
+                            Box(
+                                modifier = modifier
+                                    .fillMaxWidth(),
+                                contentAlignment = Alignment.TopEnd
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.NavigateNext,
+                                    contentDescription = "Navigate to Edit Profile",
+                                    tint = colorScheme.onSurface,
+                                )
+                            }
+                        }
+                        Row(
+                            modifier = modifier
+                                .padding(5.dp)
+                                .fillMaxWidth()
+                                .clickable {
+                                    navController.navigate(Screen.LikeArticle.route)
+                                },
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Article,
+                                contentDescription = "Icon Bookmark Article",
+                                tint = colorScheme.onSurface,
+                                modifier = modifier
+                                    .padding(0.dp, 10.dp)
+                            )
+                            Text(
+                                text = "Like Article",
+                                color = colorScheme.onSurface,
+                                modifier = modifier
+                                    .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                            )
+                            Box(
+                                modifier = modifier
+                                    .fillMaxWidth(),
+                                contentAlignment = Alignment.TopEnd
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.NavigateNext,
+                                    contentDescription = "Navigate to Bookmark Article",
+                                    tint = colorScheme.onSurface,
+                                )
+                            }
+                        }
+                        Row(
+                            modifier = modifier
+                                .padding(5.dp)
+                                .fillMaxWidth()
+                                .clickable {
+                                    Toast
+                                        .makeText(context, "Product", Toast.LENGTH_SHORT)
+                                        .show()
+                                },
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Bookmarks,
+                                contentDescription = "Icon Bookmark Product",
+                                tint = colorScheme.onSurface,
+                                modifier = modifier
+                                    .padding(0.dp, 10.dp)
+                            )
+                            Text(
+                                text = "Bookmark Product",
+                                color = colorScheme.onSurface,
+                                modifier = modifier
+                                    .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                            )
+                            Box(
+                                modifier = modifier
+                                    .fillMaxWidth(),
+                                contentAlignment = Alignment.TopEnd
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.NavigateNext,
+                                    contentDescription = "Navigate to Bookmark Product",
+                                    tint = colorScheme.onSurface,
+                                )
+                            }
+                        }
+                        Row(
+                            modifier = modifier
+                                .padding(5.dp)
+                                .fillMaxWidth()
+                                .clickable {
+                                    Toast
+                                        .makeText(context, "About", Toast.LENGTH_SHORT)
+                                        .show()
+                                },
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Info,
+                                contentDescription = "Icon About",
+                                tint = colorScheme.onSurface,
+                                modifier = modifier
+                                    .padding(0.dp, 10.dp)
+                            )
+                            Text(
+                                text = "About",
+                                color = colorScheme.onSurface,
+                                modifier = modifier
+                                    .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                            )
+                            Box(
+                                modifier = modifier
+                                    .fillMaxWidth(),
+                                contentAlignment = Alignment.TopEnd
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.NavigateNext,
+                                    contentDescription = "Navigate to About",
+                                    tint = colorScheme.onSurface,
+                                )
+                            }
+                        }
+                    }
+                }
+                Box(
+                    modifier = modifier
+                        .padding(20.dp, 25.dp)
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                    contentAlignment = Alignment.BottomEnd
+                ) {
+                    Button(
+                        colors = ButtonDefaults.buttonColors(Color.Transparent),
+                        onClick = {
+                            viewModel.logout()
+                            if (statusState){
+                                navController.previousBackStackEntry?.arguments?.putBoolean("logout", true)
+                                navController.popBackStack()
+                                navController.navigate(Screen.Welcome.route) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            }
+                        },
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.120f)
+                            .border(2.dp, color = colorScheme.primary, RoundedCornerShape(10.dp))
+                    ) {
+                        Text(
+                            text = "Logout",
+                            color = colorScheme.primary
+                        )
                     }
                 }
             }
         }
     }
+
 }
 
 @Preview

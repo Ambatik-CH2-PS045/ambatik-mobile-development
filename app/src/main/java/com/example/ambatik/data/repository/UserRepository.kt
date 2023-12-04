@@ -1,5 +1,6 @@
 package com.example.ambatik.data.repository
 
+import com.example.ambatik.api.response.ResponseDetailuser
 import com.example.ambatik.api.response.ResponseLogin
 import com.example.ambatik.api.response.ResponseRegister
 import com.example.ambatik.api.retrofit.ApiService
@@ -23,6 +24,10 @@ class UserRepository(private val apiService: ApiService, private val userPrefere
         requestBody["username"] = username
         requestBody["password"] = password
         return apiService.login(requestBody)
+    }
+
+    suspend fun getDetail(idUser: Int): ResponseDetailuser{
+        return apiService.getUserDetail(idUser)
     }
 
     suspend fun saveSession(user: UserModel){

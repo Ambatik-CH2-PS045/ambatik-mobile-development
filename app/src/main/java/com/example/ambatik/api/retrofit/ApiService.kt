@@ -1,9 +1,11 @@
 package com.example.ambatik.api.retrofit
 
+import com.example.ambatik.api.response.DataDetailUser
 import com.example.ambatik.api.response.ResponseAddCart
 import com.example.ambatik.api.response.ResponseArticle
 import com.example.ambatik.api.response.ResponseCart
 import com.example.ambatik.api.response.ResponseDetailArticle
+import com.example.ambatik.api.response.ResponseDetailuser
 import com.example.ambatik.api.response.ResponseLikeArticle
 import com.example.ambatik.api.response.ResponseListLikeArticle
 import com.example.ambatik.api.response.ResponseLogin
@@ -64,4 +66,9 @@ interface ApiService{
     suspend fun getCart(
         @Path("id") id: Int
     ): ResponseCart
+
+    @GET("users/details/{idUser}")
+    suspend fun getUserDetail(
+        @Path("idUser") idUser: Int
+    ): ResponseDetailuser
 }
