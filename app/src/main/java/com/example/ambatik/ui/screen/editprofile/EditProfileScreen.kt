@@ -339,7 +339,7 @@ fun EditProfileScreen(
                             .fillMaxHeight(0.5f)
                     ) {
                         Text(
-                            text = "Sign up",
+                            text = "Change Profile",
                             color = colorScheme.onPrimary,
                         )
                     }
