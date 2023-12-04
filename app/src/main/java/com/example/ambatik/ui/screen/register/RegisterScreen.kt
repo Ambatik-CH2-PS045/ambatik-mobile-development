@@ -78,10 +78,10 @@ fun RegisterScreen(
     var passwordRegister by remember { mutableStateOf("") }
     var showPasswordRegister by remember { mutableStateOf(value = false) }
 
-    var isValidEmpty by remember { mutableStateOf(false) }
-    var isValidEmail by remember { mutableStateOf(false) }
-    var isValidEmptyPassword by remember { mutableStateOf(value = false) }
-    var isValidPassword by remember { mutableStateOf(false) }
+    var isValidEmpty by remember { mutableStateOf(true) }
+    var isValidEmail by remember { mutableStateOf(true) }
+    var isValidEmptyPassword by remember { mutableStateOf(true) }
+    var isValidPassword by remember { mutableStateOf(true) }
 
     val localFocusManager = LocalFocusManager.current
 
@@ -297,7 +297,10 @@ fun RegisterScreen(
                         color = Color.Red,
                         fontSize = 12.sp
                     )
-                    else -> Text(text = "")
+                    else -> Text(
+                        text = "",
+                        fontSize = 12.sp
+                    )
                 }
             }
             OutlinedTextField(
@@ -321,7 +324,7 @@ fun RegisterScreen(
                             Icon(
                                 imageVector = Icons.Filled.Visibility,
                                 contentDescription = "Hide Password",
-                                tint = Color(0xFFFFFFFF)
+                                tint = colorScheme.onSurface
                             )
                         }
                     } else{
@@ -329,7 +332,7 @@ fun RegisterScreen(
                             Icon(
                                 imageVector = Icons.Filled.VisibilityOff,
                                 contentDescription = "Hide Password",
-                                tint = Color(0xFFFFFFFF)
+                                tint = colorScheme.onSurface
                             )
                         }
                     }
@@ -373,7 +376,10 @@ fun RegisterScreen(
                         color = Color.Red,
                         fontSize = 12.sp
                     )
-                    else -> Text(text = "")
+                    else -> Text(
+                        text = "",
+                        fontSize = 12.sp
+                    )
                 }
             }
             Button(
