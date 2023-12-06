@@ -6,6 +6,7 @@ import com.example.ambatik.api.response.ResponseArticle
 import com.example.ambatik.api.response.ResponseCart
 import com.example.ambatik.api.response.ResponseDetailArticle
 import com.example.ambatik.api.response.ResponseDetailuser
+import com.example.ambatik.api.response.ResponseEditProfile
 import com.example.ambatik.api.response.ResponseLikeArticle
 import com.example.ambatik.api.response.ResponseListLikeArticle
 import com.example.ambatik.api.response.ResponseLogin
@@ -16,6 +17,7 @@ import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -71,4 +73,10 @@ interface ApiService{
     suspend fun getUserDetail(
         @Path("idUser") idUser: Int
     ): ResponseDetailuser
+
+    @PATCH("users/update/{idUser}")
+    suspend fun updateUserProfile(
+        @Path("idUser") idUser: Int,
+        @Body request: HashMap<String, String>
+    ): ResponseEditProfile
 }

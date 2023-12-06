@@ -1,6 +1,7 @@
 package com.example.ambatik.data.repository
 
 import com.example.ambatik.api.response.ResponseDetailuser
+import com.example.ambatik.api.response.ResponseEditProfile
 import com.example.ambatik.api.response.ResponseLogin
 import com.example.ambatik.api.response.ResponseRegister
 import com.example.ambatik.api.retrofit.ApiService
@@ -40,6 +41,14 @@ class UserRepository(private val apiService: ApiService, private val userPrefere
 
     suspend fun logout() {
         userPreference.logout()
+    }
+
+    suspend fun updateProfile(idUser: Int, name:String, address: String, phone: String): ResponseEditProfile{
+        val requestBody = HashMap<String, String>()
+        requestBody["name"] = name
+        requestBody["address"] = address
+        requestBody["phone"] = phone
+        return apiService.updateUserProfile(idUser, requestBody)
     }
 
     companion object{

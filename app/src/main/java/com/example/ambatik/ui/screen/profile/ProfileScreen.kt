@@ -308,7 +308,7 @@ fun ProfileScreen(
                         },
                         modifier = modifier
                             .fillMaxWidth()
-                            .fillMaxHeight(0.120f)
+//                            .fillMaxHeight(0.2f)
                             .border(2.dp, color = colorScheme.primary, RoundedCornerShape(10.dp))
                     ) {
                         Text(

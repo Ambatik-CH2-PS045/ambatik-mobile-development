@@ -43,7 +43,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -67,6 +70,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
@@ -75,6 +79,11 @@ import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.example.ambatik.BuildConfig
 import com.example.ambatik.R
+import com.example.ambatik.data.factory.UserModelFactory
+import com.example.ambatik.data.pref.UserModel
+import com.example.ambatik.data.pref.UserPreference
+import com.example.ambatik.data.pref.dataStore
+import com.example.ambatik.ui.screen.profile.ProfileViewModel
 import com.example.ambatik.ui.screen.register.isValidEmail
 import com.example.ambatik.ui.screen.register.isValidPassword
 import com.example.ambatik.ui.theme.AmbatikTheme
@@ -87,76 +96,83 @@ import java.util.Objects
 @Composable
 fun EditProfileScreen(
     navController: NavHostController = rememberNavController(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    profileViewModel: ProfileViewModel = viewModel(
+        factory = UserModelFactory.getInstance(LocalContext.current)
+    ),
+    editViewModel: EditProfileViewModel = viewModel(
+        factory = UserModelFactory.getInstance(LocalContext.current)
+    ),
+    userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore)
 ){
+    val sheetState = rememberModalBottomSheetState()
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+    val file = context.createImageFile()
+    val uri = FileProvider.getUriForFile(
+        Objects.requireNonNull(context),
+        BuildConfig.APPLICATION_ID + ".provider", file
+    )
+    var capturedImage by remember {
+        mutableStateOf<Uri>(Uri.EMPTY)
+    }
+    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()){
+        capturedImage = uri
+        Log.d("CameraURI", "URI from camera: $uri")
+    }
+    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri1 ->
+        if (uri1 != null) {
+            capturedImage = uri1
+        }
+        Log.d("GalleryURI", "URI from gallery: $uri1")
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) {
+        if (it) {
+            Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show()
+            cameraLauncher.launch(uri)
+        } else {
+            Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
+        }
+    }
+    val localFocusManager = LocalFocusManager.current
+
+    val detailUserState = profileViewModel.detailUser.observeAsState()
+    val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
+
+    LaunchedEffect(userModel.id){
+        profileViewModel.getDetailUser(userModel.id)
+    }
+
     Surface(
         color = colorScheme.surface,
         modifier = modifier
             .fillMaxSize()
     ) {
-        val sheetState = rememberModalBottomSheetState()
-        var showBottomSheet by remember { mutableStateOf(false) }
 
-        var fullname by remember { mutableStateOf("") }
-        var numberHandphone by remember { mutableStateOf("") }
-        var address by remember { mutableStateOf("") }
-        var email by remember { mutableStateOf("") }
-        var passwordEditProfile by remember { mutableStateOf("") }
-        var showPasswordEditProfile by remember { mutableStateOf(value = false) }
 
-        var isValidEmpty by remember { mutableStateOf(true) }
-        var isValidEmail by remember { mutableStateOf(true) }
-        var isValidEmptyPassword by remember { mutableStateOf(true) }
-        var isValidPassword by remember { mutableStateOf(true) }
-
-        val context = LocalContext.current
-        val file = context.createImageFile()
-        val uri = FileProvider.getUriForFile(
-            Objects.requireNonNull(context),
-            BuildConfig.APPLICATION_ID + ".provider", file
-        )
-        var capturedImage by remember {
-            mutableStateOf<Uri>(Uri.EMPTY)
-        }
-        val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()){
-            capturedImage = uri
-            Log.d("CameraURI", "URI from camera: $uri")
-        }
-        val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri1 ->
-            if (uri1 != null) {
-                capturedImage = uri1
-            }
-            Log.d("GalleryURI", "URI from gallery: $uri1")
-        }
-
-        val permissionLauncher = rememberLauncherForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) {
-            if (it) {
-                Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show()
-                cameraLauncher.launch(uri)
-            } else {
-                Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        val localFocusManager = LocalFocusManager.current
 //        val context = LocalContext.current
-        Column {
-            Box(
-                contentAlignment = Alignment.TopCenter,
-                modifier = modifier
-                    .padding(20.dp, 50.dp, 20.dp, 0.dp)
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.25f)
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
+        detailUserState.value?.let { data ->
+            var fullname by remember { mutableStateOf(data.name) }
+            var numberHandphone by remember { mutableStateOf(data.phone) }
+            var address by remember { mutableStateOf(data.address) }
+            Column {
+                Box(
+                    contentAlignment = Alignment.TopCenter,
+                    modifier = modifier
+                        .padding(20.dp, 50.dp, 20.dp, 0.dp)
+                        .fillMaxWidth()
                 ) {
-                    ImageContent(
-                        modifier = modifier,
-                        capturedImageUri = capturedImage
-                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        ImageContent(
+                            modifier = modifier,
+                            capturedImageUri = capturedImage
+                        )
 //                    AsyncImage(
 //                        model = ImageRequest.Builder(LocalContext.current)
 //                            .data(capturedImage)
@@ -168,302 +184,184 @@ fun EditProfileScreen(
 //                            .size(150.dp)
 //                            .clip(CircleShape)
 //                    )
-                    Text(
-                        text = "Change Picture",
-                        textAlign = TextAlign.Center,
-                        fontSize = 20.sp,
-                        color = colorScheme.onSurface,
-                        modifier = modifier
-                            .padding(top = 12.dp)
-                            .clickable {
-                                showBottomSheet = true
-                            }
-                    )
-
-                }
-            }
-            Box(
-                contentAlignment = Alignment.TopCenter,
-                modifier = modifier
-                    .padding(20.dp, 16.dp, 20.dp, 0.dp)
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.8f)
-            ) {
-                Column {
-                    OutlinedTextField(
-                        value = fullname,
-                        onValueChange = { fullname = it },
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = { localFocusManager.moveFocus(FocusDirection.Down) }
-                        ),
-                        singleLine = true,
-                        placeholder = {
-                            Text(
-                                text = "Fullname",
-                                color = Color(0xFF86888D)
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = "Fullname",
-                                color = Color(0xFF86888D)
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = colorScheme.outline,
-                            unfocusedBorderColor = colorScheme.outline,
-                            containerColor = Color.White,
-                            focusedTextColor = colorScheme.onSurface,
-                            unfocusedTextColor = colorScheme.onSurface,
-                        ),
-                        shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier
-                            .padding(8.dp, 4.dp, 8.dp, 4.dp)
-                            .fillMaxWidth()
-                    )
-                    OutlinedTextField(
-                        value = address,
-                        onValueChange = { address = it },
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = { localFocusManager.moveFocus(FocusDirection.Down) }
-                        ),
-                        singleLine = true,
-                        placeholder = {
-                            Text(
-                                text = "Address",
-                                color = Color(0xFF86888D)
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = "Address",
-                                color = Color(0xFF86888D)
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = colorScheme.outline,
-                            unfocusedBorderColor = colorScheme.outline,
-                            containerColor = Color.White,
-                            focusedTextColor = colorScheme.onSurface,
-                            unfocusedTextColor = colorScheme.onSurface,
-                        ),
-                        shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier
-                            .padding(8.dp, 4.dp, 8.dp, 4.dp)
-                            .fillMaxWidth()
-                    )
-                    OutlinedTextField(
-                        value = email,
-                        onValueChange = {input ->
-                            email = input
-                            isValidEmpty = input.isNotEmpty()
-                            isValidEmail = isValidEmailTextField(input)
-                        },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Email,
-                            imeAction = ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = { localFocusManager.moveFocus(FocusDirection.Down) }
-                        ),
-                        singleLine = true,
-                        placeholder = {
-                            Text(
-                                text = "Email",
-                                color = Color(0xFF86888D)
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = "Email",
-                                color = Color(0xFF86888D)
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = colorScheme.outline,
-                            unfocusedBorderColor = colorScheme.outline,
-                            containerColor = Color.White,
-                            focusedTextColor = colorScheme.onSurface,
-                            unfocusedTextColor = colorScheme.onSurface,
-                        ),
-                        shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier
-                            .padding(8.dp, 4.dp, 8.dp, 4.dp)
-                            .fillMaxWidth()
-                    )
-                    OutlinedTextField(
-                        value = numberHandphone,
-                        onValueChange = { numberHandphone = it },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Phone,
-                            imeAction = ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = { localFocusManager.moveFocus(FocusDirection.Down) }
-                        ),
-                        singleLine = true,
-                        placeholder = {
-                            Text(
-                                text = "No Handphone",
-                                color = Color(0xFF86888D)
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = "No Handphone",
-                                color = Color(0xFF86888D)
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = colorScheme.outline,
-                            unfocusedBorderColor = colorScheme.outline,
-                            containerColor = Color.White,
-                            focusedTextColor = colorScheme.onSurface,
-                            unfocusedTextColor = colorScheme.onSurface,
-                        ),
-                        shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier
-                            .padding(8.dp, 4.dp, 8.dp, 4.dp)
-                            .fillMaxWidth()
-                    )
-                    OutlinedTextField(
-                        value = passwordEditProfile,
-                        onValueChange = { input ->
-                            passwordEditProfile = input
-                            isValidEmptyPassword = input.isNotEmpty()
-                            isValidPassword = isValidPassword(input) },
-                        visualTransformation = if (showPasswordEditProfile) VisualTransformation.None else PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Password,
-                            imeAction = ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = { localFocusManager.clearFocus() }
-                        ),
-                        singleLine = true,
-                        trailingIcon = {
-                            if(showPasswordEditProfile){
-                                IconButton(onClick = { showPasswordEditProfile = false }) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Visibility,
-                                        contentDescription = "Hide Password",
-                                        tint = colorScheme.onSurface
-                                    )
-                                }
-                            } else{
-                                IconButton(onClick = { showPasswordEditProfile = true }) {
-                                    Icon(
-                                        imageVector = Icons.Filled.VisibilityOff,
-                                        contentDescription = "Hide Password",
-                                        tint = colorScheme.onSurface
-                                    )
-                                }
-                            }
-                        },
-                        placeholder = {
-                            Text(
-                                text = "Password",
-                                color = Color(0xFF86888D)
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = "Password",
-                                color = Color(0xFF86888D)
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = colorScheme.outline,
-                            unfocusedBorderColor = colorScheme.outline,
-                            containerColor = Color.White,
-                            focusedTextColor = colorScheme.onSurface,
-                            unfocusedTextColor = colorScheme.onSurface,
-                        ),
-                        shape = RoundedCornerShape(10.dp),
-                        modifier = Modifier
-                            .padding(8.dp, 4.dp, 8.dp, 4.dp)
-                            .fillMaxWidth()
-                    )
-                    Button(
-                        shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(colorScheme.primary),
-                        onClick = {
-                            if(!isValidEmail || !isValidPassword){
-                                Toast.makeText(context, "Masukan Format email dan password yang benar", Toast.LENGTH_SHORT).show()
-                            }else{
-
-                            }
-                        },
-                        modifier = Modifier
-                            .padding(8.dp, 20.dp, 8.dp, 4.dp)
-                            .fillMaxWidth()
-                            .fillMaxHeight(0.5f)
-                    ) {
                         Text(
-                            text = "Change Profile",
-                            color = colorScheme.onPrimary,
+                            text = "Change Picture",
+                            textAlign = TextAlign.Center,
+                            fontSize = 20.sp,
+                            color = colorScheme.onSurface,
+                            modifier = modifier
+                                .padding(top = 12.dp)
+                                .clickable {
+                                    showBottomSheet = true
+                                }
                         )
+
                     }
                 }
-            }
-            if (showBottomSheet) {
-                ModalBottomSheet(
-                    onDismissRequest = {
-                        showBottomSheet = false
-                    },
-                    sheetState = sheetState
+                Box(
+                    contentAlignment = Alignment.TopCenter,
+                    modifier = modifier
+                        .padding(20.dp, 16.dp, 20.dp, 0.dp)
+                        .fillMaxWidth()
                 ) {
-                    Box(
-                        contentAlignment = Alignment.TopCenter,
-                        modifier = modifier
-                            .padding(8.dp, 8.dp, 8.dp, 8.dp)
-                            .fillMaxWidth()
-                    ){
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally
+                    Column {
+                        OutlinedTextField(
+                            value = fullname ?: "",
+                            onValueChange = { fullname = it },
+                            keyboardOptions = KeyboardOptions(
+                                imeAction = ImeAction.Done
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onDone = { localFocusManager.moveFocus(FocusDirection.Down) }
+                            ),
+                            singleLine = true,
+                            label = {
+                                Text(
+                                    text = "Fullname",
+                                    color = Color(0xFF86888D)
+                                )
+                            },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedBorderColor = colorScheme.outline,
+                                unfocusedBorderColor = colorScheme.outline,
+                                containerColor = Color.White,
+                                focusedTextColor = colorScheme.onSurface,
+                                unfocusedTextColor = colorScheme.onSurface,
+                            ),
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier
+                                .padding(8.dp, 4.dp, 8.dp, 4.dp)
+                                .fillMaxWidth()
+                        )
+                        OutlinedTextField(
+                            value = data.address ?: "",
+                            onValueChange = { address = it },
+                            keyboardOptions = KeyboardOptions(
+                                imeAction = ImeAction.Done
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onDone = { localFocusManager.moveFocus(FocusDirection.Down) }
+                            ),
+                            singleLine = true,
+                            label = {
+                                Text(
+                                    text = "Address",
+                                    color = Color(0xFF86888D)
+                                )
+                            },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedBorderColor = colorScheme.outline,
+                                unfocusedBorderColor = colorScheme.outline,
+                                containerColor = Color.White,
+                                focusedTextColor = colorScheme.onSurface,
+                                unfocusedTextColor = colorScheme.onSurface,
+                            ),
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier
+                                .padding(8.dp, 4.dp, 8.dp, 4.dp)
+                                .fillMaxWidth()
+                        )
+                        OutlinedTextField(
+                            value = data.phone ?: "",
+                            onValueChange = { numberHandphone = it },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Phone,
+                                imeAction = ImeAction.Done
+                            ),
+                            keyboardActions = KeyboardActions(
+                                onDone = { localFocusManager.moveFocus(FocusDirection.Down) }
+                            ),
+                            singleLine = true,
+                            label = {
+                                Text(
+                                    text = "No Handphone",
+                                    color = Color(0xFF86888D)
+                                )
+                            },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedBorderColor = colorScheme.outline,
+                                unfocusedBorderColor = colorScheme.outline,
+                                containerColor = Color.White,
+                                focusedTextColor = colorScheme.onSurface,
+                                unfocusedTextColor = colorScheme.onSurface,
+                            ),
+                            shape = RoundedCornerShape(10.dp),
+                            modifier = Modifier
+                                .padding(8.dp, 4.dp, 8.dp, 4.dp)
+                                .fillMaxWidth()
+                        )
+                        Button(
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.buttonColors(colorScheme.primary),
+                            onClick = {
+                                editViewModel.editProfile(userModel.id, fullname ?: "", address ?: "", numberHandphone ?: "")
+                                Log.d("EDIT PROFILE", "$fullname $address $numberHandphone")
+                            },
+                            modifier = Modifier
+                                .padding(8.dp, 20.dp, 8.dp, 4.dp)
+                                .fillMaxWidth()
+                                .height(50.dp)
+                        ) {
+                            Text(
+                                text = "Change Profile",
+                                color = colorScheme.onPrimary,
+                            )
+                        }
+                    }
+                }
+                if (showBottomSheet) {
+                    ModalBottomSheet(
+                        onDismissRequest = {
+                            showBottomSheet = false
+                        },
+                        sheetState = sheetState
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.TopCenter,
+                            modifier = modifier
+                                .padding(8.dp, 8.dp, 8.dp, 8.dp)
+                                .fillMaxWidth()
                         ){
-                            Spacer(modifier = modifier.height(5.dp))
-                            Button(
-                                onClick = {
-                                    val permissionCheckResult =
-                                        ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA)
-                                    if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-                                        cameraLauncher.launch(uri)
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ){
+                                Spacer(modifier = modifier.height(5.dp))
+                                Button(
+                                    onClick = {
+                                        val permissionCheckResult =
+                                            ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA)
+                                        if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                                            cameraLauncher.launch(uri)
+                                            showBottomSheet = false
+                                        } else {
+                                            permissionLauncher.launch(android.Manifest.permission.CAMERA)
+                                        }
+                                    },
+                                    modifier = modifier
+                                        .padding(16.dp, 16.dp, 16.dp, 16.dp)
+                                        .width(140.dp)
+                                        .height(50.dp)
+                                ) {
+                                    Text(
+                                        text = "Camera",
+                                        color = colorScheme.onPrimary,
+                                    )
+                                }
+                                Button(
+                                    onClick = {
+                                        galleryLauncher.launch("image/*")
                                         showBottomSheet = false
-                                    } else {
-                                        permissionLauncher.launch(android.Manifest.permission.CAMERA)
-                                    }
-                                },
-                                modifier = modifier
-                                    .padding(16.dp, 16.dp, 16.dp, 16.dp)
-                                    .width(140.dp)
-                                    .height(50.dp)
-                            ) {
-                                Text(
-                                    text = "Camera",
-                                    color = colorScheme.onPrimary,
-                                )
-                            }
-                            Button(
-                                onClick = {
-                                    galleryLauncher.launch("image/*")
-                                    showBottomSheet = false
-                                },
-                                modifier = modifier
-                                    .padding(16.dp, 0.dp, 16.dp, 16.dp)
-                                    .width(140.dp)
-                                    .height(50.dp)
-                            ) {
-                                Text(
-                                    text = "Gallery",
-                                    color = colorScheme.onPrimary,
-                                )
+                                    },
+                                    modifier = modifier
+                                        .padding(16.dp, 0.dp, 16.dp, 16.dp)
+                                        .width(140.dp)
+                                        .height(50.dp)
+                                ) {
+                                    Text(
+                                        text = "Gallery",
+                                        color = colorScheme.onPrimary,
+                                    )
+                                }
                             }
                         }
                     }
@@ -471,10 +369,6 @@ fun EditProfileScreen(
             }
         }
     }
-}
-
-fun isValidEmailTextField(text: String): Boolean{
-    return Patterns.EMAIL_ADDRESS.matcher(text).matches()
 }
 
 @Composable
