@@ -150,7 +150,7 @@ fun LoginScreen(
                             Icon(
                                 imageVector = Icons.Filled.Visibility,
                                 contentDescription = "Hide Password",
-                                tint = Color(0xFFFFFFFF)
+                                tint = colorScheme.onSurface
                             )
                         }
                     } else{

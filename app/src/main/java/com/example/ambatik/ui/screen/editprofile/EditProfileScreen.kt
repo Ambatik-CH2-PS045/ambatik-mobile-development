@@ -234,7 +234,7 @@ fun EditProfileScreen(
                                 .fillMaxWidth()
                         )
                         OutlinedTextField(
-                            value = data.address ?: "",
+                            value = address ?: "",
                             onValueChange = { address = it },
                             keyboardOptions = KeyboardOptions(
                                 imeAction = ImeAction.Done
@@ -262,7 +262,7 @@ fun EditProfileScreen(
                                 .fillMaxWidth()
                         )
                         OutlinedTextField(
-                            value = data.phone ?: "",
+                            value = numberHandphone ?: "",
                             onValueChange = { numberHandphone = it },
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Phone,

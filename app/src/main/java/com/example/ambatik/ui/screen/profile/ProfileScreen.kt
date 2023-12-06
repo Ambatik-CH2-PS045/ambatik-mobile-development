@@ -116,7 +116,10 @@ fun ProfileScreen(
                                 modifier = Modifier
                                     .size(100.dp, 100.dp)
                             )
-                            Column {
+                            Column(
+                                modifier = modifier
+                                    .padding(start = 8.dp)
+                            ) {
                                 Text(
                                     text = detailUser.name ?: "",
                                     color = colorScheme.onSurface,
