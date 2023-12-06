@@ -61,6 +61,7 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.ambatik.BuildConfig
 import com.example.ambatik.R
+import com.example.ambatik.ui.screen.editprofile.createImageFile
 import com.example.ambatik.ui.theme.AmbatikTheme
 import java.io.File
 import java.text.SimpleDateFormat
@@ -85,13 +86,14 @@ fun ScanScreen(
 
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()){
         capturedImage = uri
+        Log.d("CameraURI", "URI from camera: $uri")
     }
 
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri1 ->
         if (uri1 != null) {
             capturedImage = uri1
         }
-        Log.d("GalleryURI", "URI from gallery: $uri")
+        Log.d("GalleryURI", "URI from gallery: $uri1")
     }
 
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -237,6 +239,7 @@ fun ImageContent(
                     .size(300.dp, 400.dp)
                     .border(2.dp, color = colorScheme.onSurface, RoundedCornerShape(20.dp))
             )
+            Log.d("ShowImage", "Image from URI: $capturedImageUri")
         }
         else {
             Image(
@@ -248,17 +251,6 @@ fun ImageContent(
             )
         }
 
-}
-
-fun Context.createImageFile(): File {
-    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-    val imageFileName = "JPEG_" + timeStamp + "_"
-    val image = File.createTempFile(
-        imageFileName,
-        ".jpg",
-        externalCacheDir
-    )
-    return image
 }
 
 @Preview
