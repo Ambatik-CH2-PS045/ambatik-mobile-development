@@ -8,3 +8,4 @@ Ambatik is an application that can recognize batik by scanning it directly throu
 - Recognize type of batik by scanning it directly through the camera or from the gallery
 - Quiz about batik
 - E-commerce
+- Personalization batik for user
