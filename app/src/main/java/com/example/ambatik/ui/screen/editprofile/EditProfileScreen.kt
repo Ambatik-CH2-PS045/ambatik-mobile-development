@@ -295,7 +295,7 @@ fun EditProfileScreen(
                             colors = ButtonDefaults.buttonColors(colorScheme.primary),
                             onClick = {
                                 editViewModel.editProfile(userModel.id, fullname ?: "", address ?: "", numberHandphone ?: "")
-                                Log.d("EDIT PROFILE", "$fullname $address $numberHandphone")
+                                Toast.makeText(context, "Berhasil Edit Profile", Toast.LENGTH_SHORT).show()
                             },
                             modifier = Modifier
                                 .padding(8.dp, 20.dp, 8.dp, 4.dp)
