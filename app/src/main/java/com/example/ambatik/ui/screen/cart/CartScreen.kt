@@ -60,23 +60,10 @@ fun CartScreen(
 ){
     val dataCartListState = viewModel.dataCart.observeAsState()
     val statusState by viewModel.status.observeAsState(false)
-    var grandTotal by remember { mutableStateOf(0) }
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
 
     LaunchedEffect(userModel.id){
-        Log.d("YourComposable", "LaunchedEffect triggered for userId: ${userModel.id}")
         viewModel.getCart(userModel.id)
-    }
-
-    LaunchedEffect(dataCartListState.value){
-        dataCartListState.value?.data?.let { cartItems ->
-            var total = 0
-            for (item in cartItems) {
-                total += item?.totalPrice?.toIntOrNull() ?: 0
-            }
-            grandTotal = total
-            Log.d("CartScreen","GrandTotal $grandTotal")
-        }
     }
 
     Scaffold(
@@ -88,7 +75,7 @@ fun CartScreen(
             )
             dataCartListState.value?.let { data ->
                 BottomContent(
-                    totalPrice = grandTotal.toString()
+                    totalPrice = data.grandTotal.toString()
                 )
             }
         }
@@ -114,9 +101,6 @@ fun CartScreen(
                             totalPrice = data?.totalPrice ?: "",
                             totalQuantity = data?.totalQty ?: "",
                             storeName = data?.storeName ?: "",
-                            calculateTotalPrice = {
-                                viewModel.getCart(userModel.id)
-                            }
                         )
                     }
                 }

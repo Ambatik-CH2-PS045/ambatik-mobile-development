@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -42,7 +43,6 @@ fun CartItem(
     totalPrice: String,
     totalQuantity: String,
     storeName: String,
-    calculateTotalPrice: (Int) -> Unit,
     viewModel: CartViewModel = viewModel(
         factory = CartModelFactory.getInstance(LocalContext.current)
     ),
@@ -116,13 +116,13 @@ fun CartItem(
                                 totalQty = (totalQty.toInt() + 1).toString()
                                 totalPrc = CalculateTotalPriceItem().toString()
                                 viewModel.changeQtyCart(userModel.id, idProduct, commandAdd)
-                                calculateTotalPrice(0)
+                                viewModel.getCart(userModel.id)
                             },
                             onProductDecreased = {
                                 totalQty = (totalQty.toInt() - 1).toString()
                                 totalPrc = CalculateTotalPriceItem().toString()
                                 viewModel.changeQtyCart(userModel.id, idProduct, commadDecrease)
-                                calculateTotalPrice(0)
+                                viewModel.getCart(userModel.id)
                             },
                             modifier = modifier
                                 .padding(top = 4.dp)
@@ -146,7 +146,6 @@ fun PreviewCartItem(){
             "500000",
             "10",
             "BATIK PEDIA",
-            calculateTotalPrice = {},
         )
     }
 }

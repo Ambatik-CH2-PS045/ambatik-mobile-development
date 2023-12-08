@@ -158,7 +158,6 @@ fun QuizScreen(
 //                            ){
 //                                QuizItem(name = "Batik Nusantara", level = "Level Easy")
 //                            }
-
                         }
                     }
                 }
