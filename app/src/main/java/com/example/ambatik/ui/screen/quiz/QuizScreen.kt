@@ -106,7 +106,7 @@ fun QuizScreen(
                             modifier = modifier
                                 .padding(15.dp, 15.dp)
                                 .size(100.dp, 50.dp)
-                                .clip(RoundedCornerShape(20.dp))
+                                .clip(RoundedCornerShape(15.dp))
                                 .background(MaterialTheme.colorScheme.primary)
                                 .alpha(0.5f)
                         )
