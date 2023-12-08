@@ -107,8 +107,8 @@ fun QuizScreen(
                                 .padding(15.dp, 15.dp)
                                 .size(100.dp, 50.dp)
                                 .clip(RoundedCornerShape(20.dp))
+                                .background(MaterialTheme.colorScheme.primary)
                                 .alpha(0.5f)
-                                .background(Color.Black)
                         )
                         Box(
                             modifier = modifier
@@ -119,7 +119,10 @@ fun QuizScreen(
                             Row {
                                 Icon(
                                     imageVector = Icons.Filled.Stars,
-                                    contentDescription = "Score"
+                                    contentDescription = "Score",
+                                    tint = MaterialTheme.colorScheme.onPrimary,
+                                    modifier = modifier
+                                        .padding(end = 4.dp)
                                 )
                                 Text(
                                     text = "99999",
