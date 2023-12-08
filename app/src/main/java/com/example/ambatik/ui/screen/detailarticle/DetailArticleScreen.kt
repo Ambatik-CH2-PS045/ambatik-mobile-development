@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.outlined.Favorite
@@ -111,7 +113,10 @@ fun DetailArticleContent(
 ){
     var liked by remember { mutableStateOf(isLiked == "1") }
     var totalLikeCount by remember { mutableStateOf(totalLike) }
-    Column {
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+    ) {
         Box {
             AsyncImage(
                 model = image,
