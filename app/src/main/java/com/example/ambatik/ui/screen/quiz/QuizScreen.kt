@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -80,18 +82,20 @@ fun QuizScreen(
                     )
                     Column(
                         modifier = modifier
-                            .padding(0.dp, 0.dp, 0.dp, 8.dp)
+                            .padding(0.dp, 8.dp, 0.dp, 8.dp)
                             .width(120.dp)
                     ) {
                         Text(
                             text = "Welcome,",
                             fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
                         Text(
                             modifier  = modifier
                                 .fillMaxWidth(),
                             text = "User",
+                            fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
@@ -146,21 +150,24 @@ fun QuizScreen(
                     modifier = Modifier
                         .padding(bottom = 80.dp)
                 ){
-                    Column(
+                    Box(
                         modifier = Modifier
                             .padding(bottom = 80.dp)
                     ){
                         LazyColumn(
+                            contentPadding = PaddingValues(16.dp),
                             verticalArrangement = Arrangement.spacedBy(12.dp),
                         ){
-//                            Card(
-//                                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary),
-//                                modifier = modifier
-//                                    .clickable {
-//                                    }
-//                            ){
-//                                QuizItem(name = "Batik Nusantara", level = "Level Easy")
-//                            }
+                            item{
+                                Card(
+                                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.outline),
+                                    modifier = modifier
+                                        .clickable {
+                                        }
+                                ){
+                                    QuizItem(name = "Batik Nusantara", level = "Level Easy")
+                                }
+                            }
                         }
                     }
                 }
