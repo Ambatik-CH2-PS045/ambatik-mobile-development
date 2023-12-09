@@ -300,7 +300,6 @@ fun ProfileScreen(
                             viewModel.logout()
                             if (statusState){
                                 navController.previousBackStackEntry?.arguments?.putBoolean("logout", true)
-                                navController.popBackStack()
                                 navController.navigate(Screen.Welcome.route) {
                                     popUpTo(navController.graph.findStartDestination().id) {
                                         saveState = true

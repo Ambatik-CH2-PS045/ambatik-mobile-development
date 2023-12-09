@@ -4,6 +4,7 @@ import com.example.ambatik.api.response.DataDetailUser
 import com.example.ambatik.api.response.ResponseAddCart
 import com.example.ambatik.api.response.ResponseArticle
 import com.example.ambatik.api.response.ResponseCart
+import com.example.ambatik.api.response.ResponseCheckout
 import com.example.ambatik.api.response.ResponseDetailArticle
 import com.example.ambatik.api.response.ResponseDetailuser
 import com.example.ambatik.api.response.ResponseEditProfile
@@ -79,4 +80,9 @@ interface ApiService{
         @Path("idUser") idUser: Int,
         @Body request: HashMap<String, String>
     ): ResponseEditProfile
+
+    @POST("order/checkout")
+    suspend fun checkoutProduct(
+        @Body request: HashMap<String, String>
+    ): ResponseCheckout
 }

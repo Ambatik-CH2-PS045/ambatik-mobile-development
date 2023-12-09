@@ -1,5 +1,6 @@
 package com.example.ambatik.ui.components.cart
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,21 +50,9 @@ fun CartItem(
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore),
     modifier: Modifier = Modifier
 ){
-    var totalPrc by remember { mutableStateOf(totalPrice) }
-    var totalQty by remember { mutableStateOf(totalQuantity) }
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
     val commandAdd = "add"
     val commadDecrease = "reduce"
-
-    fun CalculateTotalPriceItem(): Int{
-        val pricePerItem = price.toInt()
-        val quantity = totalQty.toInt()
-        return pricePerItem * quantity
-    }
-
-    LaunchedEffect(totalPrice) {
-        totalPrc = totalPrice
-    }
 
     Surface(
         color = Color.White,
@@ -102,7 +91,7 @@ fun CartItem(
                             color = colorScheme.onSurface,
                         )
                         Text(
-                            text = "Rp. $totalPrc",
+                            text = "Rp. $totalPrice",
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             color = colorScheme.onSurface,
@@ -111,18 +100,16 @@ fun CartItem(
                         )
                         CountItem(
                             orderId = idProduct,
-                            orderCount = totalQty.toInt(),
+                            orderCount = totalQuantity.toInt(),
                             onProductIncreased = {
-                                totalQty = (totalQty.toInt() + 1).toString()
-                                totalPrc = CalculateTotalPriceItem().toString()
                                 viewModel.changeQtyCart(userModel.id, idProduct, commandAdd)
                                 viewModel.getCart(userModel.id)
+                                Log.d("CartItem", "Increased: User ID - ${userModel.id}, Product ID - $idProduct")
                             },
                             onProductDecreased = {
-                                totalQty = (totalQty.toInt() - 1).toString()
-                                totalPrc = CalculateTotalPriceItem().toString()
                                 viewModel.changeQtyCart(userModel.id, idProduct, commadDecrease)
                                 viewModel.getCart(userModel.id)
+                                Log.d("CartItem", "Decreased: User ID - ${userModel.id}, Product ID - $idProduct")
                             },
                             modifier = modifier
                                 .padding(top = 4.dp)
