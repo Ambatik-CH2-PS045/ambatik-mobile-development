@@ -39,69 +39,63 @@ fun QuizItem(
     level : String,
     modifier : Modifier = Modifier,
     ) {
-    Surface (
-        color = Color.White,
+    Column(
         modifier = modifier
-            .wrapContentSize()
     ) {
-        Column(
+        Row(
             modifier = modifier
         ) {
-            Row(
+            Box(
+                contentAlignment = Alignment.TopStart,
                 modifier = modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
+                    .padding(16.dp)
             ) {
                 Box(
-                    contentAlignment = Alignment.TopStart,
                     modifier = modifier
-                        .fillMaxWidth()
-                        .height(120.dp)
-                        .padding(16.dp)
+                        .height(100.dp)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd
                 ) {
-                    Box(
+                    Button(
+                        onClick = {},
                         modifier = modifier
-                            .height(100.dp)
-                            .fillMaxWidth(),
-                        contentAlignment = Alignment.CenterEnd
-                    ) {
-                        Button(
-                            onClick = {},
-                            modifier = modifier
-                                .padding(16.dp, 16.dp, 16.dp, 16.dp)
-                        ) {
-                            Text(
-                                text = "Mulai",
-                                fontSize = 12.sp,
-                                color = MaterialTheme.colorScheme.onPrimary,
-                            )
-                        }
-
-                    }
-                    Column(
-                        modifier = modifier
-                            .fillMaxHeight()
+                            .padding(16.dp, 16.dp, 0.dp, 16.dp)
                     ) {
                         Text(
-                            text = name,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            fontSize = 24.sp,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            style = MaterialTheme.typography.titleMedium.copy(
-                                fontWeight = FontWeight.Bold
-                            ),
+                            text = "Mulai",
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onPrimary,
                         )
-                        Box(
-                            modifier = modifier
-                                .padding(0.dp, 30.dp, 0.dp, 0.dp)
-                        ) {
-                            Row {
-                                Text(
-                                    text = level,
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                    fontSize = 12.sp,
-                                    fontStyle = FontStyle.Italic
-                                )
-                            }
+                    }
+
+                }
+                Column(
+                    modifier = modifier
+                        .fillMaxHeight()
+                ) {
+                    Text(
+                        text = name,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = 24.sp,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                    )
+                    Box(
+                        modifier = modifier
+                            .padding(0.dp, 30.dp, 0.dp, 0.dp)
+                    ) {
+                        Row {
+                            Text(
+                                text = level,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontSize = 12.sp,
+                                fontStyle = FontStyle.Italic
+                            )
                         }
                     }
                 }
