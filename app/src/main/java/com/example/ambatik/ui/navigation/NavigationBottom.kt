@@ -19,6 +19,7 @@ import com.example.ambatik.ui.screen.detailshopping.DetailShopScreen
 import com.example.ambatik.ui.screen.editprofile.EditProfileScreen
 import com.example.ambatik.ui.screen.home.HomeScreen
 import com.example.ambatik.ui.screen.login.LoginScreen
+import com.example.ambatik.ui.screen.order.OrderScreen
 import com.example.ambatik.ui.screen.profile.ProfileScreen
 import com.example.ambatik.ui.screen.quiz.QuizScreen
 import com.example.ambatik.ui.screen.register.RegisterScreen
@@ -102,6 +103,9 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
         }
         composable(Screen.EditProfile.route){
             EditProfileScreen(navController)
+        }
+        composable(Screen.Order.route){
+            OrderScreen(navController)
         }
     }
 }

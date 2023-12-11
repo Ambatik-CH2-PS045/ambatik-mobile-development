@@ -8,6 +8,7 @@ import com.example.ambatik.api.response.ResponseCheckout
 import com.example.ambatik.api.response.ResponseDetailArticle
 import com.example.ambatik.api.response.ResponseDetailuser
 import com.example.ambatik.api.response.ResponseEditProfile
+import com.example.ambatik.api.response.ResponseGetOrder
 import com.example.ambatik.api.response.ResponseLikeArticle
 import com.example.ambatik.api.response.ResponseListLikeArticle
 import com.example.ambatik.api.response.ResponseLogin
@@ -85,4 +86,9 @@ interface ApiService{
     suspend fun checkoutProduct(
         @Body request: HashMap<String, String>
     ): ResponseCheckout
+
+    @GET("order/{idUser}")
+    suspend fun getOrder(
+        @Path("idUser") idUser: Int
+    ): ResponseGetOrder
 }

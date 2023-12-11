@@ -1,6 +1,7 @@
 package com.example.ambatik.data.repository
 
 import com.example.ambatik.api.response.ResponseCheckout
+import com.example.ambatik.api.response.ResponseGetOrder
 import com.example.ambatik.api.retrofit.ApiService
 import com.example.ambatik.data.pref.UserPreference
 
@@ -21,6 +22,10 @@ class OrderRepository(private val apiService: ApiService, private val userPrefer
         requestBody["eachprices"] = eachPrices.toString()
         requestBody["productIds"] = productIds.toString()
         return apiService.checkoutProduct(requestBody)
+    }
+
+    suspend fun getOrder(id: Int): ResponseGetOrder{
+        return apiService.getOrder(id)
     }
 
     companion object {

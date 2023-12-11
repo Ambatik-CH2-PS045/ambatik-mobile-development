@@ -41,7 +41,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.ambatik.api.response.ResponseCart
 import com.example.ambatik.data.factory.CartModelFactory
+import com.example.ambatik.data.factory.OrderModelFactory
 import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
@@ -55,6 +57,9 @@ fun CartScreen(
     modifier: Modifier = Modifier,
     viewModel: CartViewModel = viewModel(
         factory = CartModelFactory.getInstance(LocalContext.current)
+    ),
+    viewModelOrder: OrderViewModel = viewModel(
+        factory = OrderModelFactory.getInstance(LocalContext.current)
     ),
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore)
 ){
@@ -117,6 +122,9 @@ fun BottomContent(
 
     modifier: Modifier = Modifier
 ){
+    var totalQty by remember { mutableStateOf("") }
+    var grandTotal by remember { mutableStateOf("") }
+    var userId by remember { mutableStateOf("") }
     Row(
         modifier = modifier
             .padding(20.dp, 12.dp, 20.dp, 12.dp)
@@ -146,7 +154,9 @@ fun BottomContent(
             contentAlignment = Alignment.CenterEnd
         ) {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+
+                },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(colorScheme.primary),
                 modifier = modifier

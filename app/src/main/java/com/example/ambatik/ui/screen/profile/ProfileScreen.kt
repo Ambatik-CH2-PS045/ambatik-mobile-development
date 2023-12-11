@@ -218,9 +218,7 @@ fun ProfileScreen(
                                 .padding(5.dp)
                                 .fillMaxWidth()
                                 .clickable {
-                                    Toast
-                                        .makeText(context, "Product", Toast.LENGTH_SHORT)
-                                        .show()
+                                    navController.navigate(Screen.Order.route)
                                 },
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -232,7 +230,7 @@ fun ProfileScreen(
                                     .padding(0.dp, 10.dp)
                             )
                             Text(
-                                text = "Bookmark Product",
+                                text = "Transaksi",
                                 color = colorScheme.onSurface,
                                 modifier = modifier
                                     .padding(8.dp, 0.dp, 8.dp, 0.dp)

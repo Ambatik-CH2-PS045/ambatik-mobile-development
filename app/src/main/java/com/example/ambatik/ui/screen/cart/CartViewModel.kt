@@ -21,8 +21,8 @@ class CartViewModel(private val repository: CartRepository): ViewModel() {
     val dataCart = MutableLiveData<ResponseCart>()
 
     private val _statusChangeCart: MutableLiveData<Boolean> = MutableLiveData()
-
     val statusChangeCart: LiveData<Boolean> = _statusChangeCart
+
     val errorChangeToCart = MutableLiveData<String?>()
 
     fun getCart(id: Int){
