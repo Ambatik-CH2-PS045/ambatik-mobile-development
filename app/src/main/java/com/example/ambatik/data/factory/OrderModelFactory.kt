@@ -5,17 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.ambatik.data.repository.OrderRepository
 import com.example.ambatik.di.Injection
-import com.example.ambatik.ui.screen.cart.OrderViewModel
-import com.example.ambatik.ui.screen.order.GetOrderViewModel
+import com.example.ambatik.ui.screen.cart.AddOrderViewModel
+import com.example.ambatik.ui.screen.order.OrderViewModel
 
 class OrderModelFactory(private val repository: OrderRepository): ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T{
         return when{
+            modelClass.isAssignableFrom(AddOrderViewModel::class.java) -> {
+                AddOrderViewModel(repository) as T
+            }
             modelClass.isAssignableFrom(OrderViewModel::class.java) -> {
                 OrderViewModel(repository) as T
-            }
-            modelClass.isAssignableFrom(GetOrderViewModel::class.java) -> {
-                GetOrderViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unkown ViewModel class: " + modelClass.name)
         }

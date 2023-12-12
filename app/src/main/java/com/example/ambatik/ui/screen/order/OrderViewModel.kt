@@ -5,14 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ambatik.api.response.DataItemOrder
-import com.example.ambatik.api.response.ResponseArticle
 import com.example.ambatik.api.response.ResponseGetOrder
 import com.example.ambatik.data.repository.OrderRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class GetOrderViewModel(private val repository: OrderRepository): ViewModel() {
+class OrderViewModel(private val repository: OrderRepository): ViewModel() {
     val error = MutableLiveData<String?>()
     val status: MutableLiveData<Boolean> = MutableLiveData()
     val orderList = MutableLiveData<List<DataItemOrder>>()

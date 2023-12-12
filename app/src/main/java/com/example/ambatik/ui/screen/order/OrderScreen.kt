@@ -29,7 +29,7 @@ import com.example.ambatik.ui.theme.AmbatikTheme
 @Composable
 fun OrderScreen(
     navController: NavHostController = rememberNavController(),
-    viewModel: GetOrderViewModel = viewModel(
+    viewModel: OrderViewModel = viewModel(
         factory = OrderModelFactory.getInstance(LocalContext.current)
     ),
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore),

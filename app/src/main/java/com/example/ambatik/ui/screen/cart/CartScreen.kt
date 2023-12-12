@@ -2,6 +2,7 @@ package com.example.ambatik.ui.screen.cart
 
 import android.annotation.SuppressLint
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,7 +18,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.ambatik.api.response.ResponseCart
+import com.example.ambatik.api.response.DataItemCart
 import com.example.ambatik.data.factory.CartModelFactory
 import com.example.ambatik.data.factory.OrderModelFactory
 import com.example.ambatik.data.pref.UserModel
@@ -58,7 +58,7 @@ fun CartScreen(
     viewModel: CartViewModel = viewModel(
         factory = CartModelFactory.getInstance(LocalContext.current)
     ),
-    viewModelOrder: OrderViewModel = viewModel(
+    viewModelOrder: AddOrderViewModel = viewModel(
         factory = OrderModelFactory.getInstance(LocalContext.current)
     ),
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore)
@@ -66,6 +66,7 @@ fun CartScreen(
     val dataCartListState = viewModel.dataCart.observeAsState()
     val statusState by viewModel.status.observeAsState(false)
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
+    val context = LocalContext.current
 
     LaunchedEffect(userModel.id){
         viewModel.getCart(userModel.id)
@@ -78,9 +79,21 @@ fun CartScreen(
                 .height(80.dp)
                 .background(Color.Transparent)
             )
-            dataCartListState.value?.let { data ->
+            dataCartListState.value.let { data ->
+                val totalQty = data?.totalQty
+                val grandTotalOrder = data?.grandTotal
+                val dataItem: List<DataItemCart?> = data?.data ?: emptyList()
+                val eachQuantity = dataItem.map { it?.totalQty?.toInt() }
+                val eachPriceList = dataItem.map { it?.price }
+                val eachProduct = dataItem.map { it?.id }
+                Log.d("ORDER", "ORDER MASUK, idUser:$totalQty, grandTotal: $grandTotalOrder, idProd:$eachProduct, priceProd:$eachPriceList, qtyProd:$eachQuantity")
                 BottomContent(
-                    totalPrice = data.grandTotal.toString()
+                    totalPrice = data?.grandTotal.toString(),
+                    onAddToOrder = {
+                        viewModelOrder.checkout(totalQty, grandTotalOrder, userModel.id, eachQuantity, eachPriceList, eachProduct)
+                        Toast.makeText(context, "Berhasil memesan", Toast.LENGTH_SHORT).show()
+                    },
+                    modifier = modifier
                 )
             }
         }
@@ -119,12 +132,12 @@ fun CartScreen(
 @Composable
 fun BottomContent(
     totalPrice: String,
-
+    onAddToOrder : () -> Unit,
     modifier: Modifier = Modifier
 ){
-    var totalQty by remember { mutableStateOf("") }
-    var grandTotal by remember { mutableStateOf("") }
-    var userId by remember { mutableStateOf("") }
+//    var totalQty by remember { mutableStateOf("") }
+//    var grandTotal by remember { mutableStateOf(totalPrice) }
+//    var userId by remember { mutableStateOf("") }
     Row(
         modifier = modifier
             .padding(20.dp, 12.dp, 20.dp, 12.dp)
@@ -155,7 +168,7 @@ fun BottomContent(
         ) {
             Button(
                 onClick = {
-
+                    onAddToOrder()
                 },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(colorScheme.primary),
@@ -176,7 +189,7 @@ fun BottomContent(
 @Composable
 fun PreviewBottomCart(){
     AmbatikTheme {
-        BottomContent(totalPrice = "150000")
+        BottomContent(totalPrice = "150000", onAddToOrder = {})
     }
 }
 

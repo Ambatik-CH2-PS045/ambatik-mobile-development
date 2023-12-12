@@ -5,32 +5,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ambatik.api.response.ResponseAddCart
 import com.example.ambatik.api.response.ResponseCheckout
-import com.example.ambatik.data.repository.CartRepository
 import com.example.ambatik.data.repository.OrderRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class OrderViewModel(private val repository: OrderRepository): ViewModel() {
+class AddOrderViewModel(private val repository: OrderRepository): ViewModel() {
 
     private val _statusCheckout: MutableLiveData<Boolean> = MutableLiveData()
     val statusCheckout: LiveData<Boolean> = _statusCheckout
     val errorCheckout = MutableLiveData<String>()
     fun checkout(
-        totalQty: Int,
-        grandTotal: Int,
+        totalQty: Int?,
+        grandTotal: Int?,
         userId: Int,
-        eachQtys: List<Int>,
-        eachPrices: List<Int>,
-        productIds: List<Int>,
+        eachQtys: List<Int?>,
+        eachPrices: List<Int?>,
+        productIds: List<Int?>,
     ){
         viewModelScope.launch {
             try {
                 val responseCheckout = repository.checkoutProduct(totalQty, grandTotal, userId, eachQtys, eachPrices, productIds)
                 _statusCheckout.value = true
-                Log.d("CHECKOUT", "$responseCheckout")
+                Log.d("CHECKOUT", "ORDER MASUK $responseCheckout")
             }catch (e: HttpException){
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ResponseCheckout::class.java)
