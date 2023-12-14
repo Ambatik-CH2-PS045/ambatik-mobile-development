@@ -67,7 +67,6 @@ fun StartQuizScreen(
     val answerState = viewModel.quizAnswer.observeAsState()
     var selectedAnswers by remember { mutableStateOf(mutableListOf<Int>()) }
     var selectedQuestion by remember { mutableStateOf(mutableListOf<Int>()) }
-//    val submitQuiz = viewModel.submitQuizez.observeAsState()
 
     when(quizType){
         "origin" -> idModul = 1
