@@ -2,6 +2,7 @@ package com.example.ambatik.ui.components.quiz
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -36,7 +38,6 @@ import com.example.ambatik.ui.theme.Shapes
 @Composable
 fun QuizItem(
     name: String,
-    level : String,
     modifier : Modifier = Modifier,
     ) {
     Column(
@@ -49,8 +50,8 @@ fun QuizItem(
                 contentAlignment = Alignment.TopStart,
                 modifier = modifier
                     .fillMaxWidth()
-                    .height(120.dp)
-                    .padding(16.dp)
+                    .height(80.dp)
+                    .padding(16.dp, 4.dp)
             ) {
                 Box(
                     modifier = modifier
@@ -59,9 +60,13 @@ fun QuizItem(
                     contentAlignment = Alignment.CenterEnd
                 ) {
                     Button(
-                        onClick = {},
+                        shape = RoundedCornerShape(10.dp),
+                        onClick = {
+
+                        },
                         modifier = modifier
                             .padding(16.dp, 16.dp, 0.dp, 16.dp)
+                            .size(125.dp, 50.dp)
                     ) {
                         Text(
                             text = "Mulai",
@@ -69,9 +74,10 @@ fun QuizItem(
                             color = MaterialTheme.colorScheme.onPrimary,
                         )
                     }
-
                 }
                 Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
                     modifier = modifier
                         .fillMaxHeight()
                 ) {
@@ -85,19 +91,6 @@ fun QuizItem(
                             fontWeight = FontWeight.Bold
                         ),
                     )
-                    Box(
-                        modifier = modifier
-                            .padding(0.dp, 30.dp, 0.dp, 0.dp)
-                    ) {
-                        Row {
-                            Text(
-                                text = level,
-                                color = MaterialTheme.colorScheme.onSurface,
-                                fontSize = 12.sp,
-                                fontStyle = FontStyle.Italic
-                            )
-                        }
-                    }
                 }
             }
         }
@@ -110,7 +103,6 @@ fun PreviewArticleItem(){
     AmbatikTheme {
         QuizItem(
             name = "Batik Nusantara",
-            level = "Level Easy"
         )
     }
 }

@@ -7,6 +7,7 @@ import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.data.repository.ArticleRepository
 import com.example.ambatik.data.repository.CartRepository
 import com.example.ambatik.data.repository.OrderRepository
+import com.example.ambatik.data.repository.QuizRepository
 import com.example.ambatik.data.repository.ShopRepository
 import com.example.ambatik.data.repository.UserRepository
 import kotlinx.coroutines.flow.first
@@ -45,5 +46,12 @@ object Injection {
         val user = runBlocking { pref.getSession().first() }
         val apiService = ApiConfig.getApiService(user.token, context)
         return OrderRepository.getInstance(apiService, pref)
+    }
+
+    fun provideQuizRepository(context: Context): QuizRepository{
+        val pref = UserPreference.getInstance(context.dataStore)
+        val user = runBlocking { pref.getSession().first() }
+        val apiService = ApiConfig.getApiService(user.token, context)
+        return QuizRepository.getInstance(apiService, pref)
     }
 }

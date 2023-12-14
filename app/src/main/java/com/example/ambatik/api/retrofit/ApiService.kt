@@ -10,6 +10,7 @@ import com.example.ambatik.api.response.ResponseEditProfile
 import com.example.ambatik.api.response.ResponseGetOrder
 import com.example.ambatik.api.response.ResponseLikeArticle
 import com.example.ambatik.api.response.ResponseListLikeArticle
+import com.example.ambatik.api.response.ResponseListQuiz
 import com.example.ambatik.api.response.ResponseLogin
 import com.example.ambatik.api.response.ResponseRegister
 import com.example.ambatik.api.response.ResponseShop
@@ -88,4 +89,9 @@ interface ApiService{
     suspend fun getOrder(
         @Path("idUser") idUser: Int
     ): ResponseGetOrder
+
+    @GET("quiz/list/{idUser}")
+    suspend fun getQuiz(
+        @Path("idUser") idUser: Int
+    ): ResponseListQuiz
 }
