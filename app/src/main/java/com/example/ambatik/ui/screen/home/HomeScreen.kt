@@ -98,7 +98,8 @@ fun HomeScreen(
                 currentRoute != Screen.Cart.route &&
                 currentRoute != Screen.LikeArticle.route &&
                 currentRoute != Screen.EditProfile.route &&
-                currentRoute != Screen.Order.route){
+                currentRoute != Screen.Order.route &&
+                currentRoute != Screen.StartQuiz.route){
                 FAB(navController)
             }else{
                 FAB(
@@ -116,7 +117,8 @@ fun HomeScreen(
                 currentRoute != Screen.Cart.route &&
                 currentRoute != Screen.LikeArticle.route &&
                 currentRoute != Screen.EditProfile.route &&
-                currentRoute != Screen.Order.route){
+                currentRoute != Screen.Order.route &&
+                currentRoute != Screen.StartQuiz.route){
                 BottomBar(navController)
             }
         },

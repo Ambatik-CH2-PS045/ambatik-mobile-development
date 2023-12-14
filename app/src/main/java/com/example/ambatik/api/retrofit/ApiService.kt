@@ -12,9 +12,11 @@ import com.example.ambatik.api.response.ResponseLikeArticle
 import com.example.ambatik.api.response.ResponseListLikeArticle
 import com.example.ambatik.api.response.ResponseListQuiz
 import com.example.ambatik.api.response.ResponseLogin
+import com.example.ambatik.api.response.ResponseQuizQuestion
 import com.example.ambatik.api.response.ResponseRegister
 import com.example.ambatik.api.response.ResponseShop
 import com.example.ambatik.api.response.ResponseShopDetail
+import com.example.ambatik.api.response.ResponseSubmitQuiz
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
@@ -94,4 +96,15 @@ interface ApiService{
     suspend fun getQuiz(
         @Path("idUser") idUser: Int
     ): ResponseListQuiz
+
+    @GET("quiz/{idModul}/question/{idQuestion}")
+    suspend fun getQuestion(
+        @Path("idModul") idUser: Int,
+        @Path("idQuestion") idQuestion: Int
+    ): ResponseQuizQuestion
+
+    @POST("quiz/submit")
+    suspend fun submitQuiz(
+        @Body request: HashMap<String, Any>
+    ): ResponseSubmitQuiz
 }

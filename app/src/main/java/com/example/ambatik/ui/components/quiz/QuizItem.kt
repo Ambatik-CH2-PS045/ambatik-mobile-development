@@ -14,12 +14,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,58 +47,110 @@ import com.example.ambatik.ui.theme.Shapes
 fun QuizItem(
     name: String,
     modifier : Modifier = Modifier,
-    ) {
+    navigateToStartQuiz: () -> Unit,
+) {
+    val openAlertDialog = remember { mutableStateOf(false) }
+
+    if(openAlertDialog.value){
+        AlertDialog(
+            onDismissRequest = { openAlertDialog.value = false },
+            title = {
+                Text(
+                    text = "Kuis $name"
+                )
+            },
+            text = {
+                Text(
+                    text = "Apakah kamu sudah siap untuk melakukan kuis?"
+                )
+            },
+            confirmButton = {
+                Button(
+                    shape = RoundedCornerShape(10.dp),
+                    onClick = {
+                        openAlertDialog.value = false
+                        navigateToStartQuiz()
+                    }
+                ) {
+                    Text(
+                        text = "Mulai"
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { openAlertDialog.value = false }
+                ) {
+                    Text(
+                        text = "Kembali"
+                    )
+                }
+            }
+        )
+    }
+
     Column(
         modifier = modifier
     ) {
-        Row(
-            modifier = modifier
-        ) {
-            Box(
-                contentAlignment = Alignment.TopStart,
+        Card(
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary),
+        ){
+            Row(
                 modifier = modifier
-                    .fillMaxWidth()
-                    .height(80.dp)
-                    .padding(16.dp, 4.dp)
             ) {
                 Box(
+                    contentAlignment = Alignment.TopStart,
                     modifier = modifier
-                        .height(100.dp)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.CenterEnd
+                        .fillMaxWidth()
+                        .height(80.dp)
+                        .padding(16.dp, 4.dp)
                 ) {
-                    Button(
-                        shape = RoundedCornerShape(10.dp),
-                        onClick = {
-
-                        },
+                    Box(
                         modifier = modifier
-                            .padding(16.dp, 16.dp, 0.dp, 16.dp)
-                            .size(125.dp, 50.dp)
+                            .height(100.dp)
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.CenterEnd
+                    ) {
+                        Button(
+                            shape = RoundedCornerShape(10.dp),
+                            onClick = {
+                                openAlertDialog.value = true
+                            },
+                            modifier = modifier
+                                .padding(16.dp, 16.dp, 0.dp, 16.dp)
+                                .size(125.dp, 50.dp)
+                        ) {
+                            Text(
+                                text = "Mulai",
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onPrimary,
+                            )
+                        }
+                    }
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        modifier = modifier
+                            .fillMaxHeight()
                     ) {
                         Text(
-                            text = "Mulai",
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.onPrimary,
+                            text = name,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontSize = 24.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                fontWeight = FontWeight.Bold
+                            ),
                         )
+                        Box(
+                            modifier = modifier
+                                .padding(top = 4.dp)
+                        ) {
+                            Text(
+                                text = "5 Soal"
+                            )
+                        }
                     }
-                }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = modifier
-                        .fillMaxHeight()
-                ) {
-                    Text(
-                        text = name,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontSize = 24.sp,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
-                    )
                 }
             }
         }
@@ -103,6 +163,7 @@ fun PreviewArticleItem(){
     AmbatikTheme {
         QuizItem(
             name = "Batik Nusantara",
+            navigateToStartQuiz = {}
         )
     }
 }

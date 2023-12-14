@@ -25,6 +25,7 @@ import com.example.ambatik.ui.screen.quiz.QuizScreen
 import com.example.ambatik.ui.screen.register.RegisterScreen
 import com.example.ambatik.ui.screen.scan.ScanScreen
 import com.example.ambatik.ui.screen.shopping.ShoppingScreen
+import com.example.ambatik.ui.screen.startquiz.StartQuizScreen
 import com.example.ambatik.ui.screen.welcome.AmbatikApp
 
 @Composable
@@ -44,7 +45,12 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
             )
         }
         composable(Screen.Quiz.route){
-            QuizScreen()
+            QuizScreen(
+                navController,
+                navigateToStartQuiz = {typeQuestion ->
+                    navController.navigate(Screen.StartQuiz.createRoute(typeQuestion))
+                }
+            )
         }
         composable(Screen.Shopping.route){
             ShoppingScreen(
@@ -106,6 +112,17 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
         }
         composable(Screen.Order.route){
             OrderScreen(navController)
+        }
+        val typeQuestion = "typeQuestion"
+        composable(
+            route = Screen.StartQuiz.route,
+            arguments = listOf(navArgument(typeQuestion){type = NavType.StringType})
+        ){
+            val type = it.arguments?.getString(typeQuestion) ?: ""
+            StartQuizScreen(
+                navController,
+                quizType = type,
+            )
         }
     }
 }

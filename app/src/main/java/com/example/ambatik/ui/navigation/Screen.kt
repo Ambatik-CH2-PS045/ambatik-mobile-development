@@ -20,4 +20,7 @@ sealed class Screen(val route: String) {
     object LikeArticle: Screen("article/like")
     object EditProfile: Screen("users/details")
     object Order: Screen("order")
+    object StartQuiz: Screen("quiz/{typeQuestion}"){
+        fun createRoute(typeQuestion: String) = "quiz/$typeQuestion"
+    }
 }

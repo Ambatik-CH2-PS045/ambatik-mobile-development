@@ -75,7 +75,8 @@ fun QuizScreen(
     viewModelProfile: ProfileViewModel = viewModel(
         factory = UserModelFactory.getInstance(LocalContext.current)
     ),
-    userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore)
+    userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore),
+    navigateToStartQuiz: (String) -> Unit,
 ){
     val listQuizState = viewModel.quizList.observeAsState()
     val detailUserState = viewModelProfile.detailUser.observeAsState()
@@ -124,7 +125,7 @@ fun QuizScreen(
                                 color = MaterialTheme.colorScheme.onSurface,
                             )
                             Text(
-                                modifier  = modifier
+                                modifier = modifier
                                     .fillMaxWidth(),
                                 text = data.username ?: "",
                                 fontSize = 20.sp,
@@ -181,13 +182,12 @@ fun QuizScreen(
                             verticalArrangement = Arrangement.spacedBy(12.dp),
                         ){
                             items(listQuizState.value ?: emptyList()){data ->
-                                Card(
-                                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary),
-                                ){
-                                    QuizItem(
-                                        name = data?.type ?: ""
-                                    )
-                                }
+                                QuizItem(
+                                    name = data?.type ?: "",
+                                    navigateToStartQuiz = {
+                                        navigateToStartQuiz(data?.type ?: "")
+                                    }
+                                )
                             }
                         }
                     }
@@ -201,7 +201,7 @@ fun QuizScreen(
 @Composable
 fun PreviewEditQuizScreen(){
     AmbatikTheme {
-        QuizScreen()
+        QuizScreen(navigateToStartQuiz = {})
     }
 }
 
