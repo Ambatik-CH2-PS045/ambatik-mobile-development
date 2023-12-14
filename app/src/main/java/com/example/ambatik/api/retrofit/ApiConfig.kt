@@ -3,13 +3,11 @@ package com.example.ambatik.api.retrofit
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.ambatik.BuildConfig
-//import kotlinx.coroutines.flow.internal.NoOpContinuation.context
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-//import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 class ApiConfig {
     companion object{
