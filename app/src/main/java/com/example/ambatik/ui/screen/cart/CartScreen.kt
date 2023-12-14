@@ -86,12 +86,13 @@ fun CartScreen(
                 val eachQuantity = dataItem.map { it?.totalQty?.toInt() }
                 val eachPriceList = dataItem.map { it?.price }
                 val eachProduct = dataItem.map { it?.id }
-                Log.d("ORDER", "ORDER MASUK, idUser:$totalQty, grandTotal: $grandTotalOrder, idProd:$eachProduct, priceProd:$eachPriceList, qtyProd:$eachQuantity")
+                Log.d("ORDER", "ORDER MASUK, idUser:$totalQty, grandTotal: $grandTotalOrder, idProd:${eachProduct.size}, priceProd:${eachPriceList.size}, qtyProd:${eachQuantity.size}")
                 BottomContent(
                     totalPrice = data?.grandTotal.toString(),
                     onAddToOrder = {
                         viewModelOrder.checkout(totalQty, grandTotalOrder, userModel.id, eachQuantity, eachPriceList, eachProduct)
                         Toast.makeText(context, "Berhasil memesan", Toast.LENGTH_SHORT).show()
+                        Log.d("ORDER", "ORDER MASUK, idUser:$totalQty, grandTotal: $grandTotalOrder, idProd:$eachProduct, priceProd:$eachPriceList, qtyProd:$eachQuantity")
                     },
                     modifier = modifier
                 )

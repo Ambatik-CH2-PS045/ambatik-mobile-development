@@ -28,11 +28,11 @@ class AddOrderViewModel(private val repository: OrderRepository): ViewModel() {
             try {
                 val responseCheckout = repository.checkoutProduct(totalQty, grandTotal, userId, eachQtys, eachPrices, productIds)
                 _statusCheckout.value = true
-                Log.d("CHECKOUT", "ORDER MASUK $responseCheckout")
+                Log.d("CHECKOUT", "ORDER MASUK $responseCheckout, $totalQty,  $userId, $grandTotal, ${eachQtys.size}, ${eachPrices.size}, ${productIds.size}")
             }catch (e: HttpException){
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ResponseCheckout::class.java)
-                val errorMassage = errorBody?.message ?: "Terjadi kesalahan saat menambah cart"
+                val errorMassage = errorBody?.message ?: "Terjadi kesalahan saat checkout"
                 _statusCheckout.value = false
                 errorCheckout.postValue(errorMassage)
                 Log.d("CHECKOUT", "$e")

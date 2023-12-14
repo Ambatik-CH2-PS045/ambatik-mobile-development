@@ -1,6 +1,5 @@
 package com.example.ambatik.data.repository
 
-import android.util.Log
 import com.example.ambatik.api.response.ResponseCheckout
 import com.example.ambatik.api.response.ResponseGetOrder
 import com.example.ambatik.api.retrofit.ApiService
@@ -15,13 +14,13 @@ class OrderRepository(private val apiService: ApiService, private val userPrefer
         eachPrices: List<Int?>,
         productIds: List<Int?>
     ): ResponseCheckout {
-        val requestBody = HashMap<String, String>()
+        val requestBody = HashMap<String, Any>()
         requestBody["totalqty"] = totalQty.toString()
         requestBody["grandtotal"] = grandTotal.toString()
-        requestBody["userId"] = userId.toString()
-        requestBody["eachqtys"] = eachQtys.toString()
-        requestBody["eachprices"] = eachPrices.toString()
-        requestBody["productIds"] = productIds.toString()
+        requestBody["userId"] = userId
+        requestBody["eachqtys"] = eachQtys
+        requestBody["eachprices"] = eachPrices
+        requestBody["productIds"] = productIds
         return apiService.checkoutProduct(requestBody)
 
     }

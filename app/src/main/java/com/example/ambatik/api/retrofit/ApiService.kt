@@ -1,6 +1,5 @@
 package com.example.ambatik.api.retrofit
 
-import com.example.ambatik.api.response.DataDetailUser
 import com.example.ambatik.api.response.ResponseAddCart
 import com.example.ambatik.api.response.ResponseArticle
 import com.example.ambatik.api.response.ResponseCart
@@ -16,8 +15,6 @@ import com.example.ambatik.api.response.ResponseRegister
 import com.example.ambatik.api.response.ResponseShop
 import com.example.ambatik.api.response.ResponseShopDetail
 import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -84,7 +81,7 @@ interface ApiService{
 
     @POST("order/checkout")
     suspend fun checkoutProduct(
-        @Body request: HashMap<String, String>
+        @Body request: HashMap<String, Any>
     ): ResponseCheckout
 
     @GET("order/{idUser}")
