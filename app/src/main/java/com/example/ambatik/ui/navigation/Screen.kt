@@ -23,4 +23,7 @@ sealed class Screen(val route: String) {
     object StartQuiz: Screen("quiz/{typeQuestion}"){
         fun createRoute(typeQuestion: String) = "quiz/$typeQuestion"
     }
+    object DetailBatik: Screen("batik/{idBatik}"){
+        fun createRoute(idBatik: Int) = "batik/$idBatik"
+    }
 }

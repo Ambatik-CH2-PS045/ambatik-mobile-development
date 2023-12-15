@@ -2,9 +2,11 @@ package com.example.ambatik.api.retrofit
 
 import com.example.ambatik.api.response.ResponseAddCart
 import com.example.ambatik.api.response.ResponseArticle
+import com.example.ambatik.api.response.ResponseBatik
 import com.example.ambatik.api.response.ResponseCart
 import com.example.ambatik.api.response.ResponseCheckout
 import com.example.ambatik.api.response.ResponseDetailArticle
+import com.example.ambatik.api.response.ResponseDetailBatik
 import com.example.ambatik.api.response.ResponseDetailuser
 import com.example.ambatik.api.response.ResponseEditProfile
 import com.example.ambatik.api.response.ResponseGetOrder
@@ -107,4 +109,12 @@ interface ApiService{
     suspend fun submitQuiz(
         @Body request: HashMap<String, Any>
     ): ResponseSubmitQuiz
+
+    @GET("batik")
+    suspend fun getBatik(): ResponseBatik
+
+    @GET("batik/{idBatik}")
+    suspend fun getDetailBatik(
+        @Path("idBatik") idBatik: Int
+    ): ResponseDetailBatik
 }

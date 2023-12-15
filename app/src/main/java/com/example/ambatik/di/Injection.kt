@@ -5,6 +5,7 @@ import com.example.ambatik.api.retrofit.ApiConfig
 import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.data.repository.ArticleRepository
+import com.example.ambatik.data.repository.BatikRepository
 import com.example.ambatik.data.repository.CartRepository
 import com.example.ambatik.data.repository.OrderRepository
 import com.example.ambatik.data.repository.QuizRepository
@@ -53,5 +54,12 @@ object Injection {
         val user = runBlocking { pref.getSession().first() }
         val apiService = ApiConfig.getApiService(user.token, context)
         return QuizRepository.getInstance(apiService, pref)
+    }
+
+    fun provideBatikRepository(context: Context): BatikRepository{
+        val pref = UserPreference.getInstance(context.dataStore)
+        val user = runBlocking { pref.getSession().first() }
+        val apiService = ApiConfig.getApiService(user.token, context)
+        return BatikRepository.getInstance(apiService, pref)
     }
 }

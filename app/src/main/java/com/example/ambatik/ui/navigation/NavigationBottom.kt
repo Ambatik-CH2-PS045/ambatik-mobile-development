@@ -11,6 +11,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.ambatik.ui.screen.DetailBatik.DetailBatikScreen
 import com.example.ambatik.ui.screen.articel.ArticelScreen
 import com.example.ambatik.ui.screen.articlelike.ArticleLikeScreen
 import com.example.ambatik.ui.screen.cart.CartScreen
@@ -41,6 +42,9 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
                 navController,
                 navigateToDetail = {articleId ->
                     navController.navigate(Screen.DetailArticle.createRoute(articleId))
+                },
+                navigateToDetailBatik = {batikId ->
+                    navController.navigate(Screen.DetailBatik.createRoute(batikId))
                 }
             )
         }
@@ -123,6 +127,17 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
                 navController,
                 quizType = type,
             )
+        }
+        val idBatik = "idBatik"
+        composable(
+            route = Screen.DetailBatik.route,
+            arguments = listOf(navArgument(idBatik){type = NavType.IntType})
+        ){
+            val id = it.arguments?.getInt(idBatik) ?: 0
+            DetailBatikScreen(
+                idBatik = id
+            )
+
         }
     }
 }

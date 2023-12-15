@@ -91,6 +91,7 @@ fun CartScreen(
                     totalPrice = data?.grandTotal.toString(),
                     onAddToOrder = {
                         viewModelOrder.checkout(totalQty, grandTotalOrder, userModel.id, eachQuantity, eachPriceList, eachProduct)
+                        viewModel.getCart(userModel.id)
                         Toast.makeText(context, "Berhasil memesan", Toast.LENGTH_SHORT).show()
                         Log.d("ORDER", "ORDER MASUK, idUser:$totalQty, grandTotal: $grandTotalOrder, idProd:$eachProduct, priceProd:$eachPriceList, qtyProd:$eachQuantity")
                     },
