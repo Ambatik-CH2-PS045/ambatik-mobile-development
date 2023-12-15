@@ -26,7 +26,7 @@ class QuizRepository(private val apiService: ApiService, private val userPrefere
             requestBody["userid"] = userId.toInt()
         }
         if (quizId != null) {
-            requestBody["quizId"] = quizId.toInt()
+            requestBody["quizid"] = quizId.toInt()
         }
         requestBody["questionIds"] = questionIds
         requestBody["answerIds"] = answerIds

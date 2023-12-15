@@ -209,6 +209,7 @@ fun DetailArticleContent(
                 Text(
                     text = description,
                     color = colorScheme.onSurface,
+                    textAlign = TextAlign.Justify
                 )
             }
         }

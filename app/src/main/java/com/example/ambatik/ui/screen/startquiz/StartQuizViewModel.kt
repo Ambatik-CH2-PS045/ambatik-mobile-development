@@ -10,6 +10,7 @@ import com.example.ambatik.api.response.DataItemSummary
 import com.example.ambatik.api.response.DataQuestion
 import com.example.ambatik.api.response.ResponseCheckout
 import com.example.ambatik.api.response.ResponseQuizQuestion
+import com.example.ambatik.api.response.Summary
 import com.example.ambatik.data.repository.QuizRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class StartQuizViewModel(private val repository: QuizRepository): ViewModel() {
     val quizQuestion = MutableLiveData<DataQuestion?>()
     val quizAnswer = MutableLiveData<List<AnswersItem?>?>()
 
-    val submitQuizez = MutableLiveData<List<DataItemSummary?>?>()
+    val submitQuizez = MutableLiveData<Summary?>()
     private val _statusSubmitQuiz: MutableLiveData<Boolean> = MutableLiveData()
     val statusSubmitQuiz: LiveData<Boolean> = _statusSubmitQuiz
     val errorSubmit = MutableLiveData<String>()
@@ -58,8 +59,8 @@ class StartQuizViewModel(private val repository: QuizRepository): ViewModel() {
         viewModelScope.launch {
             try {
                 val responseSubmitQuiz = repository.submitQuiz(userId, quizId, questionIds, answerIds)
-                submitQuizez.postValue(listOf(responseSubmitQuiz.data?.get(0)))
-                Log.d("SUBMIT QUIZ", "submitQuiz: $responseSubmitQuiz, $submitQuizez")
+                submitQuizez.postValue(responseSubmitQuiz.data?.firstOrNull()?.summary)
+                Log.d("SUBMIT QUIZ", "submitQuiz: $responseSubmitQuiz, ${submitQuizez.value}")
             }catch (e: HttpException){
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ResponseCheckout::class.java)
