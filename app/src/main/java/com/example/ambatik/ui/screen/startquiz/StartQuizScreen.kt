@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
@@ -68,8 +69,10 @@ fun StartQuizScreen(
     var numberQuestion by remember { mutableStateOf(1) }
     val questionState = viewModel.quizQuestion.observeAsState()
     val answerState = viewModel.quizAnswer.observeAsState()
+    val submitQuiz = viewModel.submitQuizez.observeAsState()
     var selectedAnswers by remember { mutableStateOf(mutableListOf<Int>()) }
     var selectedQuestion by remember { mutableStateOf(mutableListOf<Int>()) }
+    var changeScreen by remember { mutableStateOf(false) }
 
     when(quizType){
         "origin" -> idModul = 1
@@ -156,40 +159,53 @@ fun StartQuizScreen(
                     .fillMaxSize()
                     .padding(20.dp)
             ){
-                Text(
-                    text = "Kamu teleh menyelesaikan kuis kamu. Apakah kamu ingin melihat hasil kuis kamu?",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = modifier
-                        .padding(bottom = 12.dp)
-                )
-                Button(
-                    shape = RoundedCornerShape(10.dp),
-                    onClick = {
-                        viewModel.submitQuiz(userModel.id, idModul, selectedQuestion, selectedAnswers)
-                    },
-                    modifier = modifier
-                        .padding(bottom = 14.dp)
-                        .height(45.dp)
-                        .fillMaxWidth()
-                ) {
-                    Text(text = "Hasil kuis")
-                }
-                Button(
-                    colors = ButtonDefaults.buttonColors(Color.Transparent),
-                    onClick = {
-                        navController.navigateUp()
-                    },
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .height(40.dp)
-                        .border(2.dp, color = colorScheme.primary, RoundedCornerShape(10.dp))
-                ) {
+                if (!changeScreen){
                     Text(
-                        text = "Kembali",
-                        color = colorScheme.primary,
+                        text = "Kamu teleh menyelesaikan kuis kamu. Apakah kamu ingin melihat hasil kuis kamu?",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = modifier
+                            .padding(bottom = 12.dp)
                     )
+                    Button(
+                        shape = RoundedCornerShape(10.dp),
+                        onClick = {
+                            viewModel.submitQuiz(userModel.id, idModul, selectedQuestion, selectedAnswers)
+                            changeScreen = true
+                        },
+                        modifier = modifier
+                            .padding(bottom = 14.dp)
+                            .height(45.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Text(text = "Hasil kuis")
+                    }
+                    Button(
+                        colors = ButtonDefaults.buttonColors(Color.Transparent),
+                        onClick = {
+                            navController.navigateUp()
+                        },
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .height(40.dp)
+                            .border(2.dp, color = colorScheme.primary, RoundedCornerShape(10.dp))
+                    ) {
+                        Text(
+                            text = "Kembali",
+                            color = colorScheme.primary,
+                        )
+                    }
+                } else{
+                    submitQuiz.value?.let { dataSubmit ->
+                        Text(
+                            text = "Total jawaban benar: ${dataSubmit.totalCorrect}"
+                        )
+                        Text(text = "Total jawaban salah: ${dataSubmit.totalWrong}"
+                        )
+                        Text(text = "Total poin yang didapatkan: ${dataSubmit.accumulatePoint}"
+                        )
+                    }
                 }
             }
         }
