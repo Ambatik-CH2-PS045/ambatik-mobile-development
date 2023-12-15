@@ -374,7 +374,7 @@ fun EditProfileScreen(
 @Composable
 fun ImageContent(
     modifier: Modifier = Modifier,
-    capturedImageUri: Uri? = null
+    capturedImageUri: Uri?
 ){
     if (capturedImageUri?.path?.isNotEmpty() == true) {
         Image(
