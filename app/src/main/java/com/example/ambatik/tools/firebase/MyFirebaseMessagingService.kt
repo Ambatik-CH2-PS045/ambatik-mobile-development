@@ -20,7 +20,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: ${remoteMessage.from}")
         Log.d(TAG, "Message data payload: " + remoteMessage.data)
         Log.d(TAG, "Message Notification Body: ${remoteMessage.notification?.body}")
