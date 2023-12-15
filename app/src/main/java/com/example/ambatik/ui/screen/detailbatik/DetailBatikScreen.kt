@@ -1,4 +1,4 @@
-package com.example.ambatik.ui.screen.DetailBatik
+package com.example.ambatik.ui.screen.detailbatik
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -30,13 +30,19 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -82,6 +88,8 @@ fun QuizScreen(
     val detailUserState = viewModelProfile.detailUser.observeAsState()
     val statusState by viewModel.status.observeAsState(false)
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
+    var tabIndex by remember { mutableStateOf(0) }
+    val tabs = listOf("Kuis", "Leaderboard")
 
     LaunchedEffect(userModel.id){
         viewModel.getQuiz(userModel.id)
@@ -169,29 +177,47 @@ fun QuizScreen(
                         }
                     }
                 }
-                Column(
-                    modifier = Modifier
-                        .padding(bottom = 80.dp)
-                ){
-                    Box(
+                TabRow(selectedTabIndex = tabIndex) {
+                    tabs.forEachIndexed {index, title ->
+                        Tab(
+                            text = { 
+                                Text(
+                                    text = title,
+                                    color = colorScheme.onSurface
+                                )
+                            },
+                            selected = tabIndex == index,
+                            onClick = { tabIndex = index }
+                        )
+                    }
+                }
+                when(tabIndex){
+                    0 -> Column(
                         modifier = Modifier
                             .padding(bottom = 80.dp)
                     ){
-                        LazyColumn(
-                            contentPadding = PaddingValues(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                        Box(
+                            modifier = Modifier
+                                .padding(bottom = 80.dp)
                         ){
-                            items(listQuizState.value ?: emptyList()){data ->
-                                QuizItem(
-                                    name = data?.type ?: "",
-                                    navigateToStartQuiz = {
-                                        navigateToStartQuiz(data?.type ?: "")
-                                    }
-                                )
+                            LazyColumn(
+                                contentPadding = PaddingValues(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(12.dp),
+                            ){
+                                items(listQuizState.value ?: emptyList()){data ->
+                                    QuizItem(
+                                        name = data?.type ?: "",
+                                        navigateToStartQuiz = {
+                                            navigateToStartQuiz(data?.type ?: "")
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
+                    1 -> Text(text = "LEADERBOARD")
                 }
+
             }
         }
     }

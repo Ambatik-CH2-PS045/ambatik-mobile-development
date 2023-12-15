@@ -4,14 +4,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.ambatik.ui.screen.DetailBatik.DetailBatikScreen
+import com.example.ambatik.ui.screen.detailbatik.DetailBatikScreen
 import com.example.ambatik.ui.screen.articel.ArticelScreen
 import com.example.ambatik.ui.screen.articlelike.ArticleLikeScreen
 import com.example.ambatik.ui.screen.cart.CartScreen

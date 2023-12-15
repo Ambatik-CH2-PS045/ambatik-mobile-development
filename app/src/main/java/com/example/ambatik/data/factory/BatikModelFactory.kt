@@ -5,11 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.ambatik.data.repository.BatikRepository
 import com.example.ambatik.di.Injection
-import com.example.ambatik.ui.screen.DetailBatik.DetailBatikViewModel
-import com.example.ambatik.ui.screen.articel.ArticleViewModel
+import com.example.ambatik.ui.screen.detailbatik.DetailBatikViewModel
 import com.example.ambatik.ui.screen.articel.BatikViewModel
-import com.example.ambatik.ui.screen.articlelike.ArticleLikeViewModel
-import com.example.ambatik.ui.screen.detailarticle.DetailArticleViewModel
 
 class BatikModelFactory(private val repository: BatikRepository): ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T{
