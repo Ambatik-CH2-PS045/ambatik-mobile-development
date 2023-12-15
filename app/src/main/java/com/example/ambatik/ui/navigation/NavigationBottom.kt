@@ -16,6 +16,7 @@ import com.example.ambatik.ui.screen.articel.ArticelScreen
 import com.example.ambatik.ui.screen.articlelike.ArticleLikeScreen
 import com.example.ambatik.ui.screen.cart.CartScreen
 import com.example.ambatik.ui.screen.detailarticle.DetailArticleScreen
+import com.example.ambatik.ui.screen.detailorder.DetailOrderScreen
 import com.example.ambatik.ui.screen.detailshopping.DetailShopScreen
 import com.example.ambatik.ui.screen.editprofile.EditProfileScreen
 import com.example.ambatik.ui.screen.home.HomeScreen
@@ -115,7 +116,12 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
             EditProfileScreen(navController)
         }
         composable(Screen.Order.route){
-            OrderScreen(navController)
+            OrderScreen(
+                navController,
+                navigateToDetailOrder = {orderId ->
+                    navController.navigate(Screen.DetailOrder.createRoute(orderId))
+                }
+            )
         }
         val typeQuestion = "typeQuestion"
         composable(
@@ -137,7 +143,16 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
             DetailBatikScreen(
                 idBatik = id
             )
-
+        }
+        val idOrder = "idOrder"
+        composable(
+            route = Screen.DetailOrder.route,
+            arguments = listOf(navArgument(idOrder){type = NavType.IntType})
+        ){
+            val id = it.arguments?.getInt(idOrder) ?: 0
+            DetailOrderScreen(
+                idOrder = id
+            )
         }
     }
 }

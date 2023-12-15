@@ -1,5 +1,6 @@
 package com.example.ambatik.ui.screen.order
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,7 +34,8 @@ fun OrderScreen(
         factory = OrderModelFactory.getInstance(LocalContext.current)
     ),
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToDetailOrder: (Int) -> Unit
 ) {
     val orderListState = viewModel.orderList.observeAsState()
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
@@ -57,7 +59,11 @@ fun OrderScreen(
                     totalPrice = data.totalPrice.toString(),
                     totalItem = data.totalItem.toString(),
                     otherItem = data.otherItem.toString(),
-                    productName = data.productName
+                    productName = data.productName,
+                    modifier = modifier
+                        .clickable {
+                            navigateToDetailOrder(data.id)
+                        }
                 )
             }
         }
@@ -68,6 +74,6 @@ fun OrderScreen(
 @Preview
 fun PreviewOrderScreen(){
     AmbatikTheme {
-        OrderScreen()
+        OrderScreen(navigateToDetailOrder = {})
     }
 }

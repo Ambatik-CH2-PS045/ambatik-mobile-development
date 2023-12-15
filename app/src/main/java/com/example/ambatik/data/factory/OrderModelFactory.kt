@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.ambatik.data.repository.OrderRepository
 import com.example.ambatik.di.Injection
 import com.example.ambatik.ui.screen.cart.AddOrderViewModel
+import com.example.ambatik.ui.screen.detailorder.DetailOrderViewModel
 import com.example.ambatik.ui.screen.order.OrderViewModel
 
 class OrderModelFactory(private val repository: OrderRepository): ViewModelProvider.NewInstanceFactory() {
@@ -16,6 +17,9 @@ class OrderModelFactory(private val repository: OrderRepository): ViewModelProvi
             }
             modelClass.isAssignableFrom(OrderViewModel::class.java) -> {
                 OrderViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(DetailOrderViewModel::class.java) -> {
+                DetailOrderViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unkown ViewModel class: " + modelClass.name)
         }
