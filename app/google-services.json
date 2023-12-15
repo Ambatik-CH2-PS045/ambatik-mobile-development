@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "69200741144",
+    "project_id": "ambatik-3c723",
+    "storage_bucket": "ambatik-3c723.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69200741144:android:3fe8f409b91a3fbfcad46d",
+        "android_client_info": {
+          "package_name": "com.example.ambatik"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_GUKg5LGyFp-AFTT0u_pCN5I2Nb-s8dw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
