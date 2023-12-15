@@ -77,7 +77,7 @@ fun OrderItem(
                             .fillMaxWidth()
                     ) {
                         Text(
-                            text = "+$otherItem more item",
+                            text = otherItem,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             color = MaterialTheme.colorScheme.onSurface,

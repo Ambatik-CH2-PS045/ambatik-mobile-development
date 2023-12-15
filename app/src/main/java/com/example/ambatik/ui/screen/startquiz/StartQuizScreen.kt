@@ -1,6 +1,7 @@
 package com.example.ambatik.ui.screen.startquiz
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -25,6 +27,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -32,6 +35,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,6 +56,7 @@ import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.ui.theme.AmbatikTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun StartQuizScreen(
@@ -73,6 +78,23 @@ fun StartQuizScreen(
     var selectedAnswers by remember { mutableStateOf(mutableListOf<Int>()) }
     var selectedQuestion by remember { mutableStateOf(mutableListOf<Int>()) }
     var changeScreen by remember { mutableStateOf(false) }
+
+    val scope = rememberCoroutineScope()
+
+    val context = LocalContext.current
+    
+    var state by remember { mutableStateOf(false) }
+
+    BackHandler(enabled = true) {
+        state = true
+    }
+    
+    if (state){
+        AlertDialogShow(
+            navController = navController,
+            openAlertDialog = true
+        )
+    }
 
     when(quizType){
         "origin" -> idModul = 1
@@ -209,6 +231,52 @@ fun StartQuizScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun AlertDialogShow(
+    navController: NavHostController,
+    openAlertDialog: Boolean = false,
+    modifier: Modifier = Modifier
+){
+    val openAlertDialog = remember { mutableStateOf(openAlertDialog) }
+    if(openAlertDialog.value){
+        AlertDialog(
+            onDismissRequest = { openAlertDialog.value = false },
+            title = {
+                Text(
+                    text = "Kembali ke halaman quiz"
+                )
+            },
+            text = {
+                Text(
+                    text = "Apakah ingin kembali ke halaman quiz?"
+                )
+            },
+            confirmButton = {
+                Button(
+                    shape = RoundedCornerShape(10.dp),
+                    onClick = {
+                        navController.navigateUp()
+                        openAlertDialog.value = false
+                    }
+                ) {
+                    Text(
+                        text = "Iya"
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { openAlertDialog.value = false }
+                ) {
+                    Text(
+                        text = "Tidak"
+                    )
+                }
+            }
+        )
     }
 }
 

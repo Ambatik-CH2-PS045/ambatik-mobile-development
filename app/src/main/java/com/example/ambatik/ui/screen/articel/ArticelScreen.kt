@@ -79,7 +79,7 @@ fun ArticelScreen(
                     .padding(16.dp, 16.dp, 16.dp, 0.dp)
             )
             LazyRow(
-                contentPadding = PaddingValues(16.dp),
+                contentPadding = PaddingValues(16.dp, 0.dp, 16.dp, 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ){
                 items(batikListState.value ?: emptyList()){dataBatik ->

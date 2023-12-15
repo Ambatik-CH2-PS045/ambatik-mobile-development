@@ -51,6 +51,7 @@ fun BatikItem(
                     Text(
                         text = nameBatik,
                         fontSize = 16.sp,
+                        lineHeight = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
