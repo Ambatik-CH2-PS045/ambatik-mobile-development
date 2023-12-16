@@ -8,6 +8,11 @@ import com.example.ambatik.api.retrofit.ApiService
 import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.pref.UserPreference
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import retrofit2.http.Multipart
+import java.io.File
 
 class UserRepository(private val apiService: ApiService, private val userPreference: UserPreference) {
     suspend fun register(name: String, email: String, username: String, password: String, phone: String): ResponseRegister{
@@ -43,12 +48,18 @@ class UserRepository(private val apiService: ApiService, private val userPrefere
         userPreference.logout()
     }
 
-    suspend fun updateProfile(idUser: Int, name:String, address: String, phone: String): ResponseEditProfile{
+    suspend fun updateProfile(idUser: Int, imgProfile: File, name:String, address: String, phone: String): ResponseEditProfile{
+        val reqImageFile = imgProfile.asRequestBody("image/jpeg".toMediaType())
+        val imgUser = MultipartBody.Part.createFormData(
+            "url_profile",
+            imgProfile.name,
+            reqImageFile
+        )
         val requestBody = HashMap<String, String>()
         requestBody["name"] = name
         requestBody["address"] = address
         requestBody["phone"] = phone
-        return apiService.updateUserProfile(idUser, requestBody)
+        return apiService.updateUserProfile(idUser, imgUser, requestBody)
     }
 
     companion object{

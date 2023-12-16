@@ -9,16 +9,18 @@ import com.example.ambatik.api.response.ResponseLogin
 import com.example.ambatik.data.repository.UserRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import retrofit2.HttpException
+import java.io.File
 
 class EditProfileViewModel(private val repository: UserRepository): ViewModel() {
     val error = MutableLiveData<String?>()
     val status: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun editProfile(id: Int, name: String, address: String, phone: String){
+    fun editProfile(id: Int, imgUser: File, name: String, address: String, phone: String){
         viewModelScope.launch {
             try {
-                val editProfileResponse = repository.updateProfile(id, name, address, phone)
+                val editProfileResponse = repository.updateProfile(id, imgUser, name, address, phone)
                 status.postValue(true)
                 Log.d("EDIT PROFILE", "$editProfileResponse")
             }catch (e: HttpException){
