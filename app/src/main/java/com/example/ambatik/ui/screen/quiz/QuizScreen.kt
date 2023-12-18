@@ -187,10 +187,7 @@ fun QuizScreen(
                         modifier = Modifier
                             .padding(bottom = 40.dp)
                     ){
-                        Box(
-                            modifier = Modifier
-//                                .padding(bottom = 80.dp)
-                        ){
+                        Box{
                             LazyColumn(
                                 contentPadding = PaddingValues(16.dp),
                                 verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -212,10 +209,7 @@ fun QuizScreen(
                         modifier = Modifier
                             .padding(bottom = 40.dp)
                     ){
-                        Box(
-                            modifier = Modifier
-//                                .padding(bottom = 80.dp)
-                        ){
+                        Box{
                             LazyColumn(
                                 contentPadding = PaddingValues(16.dp),
                                 verticalArrangement = Arrangement.spacedBy(12.dp),
