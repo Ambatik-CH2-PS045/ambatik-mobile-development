@@ -59,65 +59,64 @@ fun ArticelScreen(
     }
 
     Surface(
-        color = MaterialTheme.colorScheme.surface,
-        modifier = modifier
-            .fillMaxSize()
+        color = colorScheme.surface,
+        modifier = modifier.fillMaxSize()
     ) {
-        Column(
+        LazyColumn(
+            contentPadding = PaddingValues(bottom = 30.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = modifier
+                .padding(horizontal = 16.dp)
         ) {
-            Text(
-                text = "Batik",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = colorScheme.onSurface,
-                modifier = modifier
-                    .padding(16.dp, 16.dp, 16.dp, 0.dp)
-            )
-            LazyRow(
-                contentPadding = PaddingValues(16.dp, 0.dp, 16.dp, 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ){
-                items(batikListState.value ?: emptyList()){dataBatik ->
-                    BatikItem(
-                        imgUrl = dataBatik?.urlBatik ?: "",
-                        nameBatik = dataBatik?.name ?: "",
-                        origin = dataBatik?.origin ?: "",
-                        modifier = modifier
-                            .clickable {
+            item {
+                Text(
+                    text = "Batik",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = colorScheme.onSurface,
+                    modifier = modifier
+                        .padding(top = 12.dp)
+                )
+            }
+            item {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(batikListState.value ?: emptyList()) { dataBatik ->
+                        BatikItem(
+                            imgUrl = dataBatik?.urlBatik ?: "",
+                            nameBatik = dataBatik?.name ?: "",
+                            origin = dataBatik?.origin ?: "",
+                            modifier = modifier.clickable {
                                 dataBatik?.id?.let { navigateToDetailBatik(it) }
                             }
-                    )
+                        )
+                    }
                 }
             }
-            Text(
-                text = "Article",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = colorScheme.onSurface,
-                modifier = modifier
-                    .padding(16.dp, 0.dp, 16.dp, 0.dp)
-            )
-            if (statusState){
-                LazyColumn(
-                    contentPadding = PaddingValues(16.dp, 16.dp, 16.dp, 24.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ){
-                    items(articleListState.value ?: emptyList()){ data ->
-                        Card(
-                            colors = CardDefaults.cardColors(colorScheme.onPrimary),
-                            modifier = modifier
-                                .clickable {
-                                    navigateToDetail(data.id)
-                                }
-                        ){
-                            ArticleItem(
-                                image = data.urlBanner,
-                                title = data.title,
-                                createAt = "20-20-2023",
-                                totalLike = data.totalLike.toString(),
-                            )
-                        }
+            item {
+                Text(
+                    text = "Article",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = colorScheme.onSurface,
+                )
+            }
+            if (statusState) {
+                items(articleListState.value ?: emptyList()) { data ->
+                    Card(
+                        colors = CardDefaults.cardColors(colorScheme.onPrimary),
+                        modifier = modifier
+                            .clickable {
+                                navigateToDetail(data.id)
+                            }
+                    ) {
+                        ArticleItem(
+                            image = data.urlBanner,
+                            title = data.title,
+                            createAt = data.createdAt,
+                            totalLike = data.totalLike.toString(),
+                        )
                     }
                 }
             }

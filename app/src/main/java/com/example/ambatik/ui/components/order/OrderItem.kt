@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +41,7 @@ fun OrderItem(
             AsyncImage(
                 model = image,
                 contentDescription = "Order Image",
+                contentScale = ContentScale.Crop,
                 modifier = modifier
                     .padding(15.dp, 15.dp, 15.dp, 15.dp)
                     .size(95.dp)

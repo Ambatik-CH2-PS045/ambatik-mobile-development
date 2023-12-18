@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,6 +26,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.PhotoLibrary
+import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
@@ -236,71 +238,88 @@ fun ScanScreen(
             hasilPredictBatik.value?.let { data ->
                 Column(
                     modifier = modifier
-                        .padding(12.dp)
+                        .padding(bottom = 12.dp)
                         .verticalScroll(rememberScrollState())
                 ) {
-                    Row(
+                    AsyncImage(
+                        model = data.urlBatik,
+                        contentDescription = "Detail Scan Batik",
+                        contentScale = ContentScale.Crop,
                         modifier = modifier
-                            .padding(bottom = 8.dp)
-                    ) {
-                        AsyncImage(
-                            model = data.urlBatik,
-                            contentDescription = "Detail Scan Batik",
-                            contentScale = ContentScale.Crop,
-                            modifier = modifier
-                                .padding(end = 12.dp)
-                                .size(125.dp)
-                        )
-                        Box(
-                            modifier = modifier
-                                .size(230.dp, 125.dp),
-                            contentAlignment = Alignment.CenterStart
-                        ) {
-                            Column {
-                                Text(
-                                    text = data.name ?: "",
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                                Text(
-                                    text = data.origin ?: "",
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis,
-                                    modifier = modifier
-                                        .padding(top = 8.dp)
-                                )
-                            }
+                            .padding(bottom = 12.dp)
+                            .fillMaxWidth()
+                            .height(250.dp)
+                            .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
+                    )
+                    Box(
+                        modifier = modifier
+                            .padding(horizontal = 12.dp)
+                    ){
+                        Column {
+                            Text(
+                                text = data.name ?: "",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Text(
+                                text = data.origin ?: "",
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = modifier
+                                    .padding(top = 4.dp)
+                            )
+                            Divider(
+                                modifier = modifier
+                                    .padding(top = 16.dp)
+                                    .height(0.75.dp)
+                            )
+                            Text(
+                                text = "Arti",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = modifier
+                                    .padding(top = 16.dp)
+                            )
+                            Text(
+                                text = data.meaning ?: "",
+                                textAlign = TextAlign.Justify
+                            )
+                            Divider(
+                                modifier = modifier
+                                    .padding(top = 16.dp)
+                                    .height(0.75.dp)
+                            )
+                            Text(
+                                text = "Proses Pembuatan",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = modifier
+                                    .padding(top = 16.dp)
+                            )
+                            Text(
+                                text = data.makingProcess ?: "",
+                                textAlign = TextAlign.Justify
+                            )
+                            Divider(
+                                modifier = modifier
+                                    .padding(top = 16.dp)
+                                    .height(0.75.dp)
+                            )
+                            Text(
+                                text = "Penggunaan",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = modifier
+                                    .padding(top = 16.dp)
+                            )
+                            Text(
+                                text = data.usagePurpose ?: "",
+                                textAlign = TextAlign.Justify
+                            )
                         }
                     }
-                    Text(
-                        text = "Arti:",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                    )
-                    Text(
-                        text = data.meaning ?: "",
-                        textAlign = TextAlign.Justify
-                    )
-                    Text(
-                        text = "Proses Pembuatan:",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                    )
-                    Text(
-                        text = data.makingProcess ?: "",
-                        textAlign = TextAlign.Justify
-                    )
-                    Text(
-                        text = "Penggunaan:",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                    )
-                    Text(
-                        text = data.usagePurpose ?: "",
-                        textAlign = TextAlign.Justify
-                    )
                 }
             }
         }

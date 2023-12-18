@@ -1,11 +1,14 @@
 package com.example.ambatik.ui.screen.detailbatik
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -18,8 +21,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.ambatik.data.factory.BatikModelFactory
@@ -72,49 +77,89 @@ fun DetailBatikContent(
     usagePurpose: String,
     modifier: Modifier = Modifier
 ){
-    Column {
+    Column(
+        modifier = modifier
+            .padding(bottom = 12.dp)
+    ) {
         AsyncImage(
             model = image,
             contentDescription = "Detail Batik Image",
             contentScale = ContentScale.Crop,
             modifier = modifier
+                .padding(bottom = 12.dp)
                 .height(250.dp)
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp))
+                .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
         )
-        Text(
-            text = name,
-            textAlign = TextAlign.Justify,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = origin,
-            textAlign = TextAlign.Justify
-        )
-        Text(
-            text = "Meaning:",
-            textAlign = TextAlign.Justify
-        )
-        Text(
-            text = meaning,
-            textAlign = TextAlign.Justify
-        )
-        Text(
-            text = "Making Process:",
-            textAlign = TextAlign.Justify
-        )
-        Text(
-            text = makingProcess,
-            textAlign = TextAlign.Justify
-        )
-        Text(
-            text = "Usage Purpose:",
-            textAlign = TextAlign.Justify
-        )
-        Text(
-            text = usagePurpose,
-            textAlign = TextAlign.Justify
-        )
+        Box(
+            modifier = modifier
+                .padding(horizontal = 12.dp)
+        ) {
+            Column {
+                Text(
+                    text = name,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = origin,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = modifier
+                        .padding(top = 4.dp)
+                )
+                Divider(
+                    modifier = modifier
+                        .padding(top = 16.dp)
+                        .height(0.75.dp)
+                )
+                Text(
+                    text = "Arti",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = modifier
+                        .padding(top = 16.dp)
+                )
+                Text(
+                    text = meaning,
+                    textAlign = TextAlign.Justify
+                )
+                Divider(
+                    modifier = modifier
+                        .padding(top = 16.dp)
+                        .height(0.75.dp)
+                )
+                Text(
+                    text = "Proses Pembuatan",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = modifier
+                        .padding(top = 16.dp)
+                )
+                Text(
+                    text = makingProcess,
+                    textAlign = TextAlign.Justify
+                )
+                Divider(
+                    modifier = modifier
+                        .padding(top = 16.dp)
+                        .height(0.75.dp)
+                )
+                Text(
+                    text = "Penggunaan",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = modifier
+                        .padding(top = 16.dp)
+                )
+                Text(
+                    text = usagePurpose,
+                    textAlign = TextAlign.Justify
+                )
+            }
+        }
     }
 }
 

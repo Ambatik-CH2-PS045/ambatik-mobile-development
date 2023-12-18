@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -27,7 +28,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,11 +64,11 @@ fun DetailOrderScreen(
         bottomBar = {
             Spacer(modifier = Modifier
                 .fillMaxWidth()
-                .height(80.dp)
-                .background(Color.Transparent)
+                .height(75.dp)
+                .background(colorScheme.onPrimary)
             )
             LazyColumn(
-                contentPadding = PaddingValues(horizontal = 20.dp),
+                contentPadding = PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp),
             ){
                 items(detailOrder.value ?: emptyList()){dataBottom ->
                     BottomBarContent(
@@ -82,8 +85,8 @@ fun DetailOrderScreen(
                 .fillMaxWidth()
         ) {
             LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                contentPadding = PaddingValues(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 90.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ){
                 items(listDetailOrder.value ?: emptyList()){data ->
                     DetailOrderContent(
@@ -110,7 +113,7 @@ fun BottomBarContent(
             text = "Total Item: $totalItem"
         )
         Text(
-            text = "Total Price: $totalPrice"
+            text = "Total Price: Rp. $totalPrice"
         )
     }
 }
@@ -125,21 +128,27 @@ fun DetailOrderContent(
     modifier: Modifier = Modifier
 ){
     Card(
+        colors = CardDefaults.cardColors(colorScheme.onPrimary),
         modifier = modifier
             .fillMaxWidth()
             .height(150.dp)
     ) {
-        Row {
+        Row(
+            modifier = modifier
+                .padding(end = 12.dp)
+        ) {
             Box(
                 modifier = modifier
                     .padding(start = 12.dp, end = 12.dp)
                     .height(150.dp),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.TopCenter
             ) {
                 AsyncImage(
                     model = image,
                     contentDescription = "DETIAL ORDER IMAGE",
+                    contentScale = ContentScale.Crop,
                     modifier = modifier
+                        .padding(top = 12.dp)
                         .size(100.dp)
                 )
             }
@@ -156,11 +165,16 @@ fun DetailOrderContent(
                     )
                     Text(
                         text = name,
+                        fontWeight = FontWeight.Bold,
                         maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = modifier
+                            .padding(top = 4.dp)
                     )
                     Text(
-                        text = "Rp. $price"
+                        text = "Rp. $price",
+                        modifier = modifier
+                            .padding(top = 8.dp, bottom = 4.dp)
                     )
                     Text(
                         text = "Total Item: $quantity"

@@ -113,7 +113,7 @@ fun ShoppingScreen(
             }
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(160.dp),
-                contentPadding = PaddingValues(16.dp),
+                contentPadding = PaddingValues(16.dp, bottom = 30.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = modifier

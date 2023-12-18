@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -93,26 +94,30 @@ fun ProfileScreen(
                                 contentDescription = "Profile Image",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
-                                    .size(100.dp, 100.dp)
+                                    .size(75.dp)
                                     .clip(CircleShape)
                             )
-                            Column(
+                            Box(
                                 modifier = modifier
-                                    .padding(start = 8.dp)
+                                    .height(75.dp),
+                                contentAlignment = Alignment.CenterStart
                             ) {
-                                Text(
-                                    text = detailUser.name ?: "",
-                                    color = colorScheme.onSurface,
-                                    fontSize = 24.sp,
-                                    fontWeight = FontWeight.Bold,
+                                Column(
                                     modifier = modifier
-                                        .padding(bottom = 8.dp)
-                                )
-                                Text(
-                                    text = detailUser.username ?: "",
-                                    color = colorScheme.onSurface,
-                                    fontSize = 18.sp,
-                                )
+                                        .padding(start = 8.dp)
+                                ) {
+                                    Text(
+                                        text = detailUser.name ?: "",
+                                        color = colorScheme.onSurface,
+                                        fontSize = 24.sp,
+                                        fontWeight = FontWeight.Bold,
+                                    )
+                                    Text(
+                                        text = detailUser.username ?: "",
+                                        color = colorScheme.onSurface,
+                                        fontSize = 18.sp,
+                                    )
+                                }
                             }
                         }
                     }

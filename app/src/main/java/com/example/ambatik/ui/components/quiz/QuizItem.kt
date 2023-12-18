@@ -15,6 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -121,21 +122,21 @@ fun QuizItem(
         }
     }
 
-    Column(
+    Card(
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary),
         modifier = modifier
-    ) {
-        Card(
-            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary),
-        ){
+            .fillMaxWidth()
+            .height(100.dp)
+    ){
             Row(
                 modifier = modifier
             ) {
                 Box(
-                    contentAlignment = Alignment.TopStart,
+                    contentAlignment = Alignment.CenterStart,
                     modifier = modifier
-                        .fillMaxWidth()
-                        .height(80.dp)
                         .padding(16.dp, 4.dp)
+                        .fillMaxWidth()
+                        .height(100.dp)
                 ) {
                     Box(
                         modifier = modifier
@@ -154,7 +155,8 @@ fun QuizItem(
                         ) {
                             Text(
                                 text = "Mulai",
-                                fontSize = 12.sp,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onPrimary,
                             )
                         }
@@ -167,37 +169,29 @@ fun QuizItem(
                         Text(
                             text = name,
                             color = MaterialTheme.colorScheme.onSurface,
-                            fontSize = 24.sp,
+                            fontSize = 20.sp,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             style = MaterialTheme.typography.titleMedium.copy(
                                 fontWeight = FontWeight.Bold
                             ),
                         )
-                        Box(
+                        Text(
+                            text = "5 Soal",
                             modifier = modifier
-                                .padding(top = 4.dp)
-                        ) {
+                                .padding(vertical = 6.dp)
+                        )
+                        if (quizHistories!!.isEmpty()){
+                            Text(text = "")
+                        }else{
                             Text(
-                                text = "5 Soal"
+                                text = "High Score: $score",
+                                fontWeight = FontWeight.Bold,
+                                color = colorScheme.primary
                             )
                         }
                     }
                 }
             }
-        }
     }
 }
-
-//@Preview
-//@Composable
-//fun PreviewArticleItem(){
-//    AmbatikTheme {
-//        QuizItem(
-//            name = "Batik Nusantara",
-//            navigateToStartQuiz = {},
-//            quizHistories = [],
-//            score = ""
-//        )
-//    }
-//}

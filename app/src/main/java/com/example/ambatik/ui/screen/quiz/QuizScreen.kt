@@ -95,8 +95,8 @@ fun QuizScreen(
             Column {
                 Box(
                     modifier = modifier
-                        .height(130.dp)
                         .padding(16.dp, 16.dp, 16.dp, 16.dp)
+                        .height(75.dp)
                         .background(MaterialTheme.colorScheme.surface)
                 ) {
                     Row(
@@ -108,7 +108,7 @@ fun QuizScreen(
                             contentScale = ContentScale.Crop,
                             contentDescription = "Edit Profile",
                             modifier = modifier
-                                .size(100.dp)
+                                .size(75.dp)
                                 .clip(CircleShape)
                         )
                         Column(
@@ -117,7 +117,7 @@ fun QuizScreen(
                                 .width(120.dp)
                         ) {
                             Text(
-                                text = "WELCOME,",
+                                text = "Halo,",
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp,
                                 color = MaterialTheme.colorScheme.onSurface,
@@ -139,30 +139,22 @@ fun QuizScreen(
                         ) {
                             Box(
                                 modifier = modifier
-                                    .padding(15.dp, 15.dp)
-                                    .wrapContentSize()
-                                    .clip(RoundedCornerShape(15.dp))
-                                    .background(MaterialTheme.colorScheme.primary)
-                            ){
-                                Box(
-                                    modifier = modifier
-                                        .width(100.dp)
-                                        .height(50.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Row {
-                                        Icon(
-                                            imageVector = Icons.Filled.Stars,
-                                            contentDescription = "Score",
-                                            tint = MaterialTheme.colorScheme.onPrimary,
-                                            modifier = modifier
-                                                .padding(end = 4.dp)
-                                        )
-                                        Text(
-                                            text = data.point.toString(),
-                                            color = MaterialTheme.colorScheme.onPrimary
-                                        )
-                                    }
+                                    .width(100.dp)
+                                    .height(50.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Row {
+                                    Icon(
+                                        imageVector = Icons.Filled.Stars,
+                                        contentDescription = "Score",
+                                        tint = colorScheme.primary,
+                                        modifier = modifier
+                                            .padding(end = 4.dp)
+                                    )
+                                    Text(
+                                        text = data.point.toString(),
+                                        color = colorScheme.primary
+                                    )
                                 }
                             }
                         }
@@ -183,10 +175,7 @@ fun QuizScreen(
                     }
                 }
                 when(tabIndex){
-                    0 -> Column(
-                        modifier = Modifier
-                            .padding(bottom = 40.dp)
-                    ){
+                    0 -> Column{
                         Box{
                             LazyColumn(
                                 contentPadding = PaddingValues(16.dp),
@@ -205,10 +194,7 @@ fun QuizScreen(
                             }
                         }
                     }
-                    1 -> Column(
-                        modifier = Modifier
-                            .padding(bottom = 40.dp)
-                    ){
+                    1 -> Column{
                         Box{
                             LazyColumn(
                                 contentPadding = PaddingValues(16.dp),

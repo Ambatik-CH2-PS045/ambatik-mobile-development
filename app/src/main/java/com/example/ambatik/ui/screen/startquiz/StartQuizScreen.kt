@@ -196,7 +196,8 @@ fun StartQuizScreen(
                     Button(
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         onClick = {
-                            navController.navigateUp()
+                            state = true
+//                            navController.navigateUp()
                         },
                         modifier = modifier
                             .fillMaxWidth()
@@ -236,12 +237,12 @@ fun AlertDialogShow(
             onDismissRequest = { openAlertDialog.value = false },
             title = {
                 Text(
-                    text = "Kembali ke halaman quiz"
+                    text = "Halaman quiz"
                 )
             },
             text = {
                 Text(
-                    text = "Apakah ingin kembali ke halaman quiz?"
+                    text = "Apakah ingin kembali ke halaman quiz? data quiz kamu tidak akan tersimpan"
                 )
             },
             confirmButton = {
