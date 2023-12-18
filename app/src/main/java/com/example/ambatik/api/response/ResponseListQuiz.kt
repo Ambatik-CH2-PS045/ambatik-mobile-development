@@ -20,15 +20,34 @@ data class ResponseListQuiz(
 @Parcelize
 data class DataItemQuiz(
 
+	@field:SerializedName("quiz_histories")
+	val quizHistories: List<QuizHistoriesItem?>? = null,
+
 	@field:SerializedName("id")
 	val id: Int? = null,
 
-	@field:SerializedName("quiz_histories")
-	val quizHistories: List<String?>? = null,
-
 	@field:SerializedName("type")
-	val type: String? = null,
+	val type: String? = null
+) : Parcelable
+
+@Parcelize
+data class QuizHistoriesItem(
+
+	@field:SerializedName("createdAt")
+	val createdAt: String? = null,
+
+	@field:SerializedName("quizId")
+	val quizId: Int? = null,
+
+	@field:SerializedName("id")
+	val id: Int? = null,
 
 	@field:SerializedName("done")
-	val done: String? = null
+	val done: String? = null,
+
+	@field:SerializedName("userId")
+	val userId: Int? = null,
+
+	@field:SerializedName("point")
+	val point: Int? = null
 ) : Parcelable

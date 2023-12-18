@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ambatik.api.response.DataItemLeaderboard
 import com.example.ambatik.api.response.DataItemQuiz
+import com.example.ambatik.api.response.QuizHistoriesItem
 import com.example.ambatik.api.response.ResponseArticle
 import com.example.ambatik.api.response.ResponseLeaderboard
 import com.example.ambatik.api.response.ResponseListQuiz

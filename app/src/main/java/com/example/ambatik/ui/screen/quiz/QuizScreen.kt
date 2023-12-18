@@ -1,17 +1,12 @@
 package com.example.ambatik.ui.screen.quiz
 
 import android.annotation.SuppressLint
-import android.graphics.fonts.FontStyle
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,10 +19,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Stars
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -45,10 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.paint
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -59,8 +48,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.example.ambatik.R
 import com.example.ambatik.data.factory.QuizModelFactory
 import com.example.ambatik.data.factory.UserModelFactory
 import com.example.ambatik.data.pref.UserModel
@@ -68,7 +55,6 @@ import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.ui.components.leaderboard.LeaderboardItem
 import com.example.ambatik.ui.components.quiz.QuizItem
-import com.example.ambatik.ui.screen.editprofile.EditProfileScreen
 import com.example.ambatik.ui.screen.profile.ProfileViewModel
 import com.example.ambatik.ui.theme.AmbatikTheme
 
@@ -95,8 +81,8 @@ fun QuizScreen(
     val tabs = listOf("Kuis", "Leaderboard")
 
     LaunchedEffect(userModel.id){
-        viewModel.getQuiz(userModel.id)
         viewModelProfile.getDetailUser(userModel.id)
+        viewModel.getQuiz(userModel.id)
         viewModel.getLeaderboard()
     }
 
@@ -199,11 +185,11 @@ fun QuizScreen(
                 when(tabIndex){
                     0 -> Column(
                         modifier = Modifier
-                            .padding(bottom = 80.dp)
+                            .padding(bottom = 40.dp)
                     ){
                         Box(
                             modifier = Modifier
-                                .padding(bottom = 80.dp)
+//                                .padding(bottom = 80.dp)
                         ){
                             LazyColumn(
                                 contentPadding = PaddingValues(16.dp),
@@ -214,7 +200,9 @@ fun QuizScreen(
                                         name = data?.type ?: "",
                                         navigateToStartQuiz = {
                                             navigateToStartQuiz(data?.type ?: "")
-                                        }
+                                        },
+                                        quizHistories = data?.quizHistories,
+                                        score = data?.quizHistories?.firstOrNull()?.point.toString()
                                     )
                                 }
                             }
@@ -222,11 +210,11 @@ fun QuizScreen(
                     }
                     1 -> Column(
                         modifier = Modifier
-                            .padding(bottom = 80.dp)
+                            .padding(bottom = 40.dp)
                     ){
                         Box(
                             modifier = Modifier
-                                .padding(bottom = 80.dp)
+//                                .padding(bottom = 80.dp)
                         ){
                             LazyColumn(
                                 contentPadding = PaddingValues(16.dp),
