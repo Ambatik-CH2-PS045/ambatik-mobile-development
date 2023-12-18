@@ -1,6 +1,5 @@
 package com.example.ambatik.data.repository
 
-import android.net.Uri
 import com.example.ambatik.api.response.ResponseDetailuser
 import com.example.ambatik.api.response.ResponseEditPhotoProfile
 import com.example.ambatik.api.response.ResponseEditProfile
@@ -15,8 +14,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.http.Multipart
 import java.io.File
 
 class UserRepository(private val apiService: ApiService, private val userPreference: UserPreference) {

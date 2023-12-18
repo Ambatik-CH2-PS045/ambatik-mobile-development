@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ambatik.api.response.AnswersItem
-import com.example.ambatik.api.response.DataItemSummary
 import com.example.ambatik.api.response.DataQuestion
 import com.example.ambatik.api.response.ResponseCheckout
 import com.example.ambatik.api.response.ResponseQuizQuestion

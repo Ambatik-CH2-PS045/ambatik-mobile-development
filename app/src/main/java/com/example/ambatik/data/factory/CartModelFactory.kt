@@ -4,12 +4,9 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.ambatik.data.repository.CartRepository
-import com.example.ambatik.data.repository.ShopRepository
 import com.example.ambatik.di.Injection
 import com.example.ambatik.ui.screen.cart.CartViewModel
 import com.example.ambatik.ui.screen.detailshopping.AddToCartViewModel
-import com.example.ambatik.ui.screen.detailshopping.DetailShopViewModel
-import com.example.ambatik.ui.screen.shopping.ShoppingViewModel
 
 class CartModelFactory(private val repository: CartRepository): ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T{

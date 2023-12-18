@@ -1,7 +1,5 @@
 package com.example.ambatik.ui.screen.detailarticle
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -24,7 +22,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -50,9 +47,6 @@ import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.ui.theme.AmbatikTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.withContext
 
 @Composable
 fun DetailArticleScreen(

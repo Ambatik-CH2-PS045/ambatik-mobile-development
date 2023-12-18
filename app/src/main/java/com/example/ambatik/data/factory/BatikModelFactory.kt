@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.ambatik.data.repository.BatikRepository
 import com.example.ambatik.di.Injection
-import com.example.ambatik.ui.screen.detailbatik.DetailBatikViewModel
 import com.example.ambatik.ui.screen.articel.BatikViewModel
+import com.example.ambatik.ui.screen.detailbatik.DetailBatikViewModel
 import com.example.ambatik.ui.screen.scan.ScanViewModel
 
 class BatikModelFactory(private val repository: BatikRepository): ViewModelProvider.NewInstanceFactory() {

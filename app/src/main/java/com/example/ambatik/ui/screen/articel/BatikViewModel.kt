@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ambatik.api.response.DataItem
 import com.example.ambatik.api.response.DataItemBatik
-import com.example.ambatik.api.response.ResponseArticle
 import com.example.ambatik.api.response.ResponseBatik
 import com.example.ambatik.data.repository.BatikRepository
 import com.google.gson.Gson

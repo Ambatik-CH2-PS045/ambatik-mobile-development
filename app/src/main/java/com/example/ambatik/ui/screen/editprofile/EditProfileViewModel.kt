@@ -1,6 +1,5 @@
 package com.example.ambatik.ui.screen.editprofile
 
-import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +9,6 @@ import com.example.ambatik.api.response.ResponseEditProfile
 import com.example.ambatik.data.repository.UserRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
 import retrofit2.HttpException
 import java.io.File
 

@@ -20,7 +20,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -53,7 +52,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.data.factory.UserModelFactory
 import com.example.ambatik.ui.navigation.Screen
-import com.example.ambatik.ui.screen.register.RegisterViewModel
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

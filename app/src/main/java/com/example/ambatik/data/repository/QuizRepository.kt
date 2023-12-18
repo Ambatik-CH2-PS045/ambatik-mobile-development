@@ -1,6 +1,5 @@
 package com.example.ambatik.data.repository
 
-import com.example.ambatik.api.response.ResponseBatik
 import com.example.ambatik.api.response.ResponseLeaderboard
 import com.example.ambatik.api.response.ResponseListQuiz
 import com.example.ambatik.api.response.ResponseQuizQuestion

@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ambatik.api.response.ResponseAddCart
 import com.example.ambatik.data.repository.CartRepository
-import com.example.ambatik.data.repository.ShopRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import retrofit2.HttpException

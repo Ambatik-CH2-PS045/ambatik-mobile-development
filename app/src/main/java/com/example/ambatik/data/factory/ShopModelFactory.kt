@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.ambatik.data.repository.ShopRepository
 import com.example.ambatik.di.Injection
-import com.example.ambatik.ui.screen.articel.ArticleViewModel
-import com.example.ambatik.ui.screen.detailarticle.DetailArticleViewModel
 import com.example.ambatik.ui.screen.detailshopping.DetailShopViewModel
 import com.example.ambatik.ui.screen.shopping.ShoppingViewModel
 

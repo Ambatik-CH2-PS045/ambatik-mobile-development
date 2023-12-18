@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -82,27 +83,33 @@ fun DetailBatikContent(
                 .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp))
         )
         Text(
-            text = name
+            text = name,
+            textAlign = TextAlign.Justify,
+            fontWeight = FontWeight.Bold
         )
         Text(
-            text = origin
+            text = origin,
+            textAlign = TextAlign.Justify
         )
         Text(
             text = "Meaning:",
+            textAlign = TextAlign.Justify
         )
         Text(
             text = meaning,
             textAlign = TextAlign.Justify
         )
         Text(
-            text = "Making Process:"
+            text = "Making Process:",
+            textAlign = TextAlign.Justify
         )
         Text(
             text = makingProcess,
             textAlign = TextAlign.Justify
         )
         Text(
-            text = "Usage Purpose:"
+            text = "Usage Purpose:",
+            textAlign = TextAlign.Justify
         )
         Text(
             text = usagePurpose,

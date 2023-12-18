@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ambatik.api.response.DataItemDetailOrder
 import com.example.ambatik.api.response.ProductsItem
-import com.example.ambatik.api.response.ResponseCheckout
 import com.example.ambatik.api.response.ResponseDetailTransaksi
 import com.example.ambatik.data.repository.OrderRepository
 import com.google.gson.Gson

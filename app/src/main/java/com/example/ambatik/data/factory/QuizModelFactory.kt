@@ -5,9 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.ambatik.data.repository.QuizRepository
 import com.example.ambatik.di.Injection
-import com.example.ambatik.ui.screen.detailshopping.DetailShopViewModel
 import com.example.ambatik.ui.screen.quiz.QuizViewModel
-import com.example.ambatik.ui.screen.shopping.ShoppingViewModel
 import com.example.ambatik.ui.screen.startquiz.StartQuizViewModel
 
 class QuizModelFactory(private val repository: QuizRepository): ViewModelProvider.NewInstanceFactory() {

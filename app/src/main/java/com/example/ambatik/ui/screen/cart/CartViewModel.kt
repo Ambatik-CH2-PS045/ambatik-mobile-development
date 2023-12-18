@@ -5,11 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ambatik.api.response.DataItemCart
 import com.example.ambatik.api.response.ResponseAddCart
-import com.example.ambatik.api.response.ResponseArticle
 import com.example.ambatik.api.response.ResponseCart
-import com.example.ambatik.data.repository.ArticleRepository
 import com.example.ambatik.data.repository.CartRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.launch

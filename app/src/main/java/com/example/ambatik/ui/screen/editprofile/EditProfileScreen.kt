@@ -1,9 +1,7 @@
 package com.example.ambatik.ui.screen.editprofile
 
-import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -49,7 +47,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -65,9 +62,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
-import coil.request.ImageRequest
 import com.example.ambatik.BuildConfig
-import com.example.ambatik.R
 import com.example.ambatik.data.factory.UserModelFactory
 import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.pref.UserPreference
@@ -76,9 +71,6 @@ import com.example.ambatik.ui.screen.profile.ProfileViewModel
 import com.example.ambatik.ui.theme.AmbatikTheme
 import com.example.ambatik.utlis.createCustomTempFile
 import com.example.ambatik.utlis.uriToFile
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Objects
 
 @OptIn(ExperimentalMaterial3Api::class)

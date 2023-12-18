@@ -5,9 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ambatik.api.response.DataDetailBatik
 import com.example.ambatik.api.response.DataPredictBatik
-import com.example.ambatik.api.response.ResponseEditPhotoProfile
 import com.example.ambatik.api.response.ResponsePredictBatik
 import com.example.ambatik.data.repository.BatikRepository
 import com.google.gson.Gson

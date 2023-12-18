@@ -4,14 +4,11 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ambatik.api.response.DataItem
 import com.example.ambatik.api.response.DataItemArticle
-import com.example.ambatik.api.response.LikeItem
 import com.example.ambatik.api.response.ResponseArticle
 import com.example.ambatik.api.response.ResponseLikeArticle
 import com.example.ambatik.data.repository.ArticleRepository
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
