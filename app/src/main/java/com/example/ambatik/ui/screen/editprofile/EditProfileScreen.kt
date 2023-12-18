@@ -117,7 +117,6 @@ fun EditProfileScreen(
     var capturedImage by remember {
         mutableStateOf<Uri>(Uri.EMPTY)
     }
-    val imgUser = File(capturedImage.path)
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()){
         capturedImage = uri
         Log.d("CameraURI", "URI from camera: $uri")
@@ -154,8 +153,6 @@ fun EditProfileScreen(
             .fillMaxSize()
     ) {
 
-
-//        val context = LocalContext.current
         detailUserState.value?.let { data ->
             var fullname by remember { mutableStateOf(data.name) }
             var numberHandphone by remember { mutableStateOf(data.phone) }
@@ -295,7 +292,8 @@ fun EditProfileScreen(
                             shape = RoundedCornerShape(10.dp),
                             colors = ButtonDefaults.buttonColors(colorScheme.primary),
                             onClick = {
-                                editViewModel.editProfile(userModel.id, imgUser,fullname ?: "", address ?: "", numberHandphone ?: "")
+//                                editViewModel.editProfile(userModel.id, fullname ?: "", address ?: "", numberHandphone ?: "", capturedImage)
+                                editViewModel.editProfile(userModel.id, fullname ?: "", address ?: "", numberHandphone ?: "")
                                 Toast.makeText(context, "Berhasil Edit Profile", Toast.LENGTH_SHORT).show()
                             },
                             modifier = Modifier

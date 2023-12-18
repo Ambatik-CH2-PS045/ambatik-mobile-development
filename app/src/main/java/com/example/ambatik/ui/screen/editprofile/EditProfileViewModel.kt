@@ -1,5 +1,6 @@
 package com.example.ambatik.ui.screen.editprofile
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,10 +18,12 @@ class EditProfileViewModel(private val repository: UserRepository): ViewModel() 
     val error = MutableLiveData<String?>()
     val status: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun editProfile(id: Int, imgUser: File, name: String, address: String, phone: String){
+//    fun editProfile(id: Int, name: String, address: String, phone: String, currentImage: Uri){
+    fun editProfile(id: Int, name: String, address: String, phone: String){
         viewModelScope.launch {
             try {
-                val editProfileResponse = repository.updateProfile(id, imgUser, name, address, phone)
+//                val editProfileResponse = repository.updateProfile(id, currentImage, name, address, phone)
+                val editProfileResponse = repository.updateProfile(id, name, address, phone)
                 status.postValue(true)
                 Log.d("EDIT PROFILE", "$editProfileResponse")
             }catch (e: HttpException){

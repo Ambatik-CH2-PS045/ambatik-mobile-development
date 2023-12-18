@@ -22,6 +22,7 @@ import com.example.ambatik.api.response.ResponseShopDetail
 import com.example.ambatik.api.response.ResponseSubmitQuiz
 import okhttp3.MultipartBody
 import retrofit2.http.Body
+import retrofit2.http.FieldMap
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
@@ -83,12 +84,17 @@ interface ApiService{
         @Path("idUser") idUser: Int
     ): ResponseDetailuser
 
-    @Multipart
+
+//    @PATCH("users/update/{idUser}")
+//    suspend fun updateUserProfile(
+//        @Path("idUser") idUser: Int,
+//        @FieldMap request: Map<String, String>,
+//        @Part image: MultipartBody.Part?
+//    ): ResponseEditProfile
+
     @PATCH("users/update/{idUser}")
     suspend fun updateUserProfile(
         @Path("idUser") idUser: Int,
-//        @Path("url_profile") imgUser: File,
-        @Part file: MultipartBody.Part,
         @Body request: HashMap<String, String>
     ): ResponseEditProfile
 
