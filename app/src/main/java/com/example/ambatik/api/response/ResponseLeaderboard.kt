@@ -5,10 +5,10 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 @Parcelize
-data class ResponseListQuiz(
+data class ResponseLeaderboard(
 
 	@field:SerializedName("data")
-	val data: List<DataItemQuiz?>? = null,
+	val data: List<DataItemLeaderboard?>? = null,
 
 	@field:SerializedName("error")
 	val error: Boolean? = null,
@@ -18,17 +18,14 @@ data class ResponseListQuiz(
 ) : Parcelable
 
 @Parcelize
-data class DataItemQuiz(
+data class DataItemLeaderboard(
 
-	@field:SerializedName("id")
-	val id: Int? = null,
+	@field:SerializedName("name")
+	val name: String? = null,
 
-	@field:SerializedName("quiz_histories")
-	val quizHistories: List<String?>? = null,
+	@field:SerializedName("point")
+	val point: Int? = null,
 
-	@field:SerializedName("type")
-	val type: String? = null,
-
-	@field:SerializedName("done")
-	val done: String? = null
+	@field:SerializedName("url_profile")
+	val urlProfile: String? = null
 ) : Parcelable

@@ -9,20 +9,27 @@ import com.example.ambatik.api.response.ResponseDetailArticle
 import com.example.ambatik.api.response.ResponseDetailBatik
 import com.example.ambatik.api.response.ResponseDetailTransaksi
 import com.example.ambatik.api.response.ResponseDetailuser
+import com.example.ambatik.api.response.ResponseEditPhotoProfile
 import com.example.ambatik.api.response.ResponseEditProfile
 import com.example.ambatik.api.response.ResponseGetOrder
+import com.example.ambatik.api.response.ResponseLeaderboard
 import com.example.ambatik.api.response.ResponseLikeArticle
 import com.example.ambatik.api.response.ResponseListLikeArticle
 import com.example.ambatik.api.response.ResponseListQuiz
 import com.example.ambatik.api.response.ResponseLogin
+import com.example.ambatik.api.response.ResponsePredictBatik
 import com.example.ambatik.api.response.ResponseQuizQuestion
 import com.example.ambatik.api.response.ResponseRegister
 import com.example.ambatik.api.response.ResponseShop
 import com.example.ambatik.api.response.ResponseShopDetail
 import com.example.ambatik.api.response.ResponseSubmitQuiz
+import okhttp3.Call
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.Body
+import retrofit2.http.Field
 import retrofit2.http.FieldMap
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
@@ -84,19 +91,18 @@ interface ApiService{
         @Path("idUser") idUser: Int
     ): ResponseDetailuser
 
-
-//    @PATCH("users/update/{idUser}")
-//    suspend fun updateUserProfile(
-//        @Path("idUser") idUser: Int,
-//        @FieldMap request: Map<String, String>,
-//        @Part image: MultipartBody.Part?
-//    ): ResponseEditProfile
-
     @PATCH("users/update/{idUser}")
     suspend fun updateUserProfile(
         @Path("idUser") idUser: Int,
         @Body request: HashMap<String, String>
     ): ResponseEditProfile
+
+    @Multipart
+    @POST("users/upload")
+    suspend fun editPhotoProfile(
+        @Part file: MultipartBody.Part,
+        @Part("userid") userId: Int
+    ): ResponseEditPhotoProfile
 
     @POST("order/checkout")
     suspend fun checkoutProduct(
@@ -138,5 +144,12 @@ interface ApiService{
         @Path("idUser") idUser: Int
     ): ResponseDetailTransaksi
 
+    @Multipart
+    @POST("batik/predict")
+    suspend fun predictBatik(
+        @Part file: MultipartBody.Part,
+    ): ResponsePredictBatik
 
+    @GET("quiz/leaderboard")
+    suspend fun getLeaderboard(): ResponseLeaderboard
 }

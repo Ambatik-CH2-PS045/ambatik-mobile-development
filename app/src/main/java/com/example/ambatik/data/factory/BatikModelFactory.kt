@@ -7,6 +7,7 @@ import com.example.ambatik.data.repository.BatikRepository
 import com.example.ambatik.di.Injection
 import com.example.ambatik.ui.screen.detailbatik.DetailBatikViewModel
 import com.example.ambatik.ui.screen.articel.BatikViewModel
+import com.example.ambatik.ui.screen.scan.ScanViewModel
 
 class BatikModelFactory(private val repository: BatikRepository): ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T{
@@ -16,6 +17,9 @@ class BatikModelFactory(private val repository: BatikRepository): ViewModelProvi
             }
             modelClass.isAssignableFrom(DetailBatikViewModel::class.java) -> {
                 DetailBatikViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(ScanViewModel::class.java) -> {
+                ScanViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unkown ViewModel class: " + modelClass.name)
         }

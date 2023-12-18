@@ -94,10 +94,10 @@ fun AmbatikApp(
                 .padding(20.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                painter = painterResource(id = R.drawable.ambatik),
                 contentDescription = "Foto Login",
                 modifier = Modifier
-                    .size(250.dp, 250.dp)
+                    .size(150.dp, 150.dp)
             )
             Text(
                 text = "Selamat datang di Ambatik",

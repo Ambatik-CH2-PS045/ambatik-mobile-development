@@ -59,12 +59,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.ambatik.R
 import com.example.ambatik.data.factory.QuizModelFactory
 import com.example.ambatik.data.factory.UserModelFactory
 import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
+import com.example.ambatik.ui.components.leaderboard.LeaderboardItem
 import com.example.ambatik.ui.components.quiz.QuizItem
 import com.example.ambatik.ui.screen.editprofile.EditProfileScreen
 import com.example.ambatik.ui.screen.profile.ProfileViewModel
@@ -85,6 +87,7 @@ fun QuizScreen(
     navigateToStartQuiz: (String) -> Unit,
 ){
     val listQuizState = viewModel.quizList.observeAsState()
+    val listLeaderboard = viewModel.leaderboardList.observeAsState()
     val detailUserState = viewModelProfile.detailUser.observeAsState()
     val statusState by viewModel.status.observeAsState(false)
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
@@ -94,6 +97,7 @@ fun QuizScreen(
     LaunchedEffect(userModel.id){
         viewModel.getQuiz(userModel.id)
         viewModelProfile.getDetailUser(userModel.id)
+        viewModel.getLeaderboard()
     }
 
     Surface(
@@ -105,7 +109,7 @@ fun QuizScreen(
             Column {
                 Box(
                     modifier = modifier
-                        .height(100.dp)
+                        .height(130.dp)
                         .padding(16.dp, 16.dp, 16.dp, 16.dp)
                         .background(MaterialTheme.colorScheme.surface)
                 ) {
@@ -123,13 +127,13 @@ fun QuizScreen(
                         )
                         Column(
                             modifier = modifier
-                                .padding(0.dp, 8.dp, 0.dp, 8.dp)
+                                .padding(8.dp, 8.dp, 0.dp, 8.dp)
                                 .width(120.dp)
                         ) {
                             Text(
-                                text = "Welcome,",
+                                text = "WELCOME,",
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp,
+                                fontSize = 16.sp,
                                 color = MaterialTheme.colorScheme.onSurface,
                             )
                             Text(
@@ -145,7 +149,7 @@ fun QuizScreen(
                             modifier = modifier
                                 .height(250.dp)
                                 .fillMaxWidth(),
-                            contentAlignment = Alignment.BottomEnd
+                            contentAlignment = Alignment.CenterEnd
                         ) {
                             Box(
                                 modifier = modifier
@@ -156,7 +160,8 @@ fun QuizScreen(
                             ){
                                 Box(
                                     modifier = modifier
-                                        .size(75.dp),
+                                        .width(100.dp)
+                                        .height(50.dp),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Row {
@@ -215,7 +220,28 @@ fun QuizScreen(
                             }
                         }
                     }
-                    1 -> Text(text = "LEADERBOARD")
+                    1 -> Column(
+                        modifier = Modifier
+                            .padding(bottom = 80.dp)
+                    ){
+                        Box(
+                            modifier = Modifier
+                                .padding(bottom = 80.dp)
+                        ){
+                            LazyColumn(
+                                contentPadding = PaddingValues(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(12.dp),
+                            ){
+                                items(listLeaderboard.value ?: emptyList()){data ->
+                                    LeaderboardItem(
+                                        name = data?.name ?: "",
+                                        point = data?.point.toString() ?: "",
+                                        urlProfile = data?.urlProfile ?: ""
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
 
             }

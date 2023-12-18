@@ -2,6 +2,7 @@ package com.example.ambatik.data.repository
 
 import android.net.Uri
 import com.example.ambatik.api.response.ResponseDetailuser
+import com.example.ambatik.api.response.ResponseEditPhotoProfile
 import com.example.ambatik.api.response.ResponseEditProfile
 import com.example.ambatik.api.response.ResponseLogin
 import com.example.ambatik.api.response.ResponseRegister
@@ -70,20 +71,17 @@ class UserRepository(private val apiService: ApiService, private val userPrefere
         requestBody["phone"] = phone
         return apiService.updateUserProfile(idUser, requestBody)
     }
-//    suspend fun updateProfile(idUser: Int, currentImageUri: Uri, name:String, address: String, phone: String): ResponseEditProfile{
-//
-//        val requestBody = HashMap<String, String>()
-//        requestBody["name"] = name
-//        requestBody["address"] = address
-//        requestBody["phone"] = phone
-//
-//        val imageFile = File(currentImageUri.path ?: "")
-//        val imageRequestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
-//        val imagePart = MultipartBody.Part.createFormData("url_profile", imageFile.name, imageRequestBody)
-//
-////        return apiService.updateUserProfile(idUser, requestBody, imagePart)
-//}
 
+    suspend fun editPhotoProfile(file: File, userid: Int): ResponseEditPhotoProfile{
+        val requestImageFile = file.asRequestBody("image/jpeg".toMediaType())
+        val multipart = MultipartBody.Part.createFormData(
+            "file",
+            file.name,
+            requestImageFile
+        )
+        val userIdRequest = RequestBody.create("text/plain".toMediaTypeOrNull(), userid.toString())
+        return apiService.editPhotoProfile(multipart, userid)
+    }
 
     companion object{
         @Volatile

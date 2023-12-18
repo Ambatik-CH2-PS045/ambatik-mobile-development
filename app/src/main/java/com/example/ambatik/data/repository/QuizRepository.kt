@@ -1,5 +1,7 @@
 package com.example.ambatik.data.repository
 
+import com.example.ambatik.api.response.ResponseBatik
+import com.example.ambatik.api.response.ResponseLeaderboard
 import com.example.ambatik.api.response.ResponseListQuiz
 import com.example.ambatik.api.response.ResponseQuizQuestion
 import com.example.ambatik.api.response.ResponseSubmitQuiz
@@ -31,6 +33,10 @@ class QuizRepository(private val apiService: ApiService, private val userPrefere
         requestBody["questionIds"] = questionIds
         requestBody["answerIds"] = answerIds
         return apiService.submitQuiz(requestBody)
+    }
+
+    suspend fun getLeaderboard(): ResponseLeaderboard {
+        return apiService.getLeaderboard()
     }
 
     companion object {

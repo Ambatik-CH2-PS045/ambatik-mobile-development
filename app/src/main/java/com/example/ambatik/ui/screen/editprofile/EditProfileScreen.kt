@@ -3,19 +3,16 @@ package com.example.ambatik.ui.screen.editprofile
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
-import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,15 +23,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
@@ -49,7 +40,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,19 +52,18 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toFile
+import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
 import com.example.ambatik.BuildConfig
@@ -84,9 +73,9 @@ import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.ui.screen.profile.ProfileViewModel
-import com.example.ambatik.ui.screen.register.isValidEmail
-import com.example.ambatik.ui.screen.register.isValidPassword
 import com.example.ambatik.ui.theme.AmbatikTheme
+import com.example.ambatik.utlis.createCustomTempFile
+import com.example.ambatik.utlis.uriToFile
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -109,7 +98,7 @@ fun EditProfileScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
-    val file = context.createImageFile()
+    val file = createCustomTempFile(context)
     val uri = FileProvider.getUriForFile(
         Objects.requireNonNull(context),
         BuildConfig.APPLICATION_ID + ".provider", file
@@ -118,12 +107,12 @@ fun EditProfileScreen(
         mutableStateOf<Uri>(Uri.EMPTY)
     }
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()){
-        capturedImage = uri
+        capturedImage = Uri.fromFile(file)
         Log.d("CameraURI", "URI from camera: $uri")
     }
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri1 ->
         if (uri1 != null) {
-            capturedImage = uri1
+            capturedImage = uriToFile(uri1, context).toUri()
         }
         Log.d("GalleryURI", "URI from gallery: $uri1")
     }
@@ -152,7 +141,6 @@ fun EditProfileScreen(
         modifier = modifier
             .fillMaxSize()
     ) {
-
         detailUserState.value?.let { data ->
             var fullname by remember { mutableStateOf(data.name) }
             var numberHandphone by remember { mutableStateOf(data.phone) }
@@ -167,21 +155,25 @@ fun EditProfileScreen(
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        ImageContent(
-                            modifier = modifier,
-                            capturedImageUri = capturedImage
-                        )
-//                    AsyncImage(
-//                        model = ImageRequest.Builder(LocalContext.current)
-//                            .data(capturedImage)
-//                            .placeholder(R.drawable.baseline_account_circle_24)
-//                            .build(),
-//                        contentScale = ContentScale.Crop,
-//                        contentDescription = "Edit Profile",
-//                        modifier = modifier
-//                            .size(150.dp)
-//                            .clip(CircleShape)
-//                    )
+                        if (capturedImage?.path?.isNotEmpty() == true) {
+                            Image(
+                                painter = rememberImagePainter(capturedImage),
+                                contentScale = ContentScale.Crop,
+                                contentDescription = "Edit Profile",
+                                modifier = modifier
+                                    .size(150.dp)
+                                    .clip(CircleShape)
+                            )
+                        } else {
+                            AsyncImage(
+                                model = data.urlProfile,
+                                contentScale = ContentScale.Crop,
+                                contentDescription = "Edit Profile",
+                                modifier = modifier
+                                    .size(150.dp)
+                                    .clip(CircleShape)
+                            )
+                        }
                         Text(
                             text = "Change Picture",
                             textAlign = TextAlign.Center,
@@ -292,9 +284,10 @@ fun EditProfileScreen(
                             shape = RoundedCornerShape(10.dp),
                             colors = ButtonDefaults.buttonColors(colorScheme.primary),
                             onClick = {
-//                                editViewModel.editProfile(userModel.id, fullname ?: "", address ?: "", numberHandphone ?: "", capturedImage)
                                 editViewModel.editProfile(userModel.id, fullname ?: "", address ?: "", numberHandphone ?: "")
+                                editViewModel.editPhotoProfile(capturedImage.toFile(), userModel.id)
                                 Toast.makeText(context, "Berhasil Edit Profile", Toast.LENGTH_SHORT).show()
+                                Log.d("UPLOAD IMAGE", "${capturedImage.toFile()}")
                             },
                             modifier = Modifier
                                 .padding(8.dp, 20.dp, 8.dp, 4.dp)
@@ -368,44 +361,6 @@ fun EditProfileScreen(
             }
         }
     }
-}
-
-@Composable
-fun ImageContent(
-    modifier: Modifier = Modifier,
-    capturedImageUri: Uri?
-){
-    if (capturedImageUri?.path?.isNotEmpty() == true) {
-        Image(
-            painter = rememberImagePainter(capturedImageUri),
-            contentScale = ContentScale.Crop,
-            contentDescription = "Edit Profile",
-            modifier = modifier
-                .size(150.dp)
-                .clip(CircleShape)
-        )
-        Log.d("ShowImage", "Image from URI: $capturedImageUri")
-    } else {
-        Image(
-            painter = painterResource(id = R.drawable.baseline_account_circle_24),
-            contentScale = ContentScale.Crop,
-            contentDescription = "Edit Profile",
-            modifier = modifier
-                .size(150.dp)
-                .clip(CircleShape)
-        )
-    }
-}
-
-fun Context.createImageFile(): File {
-    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-    val imageFileName = "JPEG_" + timeStamp + "_"
-    val image = File.createTempFile(
-        imageFileName,
-        ".jpg",
-        externalCacheDir
-    )
-    return image
 }
 
 @Preview
