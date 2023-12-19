@@ -1,5 +1,6 @@
 package com.example.ambatik.data.repository
 
+import com.example.ambatik.api.response.DataItemShop
 import com.example.ambatik.api.response.ResponseShop
 import com.example.ambatik.api.response.ResponseShopDetail
 import com.example.ambatik.api.retrofit.ApiService
@@ -12,6 +13,12 @@ class ShopRepository(private val apiService: ApiService, private val userPrefere
 
     suspend fun getDetailShop(id: Int): ResponseShopDetail{
         return apiService.getDetailShop(id)
+    }
+
+    suspend fun searchShop(query: String): List<DataItemShop> {
+        return apiService.getShop().data.filter {
+            it.name.contains(query, ignoreCase = true)
+        }
     }
 
     companion object{

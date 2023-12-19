@@ -1,6 +1,8 @@
 package com.example.ambatik.ui.screen.shopping
 
 import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,6 +22,9 @@ class ShoppingViewModel(private val repository: ShopRepository): ViewModel() {
     val loading: LiveData<Boolean> = _loading
 
     val shopList = MutableLiveData<List<DataItemShop>>()
+
+    private val _query = mutableStateOf("")
+    val query: State<String> get() = _query
 
     fun getShop(){
         viewModelScope.launch {
@@ -43,6 +48,13 @@ class ShoppingViewModel(private val repository: ShopRepository): ViewModel() {
                 status.postValue(false)
                 Log.d("SHOP", "$e")
             }
+        }
+    }
+    fun search(newQuery: String) {
+        viewModelScope.launch {
+            _query.value = newQuery
+            val shopSearch = repository.searchShop(_query.value)
+            shopList.postValue(shopSearch)
         }
     }
 }

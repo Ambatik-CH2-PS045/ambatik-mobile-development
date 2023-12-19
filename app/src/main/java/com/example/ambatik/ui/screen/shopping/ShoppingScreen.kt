@@ -1,5 +1,8 @@
 package com.example.ambatik.ui.screen.shopping
 
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -19,6 +23,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
@@ -32,18 +37,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.ambatik.R
 import com.example.ambatik.data.factory.ShopModelFactory
 import com.example.ambatik.ui.components.shop.ProductBatikItem
 import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.theme.AmbatikTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ShoppingScreen(
     navController: NavHostController = rememberNavController(),
@@ -56,6 +63,7 @@ fun ShoppingScreen(
     val shopListState = viewModel.shopList.observeAsState()
     val statusState by viewModel.status.observeAsState(false)
     val errorState by viewModel.error.observeAsState(null)
+    val query by viewModel.query
 
     LaunchedEffect(Unit){
         viewModel.getShop()
@@ -74,8 +82,8 @@ fun ShoppingScreen(
                 verticalAlignment = Alignment.CenterVertically
             ){
                 SearchBar(
-                    query = "",
-                    onQueryChange = {},
+                    query = query,
+                    onQueryChange = viewModel::search,
                     onSearch = {},
                     active = false,
                     onActiveChange = {},
@@ -130,12 +138,49 @@ fun ShoppingScreen(
                             .clickable {
                                 navigateToDetailShop(data.id)
                             }
+                            .animateItemPlacement(tween(durationMillis = 100))
                     )
                 }
             }
         }
     }
 }
+
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun SearchBarShop(
+//    query: String,
+//    onQueryChange: (String) -> Unit,
+//    modifier: Modifier = Modifier
+//) {
+//    SearchBar(
+//        query = query,
+//        onQueryChange = onQueryChange,
+//        onSearch = {},
+//        active = false,
+//        onActiveChange = {},
+//        shape = RoundedCornerShape(10.dp),
+//        colors = SearchBarDefaults.colors(containerColor = Color.White),
+//        leadingIcon = {
+//            Icon(
+//                imageVector = Icons.Default.Search,
+//                contentDescription = "",
+//                tint = colorScheme.onSurface
+//            )
+//        },
+//        placeholder = {
+//            Text(
+//                text = "Cari batik",
+//                fontSize = 14.sp,
+//            )
+//        },
+//        modifier = modifier
+//            .padding(16.dp, 16.dp, 0.dp, 16.dp)
+//            .fillMaxWidth(0.85f)
+//            .height(48.dp)
+//    ) {
+//    }
+//}
 
 @Preview
 @Composable
