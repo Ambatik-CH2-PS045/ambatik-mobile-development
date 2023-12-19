@@ -89,9 +89,9 @@ fun StartQuizScreen(
     }
 
     when(quizType){
-        "origin" -> idModul = 1
-        "pattern" -> idModul = 2
-        "meaning" -> idModul = 3
+        "Quiz 1" -> idModul = 1
+        "Quiz 2" -> idModul = 2
+        "Quiz 3" -> idModul = 3
     }
 
     when(idModul){

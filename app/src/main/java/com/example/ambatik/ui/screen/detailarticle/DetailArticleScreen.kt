@@ -1,5 +1,6 @@
 package com.example.ambatik.ui.screen.detailarticle
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -79,12 +80,13 @@ fun DetailArticleScreen(
             .fillMaxWidth()
     ) {
         articleListState.value?.let { detailArticle ->
-            var holdLike = ""
-            if (detailArticle.likes.size == 0){
+            var holdLike by remember { mutableStateOf("") }
+            if (detailArticle.likes.isEmpty()){
                 holdLike = "0"
             }else{
-                holdLike = detailArticle.likes[0].statusLike
+                holdLike = detailArticle.likes.firstOrNull()!!.statusLike
             }
+            Log.d("DetailArticleContent", "${detailArticle.likes.firstOrNull()?.statusLike}")
             DetailArticleContent(
                 image = detailArticle.urlBanner ?: "",
                 title = detailArticle.title ?: "",
@@ -104,7 +106,6 @@ fun DetailArticleScreen(
     }
 }
 
-
 @Composable
 fun DetailArticleContent(
     image: String,
@@ -119,219 +120,121 @@ fun DetailArticleContent(
     navigateToWelcome: ()-> Unit,
     modifier: Modifier = Modifier
 ){
+    var alertLogin = remember { mutableStateOf(true) }
+
+    if (!alertLogin.value) {
+        AlertLogin(
+            isLogin = alertLogin.value,
+            navigateToWelcome = {
+                navigateToWelcome()
+            }
+        )
+    }
     var liked by remember { mutableStateOf(isLiked == "1") }
     var totalLikeCount by remember { mutableStateOf(totalLike) }
-    if (isLogin){
-        Column(
-            modifier = modifier
-                .verticalScroll(rememberScrollState())
-        ) {
-            Box {
-                AsyncImage(
-                    model = image,
-                    contentDescription = "Image Detail Article",
-                    contentScale = ContentScale.Crop,
-                    modifier = modifier
-                        .height(250.dp)
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp))
-                )
+
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+    ) {
+        Box {
+            AsyncImage(
+                model = image,
+                contentDescription = "Image Detail Article",
+                contentScale = ContentScale.Crop,
+                modifier = modifier
+                    .height(250.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp))
+            )
+            Box(
+                modifier = modifier
+                    .height(250.dp)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.BottomEnd
+            ){
                 Box(
                     modifier = modifier
-                        .height(250.dp)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.BottomEnd
-                ){
-                    Box(
-                        modifier = modifier
-                            .padding(15.dp, 15.dp)
-                            .size(75.dp, 50.dp)
-                            .clip(RoundedCornerShape(20.dp))
-                            .alpha(0.5f)
-                            .background(Color.Black)
-                            .clickable {
+                        .padding(15.dp, 15.dp)
+                        .size(75.dp, 50.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .alpha(0.5f)
+                        .background(Color.Black)
+                        .clickable {
+                            if (isLogin) {
                                 liked = !liked
                                 totalLikeCount += if (liked) 1 else -1
                                 onLikeClick()
-                            }
-                    )
-                    Box(
-                        modifier = modifier
-                            .padding(25.dp, 15.dp)
-                            .size(50.dp),
-                        contentAlignment = Alignment.Center
-                    ){
-                        Row{
-                            Icon(
-                                imageVector = if (liked) Icons.Outlined.Favorite else Icons.Filled.FavoriteBorder,
-                                tint = Color.Red,
-                                contentDescription = "Icon Like Article",
-                                modifier = modifier
-                            )
-                            Text(
-                                text = totalLikeCount.toString(),
-                                color = colorScheme.onPrimary,
-                                modifier = modifier
-                                    .padding(5.dp, 0.dp, 0.dp, 0.dp)
-                            )
-
-                        }
-                    }
-
-                }
-            }
-            Box(
-                modifier = modifier
-                    .padding(15.dp)
-                    .fillMaxWidth()
-            ) {
-                Column {
-                    Box {
-                        Row {
-                            Text(
-                                text = author,
-                                color = colorScheme.onSurface
-                            )
-                            Box(
-                                modifier = modifier
-                                    .fillMaxWidth(),
-                                contentAlignment = Alignment.CenterEnd
-                            ) {
-                                Text(
-                                    text = createAt,
-                                    color = colorScheme.onSurface,
-                                    textAlign = TextAlign.Right,
-                                )
+                            } else {
+                                alertLogin.value = isLogin
                             }
                         }
-                    }
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.headlineSmall.copy(
-                            fontWeight = FontWeight.ExtraBold,
-                            fontSize = 20.sp
-                        ),
-                        color = colorScheme.onSurface,
-                        modifier = modifier
-                            .padding(0.dp, 12.dp, 0.dp, 20.dp)
-                    )
-                    Text(
-                        text = description,
-                        color = colorScheme.onSurface,
-                        textAlign = TextAlign.Justify
-                    )
-                }
-            }
-        }
-    }else{
-        var alertLogin = remember { mutableStateOf(true) }
-
-        if (!alertLogin.value) {
-            AlertLogin(
-                isLogin = alertLogin.value,
-                navigateToWelcome = {
-                    navigateToWelcome()
-                }
-            )
-        }
-
-        Column(
-            modifier = modifier
-                .verticalScroll(rememberScrollState())
-        ) {
-            Box {
-                AsyncImage(
-                    model = image,
-                    contentDescription = "Image Detail Article",
-                    contentScale = ContentScale.Crop,
-                    modifier = modifier
-                        .height(250.dp)
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp))
                 )
                 Box(
                     modifier = modifier
-                        .height(250.dp)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.BottomEnd
+                        .padding(25.dp, 15.dp)
+                        .size(50.dp),
+                    contentAlignment = Alignment.Center
                 ){
-                    Box(
-                        modifier = modifier
-                            .padding(15.dp, 15.dp)
-                            .size(75.dp, 50.dp)
-                            .clip(RoundedCornerShape(20.dp))
-                            .alpha(0.5f)
-                            .background(Color.Black)
-                            .clickable {
-                                alertLogin.value = isLogin
-                            }
-                    )
-                    Box(
-                        modifier = modifier
-                            .padding(25.dp, 15.dp)
-                            .size(50.dp),
-                        contentAlignment = Alignment.Center
-                    ){
-                        Row{
-                            Icon(
-                                imageVector =  if (liked) Icons.Outlined.Favorite else Icons.Filled.FavoriteBorder,
-                                tint = Color.Red,
-                                contentDescription = "Icon Like Article",
-                                modifier = modifier
-                            )
-                            Text(
-                                text = totalLike.toString(),
-                                color = colorScheme.onPrimary,
-                                modifier = modifier
-                                    .padding(5.dp, 0.dp, 0.dp, 0.dp)
-                            )
+                    Row{
+                        Icon(
+                            imageVector = if (liked) Icons.Outlined.Favorite else Icons.Filled.FavoriteBorder,
+                            tint = Color.Red,
+                            contentDescription = "Icon Like Article",
+                            modifier = modifier
+                        )
+                        Text(
+                            text = totalLikeCount.toString(),
+                            color = colorScheme.onPrimary,
+                            modifier = modifier
+                                .padding(5.dp, 0.dp, 0.dp, 0.dp)
+                        )
 
-                        }
                     }
-
                 }
+
             }
-            Box(
-                modifier = modifier
-                    .padding(15.dp)
-                    .fillMaxWidth()
-            ) {
-                Column {
-                    Box {
-                        Row {
+        }
+        Box(
+            modifier = modifier
+                .padding(15.dp)
+                .fillMaxWidth()
+        ) {
+            Column {
+                Box {
+                    Row {
+                        Text(
+                            text = author,
+                            color = colorScheme.onSurface
+                        )
+                        Box(
+                            modifier = modifier
+                                .fillMaxWidth(),
+                            contentAlignment = Alignment.CenterEnd
+                        ) {
                             Text(
-                                text = author,
-                                color = colorScheme.onSurface
+                                text = createAt,
+                                color = colorScheme.onSurface,
+                                textAlign = TextAlign.Right,
                             )
-                            Box(
-                                modifier = modifier
-                                    .fillMaxWidth(),
-                                contentAlignment = Alignment.CenterEnd
-                            ) {
-                                Text(
-                                    text = createAt,
-                                    color = colorScheme.onSurface,
-                                    textAlign = TextAlign.Right,
-                                )
-                            }
                         }
                     }
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.headlineSmall.copy(
-                            fontWeight = FontWeight.ExtraBold,
-                            fontSize = 20.sp
-                        ),
-                        color = colorScheme.onSurface,
-                        modifier = modifier
-                            .padding(0.dp, 12.dp, 0.dp, 20.dp)
-                    )
-                    Text(
-                        text = description,
-                        color = colorScheme.onSurface,
-                        textAlign = TextAlign.Justify
-                    )
                 }
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 20.sp
+                    ),
+                    color = colorScheme.onSurface,
+                    modifier = modifier
+                        .padding(0.dp, 12.dp, 0.dp, 20.dp)
+                )
+                Text(
+                    text = description,
+                    color = colorScheme.onSurface,
+                    textAlign = TextAlign.Justify
+                )
             }
         }
     }
