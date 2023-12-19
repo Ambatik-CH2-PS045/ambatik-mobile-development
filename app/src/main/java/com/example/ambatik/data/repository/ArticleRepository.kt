@@ -17,6 +17,10 @@ class ArticleRepository(private val apiService: ApiService, private val userPref
         return apiService.getDetailArticle(id, idUser)
     }
 
+    suspend fun getDetailArticleNoLogin(id: Int): ResponseDetailArticle{
+        return apiService.getDetailArticleNoLogin(id)
+    }
+
     suspend fun likeArticle(userId: Int, articleId: Int): ResponseLikeArticle{
         val requestBody = HashMap<String, String>()
         requestBody["userId"] = userId.toString()

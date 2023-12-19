@@ -16,6 +16,7 @@ class DetailArticleViewModel(private val repository: ArticleRepository): ViewMod
     val error = MutableLiveData<String?>()
     val status: MutableLiveData<Boolean> = MutableLiveData()
     val detailArticle = MutableLiveData<DataItemArticle>()
+    val detailArticleNoLogin = MutableLiveData<DataItemArticle>()
     val statusLike: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getDetailStory(id: Int, idUser: Int){
@@ -27,6 +28,26 @@ class DetailArticleViewModel(private val repository: ArticleRepository): ViewMod
                 detailArticle.postValue(articleDetailResponse.data)
                 Log.e("DETAIL ARTICLE", "$detailArticle")
                 Log.d("DETAIL ARTICLE", "${articleDetailResponse.data.likes[0].statusLike}")
+            }catch (e: HttpException){
+                val jsonInString = e.response()?.errorBody()?.string()
+                Log.e("DETAIL ARTICLE", "Error response: $jsonInString")
+                val errorBody = Gson().fromJson(jsonInString, ResponseArticle::class.java)
+                error.postValue(errorBody.message)
+                status.postValue(false)
+                Log.d("DETAIL ARTICLE", "$e")
+            }catch (e: Exception) {
+                error.postValue("Terjadi kesalahan saat membuat data")
+                status.postValue(false)
+                Log.d("DETAIL ARTICLE", "$e")
+            }
+        }
+    }
+
+    fun getDetailStoryNoLogin(id: Int){
+        viewModelScope.launch {
+            try {
+                val articleDetailNoLoginResponse = repository.getDetailArticleNoLogin(id)
+                detailArticleNoLogin.postValue(articleDetailNoLoginResponse.data)
             }catch (e: HttpException){
                 val jsonInString = e.response()?.errorBody()?.string()
                 Log.e("DETAIL ARTICLE", "Error response: $jsonInString")

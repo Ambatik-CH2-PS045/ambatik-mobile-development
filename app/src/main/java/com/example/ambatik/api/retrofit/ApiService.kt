@@ -52,6 +52,11 @@ interface ApiService{
         @Path("userid") userId: Int
     ): ResponseDetailArticle
 
+    @GET("article/details/{id}")
+    suspend fun getDetailArticleNoLogin(
+        @Path("id") id: Int,
+    ): ResponseDetailArticle
+
     @GET("article/like/{idUser}")
     suspend fun getLikeArticle(
         @Path("idUser") idUser: Int

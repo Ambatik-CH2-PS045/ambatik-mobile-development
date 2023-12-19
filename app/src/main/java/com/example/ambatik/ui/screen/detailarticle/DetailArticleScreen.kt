@@ -61,6 +61,7 @@ fun DetailArticleScreen(
     navigateToWelcome: () -> Unit,
 ) {
     val articleListState = viewModel.detailArticle.observeAsState()
+    val articleListNoLoginState = viewModel.detailArticleNoLogin.observeAsState()
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
 
     if (userModel.isLogin){
@@ -69,39 +70,63 @@ fun DetailArticleScreen(
         }
     }else{
         LaunchedEffect(Unit){
-            viewModel.getDetailStory(articleId, 0)
+            viewModel.getDetailStoryNoLogin(articleId)
         }
     }
-
 
     Surface(
         color = colorScheme.surface,
         modifier = modifier
             .fillMaxWidth()
     ) {
-        articleListState.value?.let { detailArticle ->
-            var holdLike by remember { mutableStateOf("") }
-            if (detailArticle.likes.isEmpty()){
-                holdLike = "0"
-            }else{
-                holdLike = detailArticle.likes.firstOrNull()!!.statusLike
+        if (userModel.isLogin){
+            articleListState.value?.let { detailArticle ->
+                var holdLike by remember { mutableStateOf("") }
+                if (detailArticle.likes.isEmpty()){
+                    holdLike = "0"
+                }else{
+                    holdLike = detailArticle.likes.firstOrNull()!!.statusLike
+                }
+                Log.d("DetailArticleContent", "${detailArticle.likes.firstOrNull()?.statusLike}")
+                DetailArticleContent(
+                    image = detailArticle.urlBanner ?: "",
+                    title = detailArticle.title ?: "",
+                    author = detailArticle.author ?: "",
+                    createAt = detailArticle.createdAt ?: "",
+                    totalLike = detailArticle.totalLike,
+                    description = detailArticle.content ?: "",
+                    isLiked = holdLike,
+                    isLogin = userModel.isLogin,
+                    onLikeClick = { viewModel.likeArticle(userModel.id, articleId) },
+                    navigateToWelcome = {
+                        navigateToWelcome()
+                    },
+                    modifier = Modifier
+                )
             }
-            Log.d("DetailArticleContent", "${detailArticle.likes.firstOrNull()?.statusLike}")
-            DetailArticleContent(
-                image = detailArticle.urlBanner ?: "",
-                title = detailArticle.title ?: "",
-                author = detailArticle.author ?: "",
-                createAt = detailArticle.createdAt ?: "",
-                totalLike = detailArticle.totalLike,
-                description = detailArticle.content ?: "",
-                isLiked = holdLike,
-                isLogin = userModel.isLogin,
-                onLikeClick = { viewModel.likeArticle(userModel.id, articleId) },
-                navigateToWelcome = {
-                    navigateToWelcome()
-                },
-                modifier = Modifier
-            )
+        }else{
+            articleListNoLoginState.value?.let { detailArticle ->
+                var holdLike by remember { mutableStateOf("") }
+                if (detailArticle.likes.isNotEmpty()){
+                    holdLike = "0"
+                }
+                Log.d("DetailArticleContent", "${detailArticle.likes.firstOrNull()?.statusLike}")
+                DetailArticleContent(
+                    image = detailArticle.urlBanner ?: "",
+                    title = detailArticle.title ?: "",
+                    author = detailArticle.author ?: "",
+                    createAt = detailArticle.createdAt ?: "",
+                    totalLike = detailArticle.totalLike,
+                    description = detailArticle.content ?: "",
+                    isLiked = holdLike,
+                    isLogin = userModel.isLogin,
+                    onLikeClick = { viewModel.likeArticle(userModel.id, articleId) },
+                    navigateToWelcome = {
+                        navigateToWelcome()
+                    },
+                    modifier = Modifier
+                )
+            }
         }
     }
 }
