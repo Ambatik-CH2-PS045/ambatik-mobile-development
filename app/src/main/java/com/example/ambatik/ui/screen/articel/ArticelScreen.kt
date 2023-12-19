@@ -72,7 +72,7 @@ fun ArticelScreen(
                 Text(
                     text = "Belajar Tentang Batik",
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Black,
                     color = colorScheme.onSurface,
                     modifier = modifier
                         .padding(top = 12.dp)
@@ -98,7 +98,7 @@ fun ArticelScreen(
                 Text(
                     text = "Article Terkini",
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Black,
                     color = colorScheme.onSurface,
                 )
             }
