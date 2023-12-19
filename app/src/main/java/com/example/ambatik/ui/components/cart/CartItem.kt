@@ -98,13 +98,13 @@ fun CartItem(
                             orderId = idProduct,
                             orderCount = totalQuantity.toInt(),
                             onProductIncreased = {
-                                viewModel.changeQtyCart(userModel.id, idProduct, commandAdd)
                                 viewModel.getCart(userModel.id)
+                                viewModel.changeQtyCart(userModel.id, idProduct, commandAdd)
                                 Log.d("CartItem", "Increased: User ID - ${userModel.id}, Product ID - $idProduct")
                             },
                             onProductDecreased = {
-                                viewModel.changeQtyCart(userModel.id, idProduct, commadDecrease)
                                 viewModel.getCart(userModel.id)
+                                viewModel.changeQtyCart(userModel.id, idProduct, commadDecrease)
                                 Log.d("CartItem", "Decreased: User ID - ${userModel.id}, Product ID - $idProduct")
                             },
                             modifier = modifier

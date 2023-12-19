@@ -48,8 +48,10 @@ fun OrderScreen(
     val orderListState = viewModel.orderList.observeAsState()
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
 
-    LaunchedEffect(userModel.id){
-        viewModel.getOrder(userModel.id)
+    if (userModel.isLogin){
+        LaunchedEffect(userModel.id){
+            viewModel.getOrder(userModel.id)
+        }
     }
 
     Surface(

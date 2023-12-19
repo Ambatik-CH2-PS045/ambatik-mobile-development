@@ -45,6 +45,7 @@ import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.ui.components.cart.CartItem
+import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.theme.AmbatikTheme
 import com.example.ambatik.utlis.formatCurrency
 
@@ -89,10 +90,14 @@ fun CartScreen(
                     BottomContent(
                         totalPrice = if (grandTotalOrder == 0) "" else formatCurrency(grandTotalOrder.toDouble()),
                         onAddToOrder = {
-                            viewModelOrder.checkout(totalQty, grandTotalOrder, userModel.id, eachQuantity, eachPriceList, eachProduct)
-                            viewModel.getCart(userModel.id)
-                            Toast.makeText(context, "Berhasil memesan", Toast.LENGTH_SHORT).show()
-                            Log.d("ORDER", "ORDER MASUK, idUser:$totalQty, grandTotal: $grandTotalOrder, idProd:$eachProduct, priceProd:$eachPriceList, qtyProd:$eachQuantity")
+                            if (data.data?.isNotEmpty() == true){
+                                viewModelOrder.checkout(totalQty, grandTotalOrder, userModel.id, eachQuantity, eachPriceList, eachProduct)
+                                viewModel.getCart(userModel.id)
+                                Toast.makeText(context, "Berhasil memesan", Toast.LENGTH_SHORT).show()
+                                Log.d("ORDER", "ORDER MASUK, idUser:$totalQty, grandTotal: $grandTotalOrder, idProd:$eachProduct, priceProd:$eachPriceList, qtyProd:$eachQuantity")
+                            }else{
+                                Toast.makeText(context, "Cart kamu masih kosong", Toast.LENGTH_SHORT).show()
+                            }
                         },
                         modifier = modifier
                     )
