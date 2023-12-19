@@ -17,6 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -173,7 +175,7 @@ fun StartQuizScreen(
             ){
                 if (!changeScreen){
                     Text(
-                        text = "Kamu teleh menyelesaikan kuis kamu. Apakah kamu ingin melihat hasil kuis kamu?",
+                        text = "Kamu teleh menyelesaikan quiz kamu. Apakah kamu ingin melihat hasil quiz kamu?",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
@@ -191,13 +193,12 @@ fun StartQuizScreen(
                             .height(45.dp)
                             .fillMaxWidth()
                     ) {
-                        Text(text = "Hasil kuis")
+                        Text(text = "Hasil quiz")
                     }
                     Button(
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         onClick = {
                             state = true
-//                            navController.navigateUp()
                         },
                         modifier = modifier
                             .fillMaxWidth()
@@ -211,13 +212,55 @@ fun StartQuizScreen(
                     }
                 } else{
                     submitQuiz.value?.let { dataSubmit ->
-                        Text(
-                            text = "Total jawaban benar: ${dataSubmit.totalCorrect}"
-                        )
-                        Text(text = "Total jawaban salah: ${dataSubmit.totalWrong}"
-                        )
-                        Text(text = "Total poin yang didapatkan: ${dataSubmit.accumulatePoint}"
-                        )
+                        Card(
+                            colors = CardDefaults.cardColors(colorScheme.onPrimary)
+                        ) {
+                            Box(
+                                modifier = modifier
+                                    .padding(16.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Column {
+                                    Text(
+                                        text = "Selamat kamu telah menyelesaikan quiz kamu.",
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        textAlign = TextAlign.Center,
+                                    )
+                                    Text(
+                                        text = "Total jawaban benar: ${dataSubmit.totalCorrect}",
+                                        textAlign = TextAlign.Center,
+                                        modifier = modifier
+                                            .padding(top = 8.dp)
+                                            .fillMaxWidth()
+                                    )
+                                    Text(
+                                        text = "Total jawaban salah: ${dataSubmit.totalWrong}",
+                                        textAlign = TextAlign.Center,
+                                        modifier = modifier
+                                            .fillMaxWidth()
+                                    )
+                                    Text(
+                                        text = "Total poin yang didapatkan: ${dataSubmit.accumulatePoint}",
+                                        textAlign = TextAlign.Center,
+                                        modifier = modifier
+                                            .fillMaxWidth()
+                                    )
+                                    Button(
+                                        shape = RoundedCornerShape(10.dp),
+                                        onClick = { navController.navigateUp() },
+                                        modifier = modifier
+                                            .padding(top = 8.dp)
+                                            .fillMaxWidth()
+                                    ) {
+                                        Text(
+                                            text = "Kembali"
+                                        )
+                                    }
+                                }
+
+                            }
+                        }
                     }
                 }
             }

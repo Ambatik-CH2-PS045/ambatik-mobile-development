@@ -107,12 +107,7 @@ fun QuizItem(
                 text = {
                     Column {
                         Text(
-                            text = "Kamu sudah pernah melakukan kuis ini apakah kamu ingin tetap melanjutkan?",
-                            modifier = modifier
-                                .padding(bottom = 8.dp)
-                        )
-                        Text(
-                            text = "Score tertinggi kamu dapat kuis ini adalah $score"
+                            text = "Kamu sudah pernah melakukan kuis ini apakah kamu ingin tetap melanjutkan?"
                         )
                     }
                 },

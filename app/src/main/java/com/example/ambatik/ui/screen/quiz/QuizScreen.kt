@@ -79,7 +79,7 @@ fun QuizScreen(
     val statusState by viewModel.status.observeAsState(false)
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
     var tabIndex by remember { mutableStateOf(0) }
-    val tabs = listOf("Kuis", "Leaderboard")
+    val tabs = listOf("Quiz", "Leaderboard")
 
     LaunchedEffect(userModel.id){
         viewModelProfile.getDetailUser(userModel.id)
