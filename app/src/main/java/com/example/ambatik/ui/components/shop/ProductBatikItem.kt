@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.ambatik.ui.theme.AmbatikTheme
+import com.example.ambatik.utlis.formatCurrency
 
 @Composable
 fun ProductBatikItem(
@@ -64,7 +65,7 @@ fun ProductBatikItem(
                     .padding(12.dp, 8.dp, 12.dp, 0.dp)
             )
             Text(
-                text = "Rp. $price",
+                text = formatCurrency(price.toDouble()),
                 color = colorScheme.onSurface,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,

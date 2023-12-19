@@ -27,6 +27,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -50,8 +51,10 @@ import com.example.ambatik.data.factory.ShopModelFactory
 import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
+import com.example.ambatik.ui.components.alert.AlertLogin
 import com.example.ambatik.ui.components.shop.OrderButton
 import com.example.ambatik.ui.theme.AmbatikTheme
+import com.example.ambatik.utlis.formatCurrency
 
 @Composable
 fun DetailShopScreen(
@@ -64,12 +67,24 @@ fun DetailShopScreen(
     viewModelCart: AddToCartViewModel = viewModel(
         factory = CartModelFactory.getInstance(LocalContext.current)
     ),
+    navigateToWelcome: () -> Unit,
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore)
 ) {
     val shopListState = viewModel.detailShop.observeAsState()
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
     val command = "add"
     val context = LocalContext.current
+
+    var alertLogin = remember { mutableStateOf(true) }
+
+    if (!alertLogin.value) {
+        AlertLogin(
+            isLogin = alertLogin.value,
+            navigateToWelcome = {
+                navigateToWelcome()
+            }
+        )
+    }
 
     LaunchedEffect(Unit){
         viewModel.getDetailShop(shopId)
@@ -90,8 +105,12 @@ fun DetailShopScreen(
                 description = detailShop.description ?: "",
                 count = 1,
                 onAddToCart = {
+                    if (userModel.isLogin){
                         viewModelCart.addToCart(userModel.id, shopId, command)
                         Toast.makeText(context, "Berhasil menambahkan product ke cart", Toast.LENGTH_SHORT).show()
+                    }else{
+                        alertLogin.value = userModel.isLogin
+                    }
                 }
             )
         }
@@ -143,7 +162,7 @@ fun DetailShopContent(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(
-                                text = "Rp. $price",
+                                text = formatCurrency(price.toDouble()),
                                 style = MaterialTheme.typography.headlineSmall.copy(
                                     fontWeight = FontWeight.ExtraBold
                                 ),

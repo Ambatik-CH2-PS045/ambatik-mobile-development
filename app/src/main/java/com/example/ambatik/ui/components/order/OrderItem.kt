@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.ambatik.ui.theme.AmbatikTheme
 import com.example.ambatik.ui.theme.Shapes
+import com.example.ambatik.utlis.formatCurrency
 
 @Composable
 fun OrderItem(
@@ -64,7 +65,7 @@ fun OrderItem(
                         ),
                     )
                     Text(
-                        text = "Rp. $totalPrice",
+                        text = formatCurrency(totalPrice.toDouble()),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         color = MaterialTheme.colorScheme.onSurface,

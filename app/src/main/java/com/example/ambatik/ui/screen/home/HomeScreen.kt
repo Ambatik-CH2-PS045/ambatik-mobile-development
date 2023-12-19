@@ -53,11 +53,6 @@ fun HomeScreen(
     val logoutStatus = remember { mutableStateOf(false) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val logout = navBackStackEntry?.arguments?.getBoolean("logout") ?: false
-
-    if (logout){
-        logoutStatus.value = true
-    }
 
     LaunchedEffect(currentRoute) {
         if (currentRoute == Screen.Welcome.route) {

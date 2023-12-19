@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.ambatik.ui.theme.AmbatikTheme
 import com.example.ambatik.ui.theme.Shapes
+import com.example.ambatik.utlis.convertDateFormat
 
 @Composable
 fun ArticleItem(
@@ -92,7 +93,7 @@ fun ArticleItem(
                                 contentAlignment = Alignment.CenterEnd
                             ) {
                                 Text(
-                                    text = createAt,
+                                    text = convertDateFormat(createAt),
                                     fontSize = 12.sp,
                                     color = colorScheme.onSurface,
                                     textAlign = TextAlign.Right,

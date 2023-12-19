@@ -71,6 +71,7 @@ fun QuizScreen(
     ),
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore),
     navigateToStartQuiz: (String) -> Unit,
+    navigateToWelcome: () -> Unit
 ){
     val listQuizState = viewModel.quizList.observeAsState()
     val listLeaderboard = viewModel.leaderboardList.observeAsState()
@@ -91,7 +92,7 @@ fun QuizScreen(
         modifier = modifier
             .fillMaxSize()
     ) {
-        detailUserState.value?.let {data ->
+        if (!userModel.isLogin){
             Column {
                 Box(
                     modifier = modifier
@@ -104,7 +105,7 @@ fun QuizScreen(
                         modifier = modifier
                     ) {
                         AsyncImage(
-                            model = data.urlProfile,
+                            model = "",
                             contentScale = ContentScale.Crop,
                             contentDescription = "Edit Profile",
                             modifier = modifier
@@ -125,7 +126,7 @@ fun QuizScreen(
                             Text(
                                 modifier = modifier
                                     .fillMaxWidth(),
-                                text = data.username ?: "",
+                                text = "-",
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface,
@@ -152,7 +153,7 @@ fun QuizScreen(
                                             .padding(end = 4.dp)
                                     )
                                     Text(
-                                        text = data.point.toString(),
+                                        text = "0",
                                         color = colorScheme.primary
                                     )
                                 }
@@ -163,7 +164,7 @@ fun QuizScreen(
                 TabRow(selectedTabIndex = tabIndex) {
                     tabs.forEachIndexed {index, title ->
                         Tab(
-                            text = { 
+                            text = {
                                 Text(
                                     text = title,
                                     color = colorScheme.onSurface
@@ -186,6 +187,9 @@ fun QuizScreen(
                                         name = data?.type ?: "",
                                         navigateToStartQuiz = {
                                             navigateToStartQuiz(data?.type ?: "")
+                                        },
+                                        navigateToWelcome = {
+                                            navigateToWelcome()
                                         },
                                         quizHistories = data?.quizHistories,
                                         score = data?.quizHistories?.firstOrNull()?.point.toString()
@@ -213,6 +217,133 @@ fun QuizScreen(
                 }
 
             }
+        }else{
+            detailUserState.value?.let {data ->
+                Column {
+                    Box(
+                        modifier = modifier
+                            .padding(16.dp, 16.dp, 16.dp, 16.dp)
+                            .height(75.dp)
+                            .background(MaterialTheme.colorScheme.surface)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = modifier
+                        ) {
+                            AsyncImage(
+                                model = data.urlProfile,
+                                contentScale = ContentScale.Crop,
+                                contentDescription = "Edit Profile",
+                                modifier = modifier
+                                    .size(75.dp)
+                                    .clip(CircleShape)
+                            )
+                            Column(
+                                modifier = modifier
+                                    .padding(8.dp, 8.dp, 0.dp, 8.dp)
+                                    .width(120.dp)
+                            ) {
+                                Text(
+                                    text = "Halo,",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                )
+                                Text(
+                                    modifier = modifier
+                                        .fillMaxWidth(),
+                                    text = data.username ?: "",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                )
+                            }
+                            Box(
+                                modifier = modifier
+                                    .height(250.dp)
+                                    .fillMaxWidth(),
+                                contentAlignment = Alignment.CenterEnd
+                            ) {
+                                Box(
+                                    modifier = modifier
+                                        .width(100.dp)
+                                        .height(50.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Row {
+                                        Icon(
+                                            imageVector = Icons.Filled.Stars,
+                                            contentDescription = "Score",
+                                            tint = colorScheme.primary,
+                                            modifier = modifier
+                                                .padding(end = 4.dp)
+                                        )
+                                        Text(
+                                            text = data.point.toString(),
+                                            color = colorScheme.primary
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    TabRow(selectedTabIndex = tabIndex) {
+                        tabs.forEachIndexed {index, title ->
+                            Tab(
+                                text = {
+                                    Text(
+                                        text = title,
+                                        color = colorScheme.onSurface
+                                    )
+                                },
+                                selected = tabIndex == index,
+                                onClick = { tabIndex = index }
+                            )
+                        }
+                    }
+                    when(tabIndex){
+                        0 -> Column{
+                            Box{
+                                LazyColumn(
+                                    contentPadding = PaddingValues(16.dp),
+                                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                                ){
+                                    items(listQuizState.value ?: emptyList()){data ->
+                                        QuizItem(
+                                            name = data?.type ?: "",
+                                            navigateToStartQuiz = {
+                                                navigateToStartQuiz(data?.type ?: "")
+                                            },
+                                            navigateToWelcome = {
+                                                navigateToWelcome()
+                                            },
+                                            quizHistories = data?.quizHistories,
+                                            score = data?.quizHistories?.firstOrNull()?.point.toString()
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        1 -> Column{
+                            Box{
+                                LazyColumn(
+                                    contentPadding = PaddingValues(16.dp),
+                                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                                ){
+                                    items(listLeaderboard.value ?: emptyList()){data ->
+                                        LeaderboardItem(
+                                            name = data?.name ?: "",
+                                            point = data?.point.toString() ?: "",
+                                            urlProfile = data?.urlProfile ?: ""
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
         }
     }
 }
@@ -221,7 +352,7 @@ fun QuizScreen(
 @Composable
 fun PreviewEditQuizScreen(){
     AmbatikTheme {
-        QuizScreen(navigateToStartQuiz = {})
+        QuizScreen(navigateToStartQuiz = {}, navigateToWelcome = {})
     }
 }
 

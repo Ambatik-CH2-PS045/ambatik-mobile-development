@@ -46,10 +46,10 @@ interface ApiService{
     @GET("article")
     suspend fun getArticle(): ResponseArticle
 
-    @GET("article/details/{id}/{idUser}")
+    @GET("article/details/{id}/{userid}")
     suspend fun getDetailArticle(
         @Path("id") id: Int,
-        @Path("idUser") idUser: Int
+        @Path("userid") userId: Int
     ): ResponseDetailArticle
 
     @GET("article/like/{idUser}")

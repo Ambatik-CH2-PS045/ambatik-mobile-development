@@ -31,8 +31,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,6 +49,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.R
 import com.example.ambatik.data.factory.ShopModelFactory
+import com.example.ambatik.data.pref.UserModel
+import com.example.ambatik.data.pref.UserPreference
+import com.example.ambatik.data.pref.dataStore
+import com.example.ambatik.ui.components.alert.AlertLogin
 import com.example.ambatik.ui.components.shop.ProductBatikItem
 import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.theme.AmbatikTheme
@@ -59,14 +66,28 @@ fun ShoppingScreen(
         factory = ShopModelFactory.getInstance(LocalContext.current)
     ),
     navigateToDetailShop: (Int) -> Unit,
+    navigateToWelcome: () -> Unit,
+    userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore),
 ) {
     val shopListState = viewModel.shopList.observeAsState()
     val statusState by viewModel.status.observeAsState(false)
     val errorState by viewModel.error.observeAsState(null)
     val query by viewModel.query
 
+    val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
+    var alertLogin = remember { mutableStateOf(true) }
+
     LaunchedEffect(Unit){
         viewModel.getShop()
+    }
+
+    if (!alertLogin.value) {
+        AlertLogin(
+            isLogin = alertLogin.value,
+            navigateToWelcome = {
+                navigateToWelcome()
+            }
+        )
     }
 
     Surface(
@@ -105,7 +126,7 @@ fun ShoppingScreen(
                     modifier = modifier
                         .padding(16.dp, 16.dp, 0.dp, 16.dp)
                         .fillMaxWidth(0.85f)
-                        .height(48.dp)
+                        .height(55.dp)
                 ) {
                 }
                 Icon(
@@ -115,7 +136,11 @@ fun ShoppingScreen(
                         .padding(16.dp)
                         .size(40.dp)
                         .clickable {
-                            navController.navigate(Screen.Cart.route)
+                            if (userModel.isLogin){
+                                navController.navigate(Screen.Cart.route)
+                            }else{
+                                alertLogin.value = userModel.isLogin
+                            }
                         }
                 )
             }
@@ -187,7 +212,8 @@ fun ShoppingScreen(
 fun PreviewShoppingScreen(){
     AmbatikTheme {
         ShoppingScreen(
-            navigateToDetailShop = {}
+            navigateToDetailShop = {},
+            navigateToWelcome = {}
         )
     }
 }

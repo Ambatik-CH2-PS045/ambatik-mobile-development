@@ -46,6 +46,7 @@ import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.ui.components.cart.CartItem
 import com.example.ambatik.ui.theme.AmbatikTheme
+import com.example.ambatik.utlis.formatCurrency
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -134,9 +135,6 @@ fun BottomContent(
     onAddToOrder : () -> Unit,
     modifier: Modifier = Modifier
 ){
-//    var totalQty by remember { mutableStateOf("") }
-//    var grandTotal by remember { mutableStateOf(totalPrice) }
-//    var userId by remember { mutableStateOf("") }
     Row(
         modifier = modifier
             .padding(20.dp, 12.dp, 20.dp, 12.dp)
@@ -155,7 +153,7 @@ fun BottomContent(
                     fontSize = 20.sp
                 )
                 Text(
-                    text = "Rp. $totalPrice",
+                    text = totalPrice,
                     color = colorScheme.onSurface,
                 )
             }

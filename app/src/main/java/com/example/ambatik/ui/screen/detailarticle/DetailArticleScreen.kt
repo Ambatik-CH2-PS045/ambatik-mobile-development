@@ -46,6 +46,7 @@ import com.example.ambatik.data.factory.ArticleModelFactory
 import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
+import com.example.ambatik.ui.components.alert.AlertLogin
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 @Composable
@@ -55,7 +56,8 @@ fun DetailArticleScreen(
     viewModel: DetailArticleViewModel = viewModel(
         factory = ArticleModelFactory.getInstance(LocalContext.current)
     ),
-    userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore)
+    userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore),
+    navigateToWelcome: () -> Unit,
 ) {
     val articleListState = viewModel.detailArticle.observeAsState()
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
@@ -85,7 +87,11 @@ fun DetailArticleScreen(
                 totalLike = detailArticle.totalLike,
                 description = detailArticle.content ?: "",
                 isLiked = holdLike,
+                isLogin = userModel.isLogin,
                 onLikeClick = { viewModel.likeArticle(userModel.id, articleId) },
+                navigateToWelcome = {
+                    navigateToWelcome()
+                },
                 modifier = Modifier
             )
         }
@@ -102,109 +108,226 @@ fun DetailArticleContent(
     totalLike: Int,
     description: String,
     isLiked: String,
+    isLogin: Boolean,
     onLikeClick: () -> Unit,
+    navigateToWelcome: ()-> Unit,
     modifier: Modifier = Modifier
 ){
-    var liked by remember { mutableStateOf(isLiked == "1") }
-    var totalLikeCount by remember { mutableStateOf(totalLike) }
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-    ) {
-        Box {
-            AsyncImage(
-                model = image,
-                contentDescription = "Image Detail Article",
-                contentScale = ContentScale.Crop,
-                modifier = modifier
-                    .height(250.dp)
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp))
-            )
+    if (isLogin){
+        var liked by remember { mutableStateOf(isLiked == "1") }
+        var totalLikeCount by remember { mutableStateOf(totalLike) }
+        Column(
+            modifier = modifier
+                .verticalScroll(rememberScrollState())
+        ) {
+            Box {
+                AsyncImage(
+                    model = image,
+                    contentDescription = "Image Detail Article",
+                    contentScale = ContentScale.Crop,
+                    modifier = modifier
+                        .height(250.dp)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp))
+                )
+                Box(
+                    modifier = modifier
+                        .height(250.dp)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.BottomEnd
+                ){
+                    Box(
+                        modifier = modifier
+                            .padding(15.dp, 15.dp)
+                            .size(75.dp, 50.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .alpha(0.5f)
+                            .background(Color.Black)
+                            .clickable {
+                                liked = !liked
+                                totalLikeCount += if (liked) 1 else -1
+                                onLikeClick()
+                            }
+                    )
+                    Box(
+                        modifier = modifier
+                            .padding(25.dp, 15.dp)
+                            .size(50.dp),
+                        contentAlignment = Alignment.Center
+                    ){
+                        Row{
+                            Icon(
+                                imageVector = if (liked) Icons.Outlined.Favorite else Icons.Filled.FavoriteBorder,
+                                tint = Color.Red,
+                                contentDescription = "Icon Like Article",
+                                modifier = modifier
+                            )
+                            Text(
+                                text = totalLikeCount.toString(),
+                                color = colorScheme.onPrimary,
+                                modifier = modifier
+                                    .padding(5.dp, 0.dp, 0.dp, 0.dp)
+                            )
+
+                        }
+                    }
+
+                }
+            }
             Box(
                 modifier = modifier
-                    .height(250.dp)
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.BottomEnd
-            ){
-                Box(
-                    modifier = modifier
-                        .padding(15.dp, 15.dp)
-                        .size(75.dp, 50.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .alpha(0.5f)
-                        .background(Color.Black)
-                        .clickable {
-                            liked = !liked
-                            totalLikeCount += if (liked) 1 else -1
-                            onLikeClick()
+                    .padding(15.dp)
+                    .fillMaxWidth()
+            ) {
+                Column {
+                    Box {
+                        Row {
+                            Text(
+                                text = author,
+                                color = colorScheme.onSurface
+                            )
+                            Box(
+                                modifier = modifier
+                                    .fillMaxWidth(),
+                                contentAlignment = Alignment.CenterEnd
+                            ) {
+                                Text(
+                                    text = createAt,
+                                    color = colorScheme.onSurface,
+                                    textAlign = TextAlign.Right,
+                                )
+                            }
                         }
-                )
-                Box(
-                    modifier = modifier
-                        .padding(25.dp, 15.dp)
-                        .size(50.dp),
-                    contentAlignment = Alignment.Center
-                ){
-                    Row{
-                        Icon(
-                            imageVector = if (liked) Icons.Outlined.Favorite else Icons.Filled.FavoriteBorder,
-                            tint = Color.Red,
-                            contentDescription = "Icon Like Article",
-                            modifier = modifier
-                        )
-                        Text(
-                            text = totalLikeCount.toString(),
-                            color = colorScheme.onPrimary,
-                            modifier = modifier
-                                .padding(5.dp, 0.dp, 0.dp, 0.dp)
-                        )
-
                     }
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.headlineSmall.copy(
+                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = 20.sp
+                        ),
+                        color = colorScheme.onSurface,
+                        modifier = modifier
+                            .padding(0.dp, 12.dp, 0.dp, 20.dp)
+                    )
+                    Text(
+                        text = description,
+                        color = colorScheme.onSurface,
+                        textAlign = TextAlign.Justify
+                    )
                 }
-
             }
         }
-        Box(
+    }else{
+        var liked by remember { mutableStateOf(isLiked == "1") }
+        var totalLikeCount by remember { mutableStateOf(totalLike) }
+        var alertLogin = remember { mutableStateOf(true) }
+
+        if (!alertLogin.value) {
+            AlertLogin(
+                isLogin = alertLogin.value,
+                navigateToWelcome = {
+                    navigateToWelcome()
+                }
+            )
+        }
+
+        Column(
             modifier = modifier
-                .padding(15.dp)
-                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
         ) {
-            Column {
-                Box {
-                    Row {
-                        Text(
-                            text = author,
-                            color = colorScheme.onSurface
-                        )
-                        Box(
-                            modifier = modifier
-                                .fillMaxWidth(),
-                            contentAlignment = Alignment.CenterEnd
-                        ) {
-                            Text(
-                                text = createAt,
-                                color = colorScheme.onSurface,
-                                textAlign = TextAlign.Right,
+            Box {
+                AsyncImage(
+                    model = image,
+                    contentDescription = "Image Detail Article",
+                    contentScale = ContentScale.Crop,
+                    modifier = modifier
+                        .height(250.dp)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp))
+                )
+                Box(
+                    modifier = modifier
+                        .height(250.dp)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.BottomEnd
+                ){
+                    Box(
+                        modifier = modifier
+                            .padding(15.dp, 15.dp)
+                            .size(75.dp, 50.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .alpha(0.5f)
+                            .background(Color.Black)
+                            .clickable {
+                                alertLogin.value = isLogin
+                            }
+                    )
+                    Box(
+                        modifier = modifier
+                            .padding(25.dp, 15.dp)
+                            .size(50.dp),
+                        contentAlignment = Alignment.Center
+                    ){
+                        Row{
+                            Icon(
+                                imageVector = if (liked) Icons.Outlined.Favorite else Icons.Filled.FavoriteBorder,
+                                tint = Color.Red,
+                                contentDescription = "Icon Like Article",
+                                modifier = modifier
                             )
+                            Text(
+                                text = totalLikeCount.toString(),
+                                color = colorScheme.onPrimary,
+                                modifier = modifier
+                                    .padding(5.dp, 0.dp, 0.dp, 0.dp)
+                            )
+
                         }
                     }
+
                 }
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 20.sp
-                    ),
-                    color = colorScheme.onSurface,
-                    modifier = modifier
-                        .padding(0.dp, 12.dp, 0.dp, 20.dp)
-                )
-                Text(
-                    text = description,
-                    color = colorScheme.onSurface,
-                    textAlign = TextAlign.Justify
-                )
+            }
+            Box(
+                modifier = modifier
+                    .padding(15.dp)
+                    .fillMaxWidth()
+            ) {
+                Column {
+                    Box {
+                        Row {
+                            Text(
+                                text = author,
+                                color = colorScheme.onSurface
+                            )
+                            Box(
+                                modifier = modifier
+                                    .fillMaxWidth(),
+                                contentAlignment = Alignment.CenterEnd
+                            ) {
+                                Text(
+                                    text = createAt,
+                                    color = colorScheme.onSurface,
+                                    textAlign = TextAlign.Right,
+                                )
+                            }
+                        }
+                    }
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.headlineSmall.copy(
+                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = 20.sp
+                        ),
+                        color = colorScheme.onSurface,
+                        modifier = modifier
+                            .padding(0.dp, 12.dp, 0.dp, 20.dp)
+                    )
+                    Text(
+                        text = description,
+                        color = colorScheme.onSurface,
+                        textAlign = TextAlign.Justify
+                    )
+                }
             }
         }
     }
@@ -222,7 +345,9 @@ fun PreviewDetailArticle(){
             author = "Wiguna Wijaya",
             description = "Dalam penyelenggaraan kali ini, LAKON Indonesia akan mempresentasikan koleksi yang lebih matang dan lebih dalam, berupa 125 koleksi pakaian siap pakai yang akan diperagakan oleh 100 orang model.",
             isLiked = "1",
-            onLikeClick = {}
+            onLikeClick = {},
+            isLogin = true,
+            navigateToWelcome = {}
         )
     }
 }

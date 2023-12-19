@@ -29,6 +29,7 @@ import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.ui.screen.cart.CartViewModel
 import com.example.ambatik.ui.theme.AmbatikTheme
+import com.example.ambatik.utlis.formatCurrency
 
 @Composable
 fun CartItem(
@@ -86,7 +87,7 @@ fun CartItem(
                             color = colorScheme.onSurface,
                         )
                         Text(
-                            text = "Rp. $totalPrice",
+                            text = formatCurrency(totalPrice.toDouble()) ,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             color = colorScheme.onSurface,

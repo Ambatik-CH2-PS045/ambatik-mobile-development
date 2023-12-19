@@ -34,6 +34,7 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -65,6 +66,10 @@ import coil.compose.rememberImagePainter
 import com.example.ambatik.BuildConfig
 import com.example.ambatik.R
 import com.example.ambatik.data.factory.BatikModelFactory
+import com.example.ambatik.data.pref.UserModel
+import com.example.ambatik.data.pref.UserPreference
+import com.example.ambatik.data.pref.dataStore
+import com.example.ambatik.ui.components.alert.AlertLogin
 import com.example.ambatik.ui.theme.AmbatikTheme
 import com.example.ambatik.utlis.createCustomTempFile
 import com.example.ambatik.utlis.uriToFile
@@ -76,8 +81,10 @@ fun ScanScreen(
     modifier: Modifier = Modifier,
     viewModel: ScanViewModel = viewModel(
         factory = BatikModelFactory.getInstance(LocalContext.current)
-    )
-){
+    ),
+    navigateToWelcome: () -> Unit,
+    userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore),
+    ){
     var scanBatikState by remember { mutableStateOf(false) }
     val statusState by viewModel.status.observeAsState(false)
     val hasilPredictBatik = viewModel.detailScanBatik.observeAsState()
@@ -113,6 +120,18 @@ fun ScanScreen(
         } else {
             Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
+    var alertLogin = remember { mutableStateOf(true) }
+
+    if (!alertLogin.value) {
+        AlertLogin(
+            isLogin = alertLogin.value,
+            navigateToWelcome = {
+                navigateToWelcome()
+            }
+        )
     }
 
     Surface(
@@ -199,8 +218,12 @@ fun ScanScreen(
                                 containerColor = colorScheme.primary,
                                 contentColor = colorScheme.onPrimary,
                                 onClick = {
-                                    viewModel.scanBatik(capturedImage.toFile())
-                                    scanBatikState = true
+                                    if (userModel.isLogin){
+                                        viewModel.scanBatik(capturedImage.toFile())
+                                        scanBatikState = true
+                                    }else{
+                                        alertLogin.value = userModel.isLogin
+                                    }
                                 },
                                 modifier = Modifier
                                     .size(85.dp)
@@ -356,6 +379,8 @@ fun ImageContent(
 @Composable
 fun PreviewScanScreen(){
     AmbatikTheme {
-        ScanScreen()
+        ScanScreen(
+            navigateToWelcome = {}
+        )
     }
 }

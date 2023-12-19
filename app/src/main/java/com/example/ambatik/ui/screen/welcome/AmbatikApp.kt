@@ -56,13 +56,6 @@ fun AmbatikApp(
         }
     }
 
-    val lifecycleOwner = LocalLifecycleOwner.current
-
-    viewModel.getSession().observe(lifecycleOwner) { session ->
-        if (session.isLogin){
-            navController.navigate(Screen.Home.route)
-        }
-    }
     Surface(
         color = colorScheme.surface,
         modifier = modifier

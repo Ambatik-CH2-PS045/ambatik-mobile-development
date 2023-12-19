@@ -31,6 +31,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,6 +52,7 @@ import com.example.ambatik.data.factory.UserModelFactory
 import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
+import com.example.ambatik.ui.components.alert.AlertLogin
 import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.theme.AmbatikTheme
 
@@ -60,11 +63,23 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel(
         factory = UserModelFactory.getInstance(LocalContext.current)
     ),
+    navigateToWelcome: () -> Unit,
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore)
 ){
     val statusState by viewModel.status.observeAsState(false)
     val detailUserState = viewModel.detailUser.observeAsState()
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
+    var alertLogin = remember { mutableStateOf(true) }
+
+    if (!alertLogin.value) {
+        AlertLogin(
+            isLogin = alertLogin.value,
+            navigateToWelcome = {
+                navigateToWelcome()
+            }
+        )
+    }
+
 
     LaunchedEffect(userModel.id){
         viewModel.getDetailUser(userModel.id)
@@ -75,7 +90,230 @@ fun ProfileScreen(
         modifier = modifier
             .fillMaxSize()
     ) {
-        detailUserState.value?.let { detailUser ->
+        if (userModel.isLogin){
+            detailUserState.value?.let { detailUser ->
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = modifier
+                ) {
+                    Box{
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            Row(
+                                modifier = modifier
+                                    .padding(20.dp, 20.dp, 0.dp, 0.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                AsyncImage(
+                                    model = detailUser.urlProfile,
+                                    contentDescription = "Profile Image",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .size(75.dp)
+                                        .clip(CircleShape)
+                                )
+                                Box(
+                                    modifier = modifier
+                                        .height(75.dp),
+                                    contentAlignment = Alignment.CenterStart
+                                ) {
+                                    Column(
+                                        modifier = modifier
+                                            .padding(start = 8.dp)
+                                    ) {
+                                        Text(
+                                            text = detailUser.name ?: "",
+                                            color = colorScheme.onSurface,
+                                            fontSize = 24.sp,
+                                            fontWeight = FontWeight.Bold,
+                                        )
+                                        Text(
+                                            text = detailUser.username ?: "",
+                                            color = colorScheme.onSurface,
+                                            fontSize = 18.sp,
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Box(
+                        modifier = modifier
+                            .padding(20.dp, 10.dp)
+                            .fillMaxWidth()
+                    ) {
+                        val context = LocalContext.current
+                        Column{
+                            Row(
+                                modifier = modifier
+                                    .padding(5.dp)
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        navController.navigate(Screen.EditProfile.route)
+                                    },
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Edit,
+                                    contentDescription = "Icon Edit Profile",
+                                    tint = colorScheme.onSurface,
+                                    modifier = modifier
+                                        .padding(0.dp, 10.dp)
+                                )
+                                Text(
+                                    text = "Edit Profile",
+                                    color = colorScheme.onSurface,
+                                    modifier = modifier
+                                        .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                                )
+                                Box(
+                                    modifier = modifier
+                                        .fillMaxWidth(),
+                                    contentAlignment = Alignment.TopEnd
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.NavigateNext,
+                                        contentDescription = "Navigate to Edit Profile",
+                                        tint = colorScheme.onSurface,
+                                    )
+                                }
+                            }
+                            Row(
+                                modifier = modifier
+                                    .padding(5.dp)
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        navController.navigate(Screen.LikeArticle.route)
+                                    },
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Article,
+                                    contentDescription = "Icon Bookmark Article",
+                                    tint = colorScheme.onSurface,
+                                    modifier = modifier
+                                        .padding(0.dp, 10.dp)
+                                )
+                                Text(
+                                    text = "Like Article",
+                                    color = colorScheme.onSurface,
+                                    modifier = modifier
+                                        .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                                )
+                                Box(
+                                    modifier = modifier
+                                        .fillMaxWidth(),
+                                    contentAlignment = Alignment.TopEnd
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.NavigateNext,
+                                        contentDescription = "Navigate to Bookmark Article",
+                                        tint = colorScheme.onSurface,
+                                    )
+                                }
+                            }
+                            Row(
+                                modifier = modifier
+                                    .padding(5.dp)
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        navController.navigate(Screen.Order.route)
+                                    },
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Bookmarks,
+                                    contentDescription = "Icon Bookmark Product",
+                                    tint = colorScheme.onSurface,
+                                    modifier = modifier
+                                        .padding(0.dp, 10.dp)
+                                )
+                                Text(
+                                    text = "Transaksi",
+                                    color = colorScheme.onSurface,
+                                    modifier = modifier
+                                        .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                                )
+                                Box(
+                                    modifier = modifier
+                                        .fillMaxWidth(),
+                                    contentAlignment = Alignment.TopEnd
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.NavigateNext,
+                                        contentDescription = "Navigate to Bookmark Product",
+                                        tint = colorScheme.onSurface,
+                                    )
+                                }
+                            }
+                            Row(
+                                modifier = modifier
+                                    .padding(5.dp)
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        Toast
+                                            .makeText(context, "About", Toast.LENGTH_SHORT)
+                                            .show()
+                                    },
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Info,
+                                    contentDescription = "Icon About",
+                                    tint = colorScheme.onSurface,
+                                    modifier = modifier
+                                        .padding(0.dp, 10.dp)
+                                )
+                                Text(
+                                    text = "About",
+                                    color = colorScheme.onSurface,
+                                    modifier = modifier
+                                        .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                                )
+                                Box(
+                                    modifier = modifier
+                                        .fillMaxWidth(),
+                                    contentAlignment = Alignment.TopEnd
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.NavigateNext,
+                                        contentDescription = "Navigate to About",
+                                        tint = colorScheme.onSurface,
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    Box(
+                        modifier = modifier
+                            .padding(20.dp, 25.dp)
+                            .fillMaxWidth()
+                            .fillMaxHeight(),
+                        contentAlignment = Alignment.BottomEnd
+                    ) {
+                        Button(
+                            colors = ButtonDefaults.buttonColors(Color.Transparent),
+                            onClick = {
+                                viewModel.logout()
+                                if (statusState){
+                                    navController.popBackStack()
+                                }
+                            },
+                            modifier = modifier
+                                .fillMaxWidth()
+//                            .fillMaxHeight(0.2f)
+                                .border(2.dp, color = colorScheme.primary, RoundedCornerShape(10.dp))
+                        ) {
+                            Text(
+                                text = "Logout",
+                                color = colorScheme.primary
+                            )
+                        }
+                    }
+                }
+            }
+        }else{
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier
@@ -90,7 +328,7 @@ fun ProfileScreen(
                                 .fillMaxWidth()
                         ) {
                             AsyncImage(
-                                model = detailUser.urlProfile,
+                                model = "",
                                 contentDescription = "Profile Image",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
@@ -107,13 +345,13 @@ fun ProfileScreen(
                                         .padding(start = 8.dp)
                                 ) {
                                     Text(
-                                        text = detailUser.name ?: "",
+                                        text = "Kamu belom login",
                                         color = colorScheme.onSurface,
                                         fontSize = 24.sp,
                                         fontWeight = FontWeight.Bold,
                                     )
                                     Text(
-                                        text = detailUser.username ?: "",
+                                        text ="-",
                                         color = colorScheme.onSurface,
                                         fontSize = 18.sp,
                                     )
@@ -134,7 +372,7 @@ fun ProfileScreen(
                                 .padding(5.dp)
                                 .fillMaxWidth()
                                 .clickable {
-                                    navController.navigate(Screen.EditProfile.route)
+                                    alertLogin.value = userModel.isLogin
                                 },
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -168,7 +406,7 @@ fun ProfileScreen(
                                 .padding(5.dp)
                                 .fillMaxWidth()
                                 .clickable {
-                                    navController.navigate(Screen.LikeArticle.route)
+                                    alertLogin.value = userModel.isLogin
                                 },
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -202,7 +440,7 @@ fun ProfileScreen(
                                 .padding(5.dp)
                                 .fillMaxWidth()
                                 .clickable {
-                                    navController.navigate(Screen.Order.route)
+                                    alertLogin.value = userModel.isLogin
                                 },
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -279,25 +517,14 @@ fun ProfileScreen(
                     Button(
                         colors = ButtonDefaults.buttonColors(Color.Transparent),
                         onClick = {
-                            viewModel.logout()
-                            if (statusState){
-                                navController.previousBackStackEntry?.arguments?.putBoolean("logout", true)
-                                navController.navigate(Screen.Welcome.route) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            }
+                            navController.navigate(Screen.Welcome.route)
                         },
                         modifier = modifier
                             .fillMaxWidth()
-//                            .fillMaxHeight(0.2f)
                             .border(2.dp, color = colorScheme.primary, RoundedCornerShape(10.dp))
                     ) {
                         Text(
-                            text = "Logout",
+                            text = "LOGIN",
                             color = colorScheme.primary
                         )
                     }
@@ -311,6 +538,8 @@ fun ProfileScreen(
 @Composable
 fun PreviewProfileScreen(){
     AmbatikTheme {
-        ProfileScreen()
+        ProfileScreen(
+            navigateToWelcome = {}
+        )
     }
 }

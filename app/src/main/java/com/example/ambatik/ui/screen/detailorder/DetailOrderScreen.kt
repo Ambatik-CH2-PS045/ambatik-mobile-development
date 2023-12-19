@@ -41,6 +41,7 @@ import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.ui.theme.AmbatikTheme
+import com.example.ambatik.utlis.formatCurrency
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -113,7 +114,7 @@ fun BottomBarContent(
             text = "Total Item: $totalItem"
         )
         Text(
-            text = "Total Price: Rp. $totalPrice"
+            text = "Total Price: Rp. ${formatCurrency(totalPrice.toDouble())}"
         )
     }
 }
@@ -172,7 +173,7 @@ fun DetailOrderContent(
                             .padding(top = 4.dp)
                     )
                     Text(
-                        text = "Rp. $price",
+                        text = formatCurrency(price.toDouble()) ,
                         modifier = modifier
                             .padding(top = 8.dp, bottom = 4.dp)
                     )

@@ -9,6 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.ambatik.ui.components.alert.AlertLogin
 import com.example.ambatik.ui.screen.articel.ArticelScreen
 import com.example.ambatik.ui.screen.articlelike.ArticleLikeScreen
 import com.example.ambatik.ui.screen.cart.CartScreen
@@ -52,6 +53,9 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
                 navController,
                 navigateToStartQuiz = {typeQuestion ->
                     navController.navigate(Screen.StartQuiz.createRoute(typeQuestion))
+                },
+                navigateToWelcome = {
+                    navController.navigate(Screen.Welcome.route)
                 }
             )
         }
@@ -60,11 +64,19 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
                 navController,
                 navigateToDetailShop = {shopId ->
                     navController.navigate(Screen.DetailShop.createRoute(shopId))
+                },
+                navigateToWelcome = {
+                    navController.navigate(Screen.Welcome.route)
                 }
             )
         }
         composable(Screen.Profile.route){
-            ProfileScreen(navController)
+            ProfileScreen(
+                navController,
+                navigateToWelcome = {
+                    navController.navigate(Screen.Welcome.route)
+                }
+            )
         }
         composable(Screen.Welcome.route){
             AmbatikApp(navController)
@@ -79,7 +91,11 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
             HomeScreen()
         }
         composable(Screen.Scan.route){
-            ScanScreen()
+            ScanScreen(
+                navigateToWelcome = {
+                    navController.navigate(Screen.Welcome.route)
+                }
+            )
         }
         val articleId = "articleId"
         composable(
@@ -88,7 +104,10 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
             ){
             val id = it.arguments?.getInt(articleId) ?: 0
             DetailArticleScreen(
-                articleId = id
+                articleId = id,
+                navigateToWelcome = {
+                    navController.navigate(Screen.Welcome.route)
+                }
             )
         }
         val shopId = "shoppingId"
@@ -99,7 +118,10 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
             val id = it.arguments?.getInt(shopId) ?: 0
             DetailShopScreen(
                 navController,
-                shopId = id
+                shopId = id,
+                navigateToWelcome = {
+                    navController.navigate(Screen.Welcome.route)
+                }
             )
         }
         composable(Screen.Cart.route){

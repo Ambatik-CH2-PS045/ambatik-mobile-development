@@ -13,7 +13,7 @@ import com.example.ambatik.ui.screen.welcome.AmbatikApp
 fun Navigation(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Welcome.route,
+        startDestination = Screen.Home.route,
     ){
         composable(Screen.Welcome.route){
             AmbatikApp(navController)
