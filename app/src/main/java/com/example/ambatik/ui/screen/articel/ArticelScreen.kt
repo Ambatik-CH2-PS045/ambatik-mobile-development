@@ -70,7 +70,7 @@ fun ArticelScreen(
         ) {
             item {
                 Text(
-                    text = "Batik",
+                    text = "Belajar Tentang Batik",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = colorScheme.onSurface,
@@ -96,7 +96,7 @@ fun ArticelScreen(
             }
             item {
                 Text(
-                    text = "Article",
+                    text = "Article Terkini",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = colorScheme.onSurface,

@@ -85,16 +85,18 @@ fun CartScreen(
                 val eachPriceList = dataItem.map { it?.price }
                 val eachProduct = dataItem.map { it?.id }
                 Log.d("ORDER", "ORDER MASUK, idUser:$totalQty, grandTotal: $grandTotalOrder, idProd:${eachProduct.size}, priceProd:${eachPriceList.size}, qtyProd:${eachQuantity.size}")
-                BottomContent(
-                    totalPrice = data?.grandTotal.toString(),
-                    onAddToOrder = {
-                        viewModelOrder.checkout(totalQty, grandTotalOrder, userModel.id, eachQuantity, eachPriceList, eachProduct)
-                        viewModel.getCart(userModel.id)
-                        Toast.makeText(context, "Berhasil memesan", Toast.LENGTH_SHORT).show()
-                        Log.d("ORDER", "ORDER MASUK, idUser:$totalQty, grandTotal: $grandTotalOrder, idProd:$eachProduct, priceProd:$eachPriceList, qtyProd:$eachQuantity")
-                    },
-                    modifier = modifier
-                )
+                if (grandTotalOrder != null) {
+                    BottomContent(
+                        totalPrice = if (grandTotalOrder == 0) "" else formatCurrency(grandTotalOrder.toDouble()),
+                        onAddToOrder = {
+                            viewModelOrder.checkout(totalQty, grandTotalOrder, userModel.id, eachQuantity, eachPriceList, eachProduct)
+                            viewModel.getCart(userModel.id)
+                            Toast.makeText(context, "Berhasil memesan", Toast.LENGTH_SHORT).show()
+                            Log.d("ORDER", "ORDER MASUK, idUser:$totalQty, grandTotal: $grandTotalOrder, idProd:$eachProduct, priceProd:$eachPriceList, qtyProd:$eachQuantity")
+                        },
+                        modifier = modifier
+                    )
+                }
             }
         }
     ) {
