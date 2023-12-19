@@ -17,7 +17,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL", "\"https://ambatik-backend-test-406009.as.r.appspot.com/\"")
+        buildConfigField("String", "BASE_URL", "\"https://ambatik-407316.as.r.appspot.com/\"")
         vectorDrawables {
             useSupportLibrary = true
         }

@@ -274,7 +274,7 @@ fun DetailArticleContent(
                     ){
                         Row{
                             Icon(
-                                imageVector = Icons.Outlined.Favorite,
+                                imageVector =  if (liked) Icons.Outlined.Favorite else Icons.Filled.FavoriteBorder,
                                 tint = Color.Red,
                                 contentDescription = "Icon Like Article",
                                 modifier = modifier
