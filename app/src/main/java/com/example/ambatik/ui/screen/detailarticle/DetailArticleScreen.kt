@@ -62,10 +62,16 @@ fun DetailArticleScreen(
     val articleListState = viewModel.detailArticle.observeAsState()
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
 
-
-    LaunchedEffect(Unit){
-        viewModel.getDetailStory(articleId, userModel.id)
+    if (userModel.isLogin){
+        LaunchedEffect(userModel.id){
+            viewModel.getDetailStory(articleId, userModel.id)
+        }
+    }else{
+        LaunchedEffect(Unit){
+            viewModel.getDetailStory(articleId, 0)
+        }
     }
+
 
     Surface(
         color = colorScheme.surface,
@@ -113,9 +119,9 @@ fun DetailArticleContent(
     navigateToWelcome: ()-> Unit,
     modifier: Modifier = Modifier
 ){
+    var liked by remember { mutableStateOf(isLiked == "1") }
+    var totalLikeCount by remember { mutableStateOf(totalLike) }
     if (isLogin){
-        var liked by remember { mutableStateOf(isLiked == "1") }
-        var totalLikeCount by remember { mutableStateOf(totalLike) }
         Column(
             modifier = modifier
                 .verticalScroll(rememberScrollState())
@@ -218,8 +224,6 @@ fun DetailArticleContent(
             }
         }
     }else{
-        var liked by remember { mutableStateOf(isLiked == "1") }
-        var totalLikeCount by remember { mutableStateOf(totalLike) }
         var alertLogin = remember { mutableStateOf(true) }
 
         if (!alertLogin.value) {
@@ -270,13 +274,13 @@ fun DetailArticleContent(
                     ){
                         Row{
                             Icon(
-                                imageVector = if (liked) Icons.Outlined.Favorite else Icons.Filled.FavoriteBorder,
+                                imageVector = Icons.Outlined.Favorite,
                                 tint = Color.Red,
                                 contentDescription = "Icon Like Article",
                                 modifier = modifier
                             )
                             Text(
-                                text = totalLikeCount.toString(),
+                                text = totalLike.toString(),
                                 color = colorScheme.onPrimary,
                                 modifier = modifier
                                     .padding(5.dp, 0.dp, 0.dp, 0.dp)
