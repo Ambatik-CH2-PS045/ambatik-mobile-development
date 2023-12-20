@@ -1,9 +1,7 @@
 package com.example.ambatik.ui.screen.detailbatik
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,10 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -98,15 +93,14 @@ fun DetailBatikContent(
         )
         Box(
             modifier = modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 12.dp)
         ) {
             Column {
                 Text(
                     text = name,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
                     maxLines = 2,
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        fontWeight = FontWeight.ExtraBold
-                    ),
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
@@ -126,7 +120,7 @@ fun DetailBatikContent(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = modifier
-                        .padding(top = 16.dp, bottom = 4.dp)
+                        .padding(top = 16.dp)
                 )
                 Text(
                     text = meaning,
@@ -142,7 +136,7 @@ fun DetailBatikContent(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = modifier
-                        .padding(top = 16.dp, bottom = 4.dp)
+                        .padding(top = 16.dp)
                 )
                 Text(
                     text = makingProcess,
@@ -158,7 +152,7 @@ fun DetailBatikContent(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = modifier
-                        .padding(top = 16.dp, bottom = 4.dp)
+                        .padding(top = 16.dp)
                 )
                 Text(
                     text = usagePurpose,

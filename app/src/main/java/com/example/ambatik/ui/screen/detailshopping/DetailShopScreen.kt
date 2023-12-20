@@ -41,7 +41,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -173,18 +172,17 @@ fun DetailShopContent(
                     }
                     Box(
                         modifier = modifier
-                            .padding(top = 8.dp)
-                            .fillMaxWidth()
+                        .fillMaxWidth()
                     ){
                         Column {
                             Text(
                                 text = nameProduct,
-                                style = MaterialTheme.typography.titleLarge,
+                                style = MaterialTheme.typography.bodyLarge,
                                 color = colorScheme.onSurface,
                             )
                             Text(
                                 text = store,
-                                style = MaterialTheme.typography.bodyLarge,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = colorScheme.onSurface,
                             )
                             Box(

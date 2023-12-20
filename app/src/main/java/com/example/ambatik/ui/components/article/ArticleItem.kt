@@ -95,7 +95,6 @@ fun ArticleItem(
                                 Text(
                                     text = convertDateFormat(createAt),
                                     fontSize = 12.sp,
-                                    fontWeight = FontWeight.Normal,
                                     color = colorScheme.onSurface,
                                     textAlign = TextAlign.Right,
                                 )
