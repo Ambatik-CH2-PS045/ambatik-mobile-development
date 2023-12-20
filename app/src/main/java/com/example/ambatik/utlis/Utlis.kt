@@ -13,8 +13,11 @@ private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
 private val timeStamp: String = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(Date())
 
 fun createCustomTempFile(context: Context): File {
+    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+    val currentTimeMillis = System.currentTimeMillis()
+    val uniqueTimeStamp = "$timeStamp-$currentTimeMillis"
     val filesDir = context.externalCacheDir
-    return File.createTempFile(timeStamp, ".jpg", filesDir)
+    return File.createTempFile("IMG_${uniqueTimeStamp}_", ".jpg", filesDir)
 }
 
 fun uriToFile(imageUri: Uri, context: Context): File {

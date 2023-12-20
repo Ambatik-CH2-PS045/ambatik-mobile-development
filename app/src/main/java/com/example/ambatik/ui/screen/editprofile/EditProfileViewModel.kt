@@ -1,6 +1,7 @@
 package com.example.ambatik.ui.screen.editprofile
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +17,14 @@ class EditProfileViewModel(private val repository: UserRepository): ViewModel() 
     val error = MutableLiveData<String?>()
     val status: MutableLiveData<Boolean> = MutableLiveData()
 
+    private val _loadingEditProfile = MutableLiveData<Boolean>()
+    val loadingEditProfile: LiveData<Boolean> = _loadingEditProfile
+
+    private val _loadingEditPhotoProfile = MutableLiveData<Boolean>()
+    val loadingEditPhotoProfile: LiveData<Boolean> = _loadingEditPhotoProfile
+
     fun editProfile(id: Int, name: String, address: String, phone: String){
+        _loadingEditProfile.postValue(true)
         viewModelScope.launch {
             try {
                 val editProfileResponse = repository.updateProfile(id, name, address, phone)
@@ -33,11 +41,14 @@ class EditProfileViewModel(private val repository: UserRepository): ViewModel() 
                 error.postValue("Terjadi kesalahan saat edit profile")
                 status.postValue(false)
                 Log.d("LOGIN", "$e")
+            }finally {
+                _loadingEditProfile.value = false
             }
         }
     }
 
     fun editPhotoProfile(file: File, userid: Int){
+        _loadingEditPhotoProfile.postValue(true)
         viewModelScope.launch {
             try {
                 val responseEditPhotoProfile = repository.editPhotoProfile(file, userid)
@@ -54,6 +65,8 @@ class EditProfileViewModel(private val repository: UserRepository): ViewModel() 
                 error.postValue("Terjadi kesalahan saat edit profile")
                 status.postValue(false)
                 Log.d("EDIT PHOTO PROFILE", "$e")
+            }finally {
+                _loadingEditPhotoProfile.value = false
             }
         }
     }

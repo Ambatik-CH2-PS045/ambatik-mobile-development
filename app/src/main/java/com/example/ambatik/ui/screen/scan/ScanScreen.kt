@@ -26,6 +26,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.PhotoLibrary
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -73,6 +74,9 @@ import com.example.ambatik.ui.components.alert.AlertLogin
 import com.example.ambatik.ui.theme.AmbatikTheme
 import com.example.ambatik.utlis.createCustomTempFile
 import com.example.ambatik.utlis.uriToFile
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 import java.util.Objects
 
 @Composable
@@ -88,6 +92,7 @@ fun ScanScreen(
     var scanBatikState by remember { mutableStateOf(false) }
     val statusState by viewModel.status.observeAsState(false)
     val hasilPredictBatik = viewModel.detailScanBatik.observeAsState()
+    val akurasiBatik = viewModel.akurasiBatik.observeAsState()
     val context = LocalContext.current
     val file = createCustomTempFile(context)
     val uri = FileProvider.getUriForFile(
@@ -95,13 +100,22 @@ fun ScanScreen(
         BuildConfig.APPLICATION_ID + ".provider", file
     )
 
+    var hasImage by remember {
+        mutableStateOf(false)
+    }
+
     var capturedImage by remember {
         mutableStateOf<Uri>(Uri.EMPTY)
     }
 
-    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()){
-        capturedImage = Uri.fromFile(file)
-        Log.d("CameraURI", "URI from camera: $uri")
+    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess: Boolean ->
+        if (isSuccess) {
+            capturedImage = Uri.fromFile(file)
+            hasImage = true
+            Log.d("CameraURI", "URI from camera: $capturedImage")
+        } else {
+            Log.d("CameraURI", "Image capture failed.")
+        }
     }
 
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri1 ->
@@ -121,6 +135,9 @@ fun ScanScreen(
             Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
         }
     }
+
+    val loading by viewModel.loading.observeAsState(initial = false)
+    var checkImage by remember { mutableStateOf(false) }
 
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
     var alertLogin = remember { mutableStateOf(true) }
@@ -154,10 +171,29 @@ fun ScanScreen(
                         .padding(50.dp)
                         .fillMaxWidth()
                 )
-                ImageContent(
-                    modifier = modifier,
-                    capturedImageUri = capturedImage
-                )
+                if (capturedImage?.path?.isNotEmpty() == true) {
+                    checkImage = true
+                    if (hasImage){
+                        Image(
+                            contentDescription = "Image Scan Batik",
+                            painter = rememberImagePainter(capturedImage),
+                            modifier = modifier
+                                .size(300.dp, 400.dp)
+                                .border(2.dp, color = colorScheme.onSurface, RoundedCornerShape(20.dp))
+                        )
+                    }
+                }
+                else {
+                    checkImage = false
+                    Image(
+                        painter = painterResource(id = R.drawable.ambatik1),
+                        contentDescription = "Image Scan Batik",
+                        modifier = modifier
+                            .size(300.dp, 400.dp)
+                            .border(2.dp, color = colorScheme.onSurface, RoundedCornerShape(20.dp))
+                            .padding(16.dp)
+                    )
+                }
                 Box(
                     modifier = modifier
                         .padding(0.dp, 25.dp, 0.dp, 0.dp)
@@ -199,6 +235,7 @@ fun ScanScreen(
                                         ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA)
                                     if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
                                         cameraLauncher.launch(uri)
+                                        hasImage = false
                                     } else {
                                         permissionLauncher.launch(android.Manifest.permission.CAMERA)
                                     }
@@ -219,8 +256,13 @@ fun ScanScreen(
                                 contentColor = colorScheme.onPrimary,
                                 onClick = {
                                     if (userModel.isLogin){
-                                        viewModel.scanBatik(capturedImage.toFile())
-                                        scanBatikState = true
+                                        if (checkImage){
+                                            viewModel.scanBatik(capturedImage.toFile())
+                                            scanBatikState = true
+                                        }else{
+                                            Toast.makeText(context, "Silahkan pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show()
+                                        }
+
                                     }else{
                                         alertLogin.value = userModel.isLogin
                                     }
@@ -258,120 +300,124 @@ fun ScanScreen(
                 }
             }
         }else{
-            hasilPredictBatik.value?.let { data ->
-                Column(
+            if (akurasiBatik.value?.accuracy != null && akurasiBatik.value?.accuracy!! <= 80){
+                Box(
                     modifier = modifier
-                        .padding(bottom = 12.dp)
-                        .verticalScroll(rememberScrollState())
-                ) {
-                    AsyncImage(
-                        model = data.urlBatik,
-                        contentDescription = "Detail Scan Batik",
-                        contentScale = ContentScale.Crop,
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text(
+                        text = "Mohon maaf kami tidak mengenali batik tersebut, mohon foto batik lebih jelas"
+                    )
+                }
+            }else{
+                var akurasi = akurasiBatik.value?.accuracy
+                val formattedNilai = String.format("%.2f", akurasi).toDoubleOrNull() ?: 0.0
+                hasilPredictBatik.value?.let { data ->
+                    Column(
                         modifier = modifier
                             .padding(bottom = 12.dp)
-                            .fillMaxWidth()
-                            .height(250.dp)
-                            .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
-                    )
-                    Box(
-                        modifier = modifier
-                            .padding(horizontal = 12.dp)
-                    ){
-                        Column {
-                            Text(
-                                text = data.name ?: "",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                            Text(
-                                text = data.origin ?: "",
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis,
-                                modifier = modifier
-                                    .padding(top = 4.dp)
-                            )
-                            Divider(
-                                modifier = modifier
-                                    .padding(top = 16.dp)
-                                    .height(0.75.dp)
-                            )
-                            Text(
-                                text = "Arti",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = modifier
-                                    .padding(top = 16.dp)
-                            )
-                            Text(
-                                text = data.meaning ?: "",
-                                textAlign = TextAlign.Justify
-                            )
-                            Divider(
-                                modifier = modifier
-                                    .padding(top = 16.dp)
-                                    .height(0.75.dp)
-                            )
-                            Text(
-                                text = "Proses Pembuatan",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = modifier
-                                    .padding(top = 16.dp)
-                            )
-                            Text(
-                                text = data.makingProcess ?: "",
-                                textAlign = TextAlign.Justify
-                            )
-                            Divider(
-                                modifier = modifier
-                                    .padding(top = 16.dp)
-                                    .height(0.75.dp)
-                            )
-                            Text(
-                                text = "Penggunaan",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = modifier
-                                    .padding(top = 16.dp)
-                            )
-                            Text(
-                                text = data.usagePurpose ?: "",
-                                textAlign = TextAlign.Justify
-                            )
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        AsyncImage(
+                            model = data.urlBatik,
+                            contentDescription = "Detail Scan Batik",
+                            contentScale = ContentScale.Crop,
+                            modifier = modifier
+                                .padding(bottom = 12.dp)
+                                .fillMaxWidth()
+                                .height(250.dp)
+                                .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
+                        )
+                        Box(
+                            modifier = modifier
+                                .padding(horizontal = 12.dp)
+                        ){
+                            Column {
+                                Text(
+                                    text = data.name ?: "",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                                Text(
+                                    text = data.origin ?: "",
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                    modifier = modifier
+                                        .padding(top = 4.dp)
+                                )
+                                Text(
+                                    text = "Akurasi pengecekan: ${formattedNilai}",
+                                    modifier = modifier
+                                        .padding(top = 4.dp)
+                                )
+                                Divider(
+                                    modifier = modifier
+                                        .padding(top = 16.dp)
+                                        .height(0.75.dp)
+                                )
+                                Text(
+                                    text = "Arti",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = modifier
+                                        .padding(top = 16.dp)
+                                )
+                                Text(
+                                    text = data.meaning ?: "",
+                                    textAlign = TextAlign.Justify
+                                )
+                                Divider(
+                                    modifier = modifier
+                                        .padding(top = 16.dp)
+                                        .height(0.75.dp)
+                                )
+                                Text(
+                                    text = "Proses Pembuatan",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = modifier
+                                        .padding(top = 16.dp)
+                                )
+                                Text(
+                                    text = data.makingProcess ?: "",
+                                    textAlign = TextAlign.Justify
+                                )
+                                Divider(
+                                    modifier = modifier
+                                        .padding(top = 16.dp)
+                                        .height(0.75.dp)
+                                )
+                                Text(
+                                    text = "Penggunaan",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = modifier
+                                        .padding(top = 16.dp)
+                                )
+                                Text(
+                                    text = data.usagePurpose ?: "",
+                                    textAlign = TextAlign.Justify
+                                )
+                            }
                         }
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun ImageContent(
-    modifier: Modifier = Modifier,
-    capturedImageUri: Uri? = null
-){
-    if (capturedImageUri?.path?.isNotEmpty() == true) {
-        Image(
-            contentDescription = "Image Scan Batik",
-            painter = rememberImagePainter(capturedImageUri),
-            modifier = modifier
-                .size(300.dp, 400.dp)
-                .border(2.dp, color = colorScheme.onSurface, RoundedCornerShape(20.dp))
-        )
-        Log.d("ShowImage", "Image from URI: $capturedImageUri")
-    }
-    else {
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = "Image Scan Batik",
-            modifier = modifier
-                .size(300.dp, 400.dp)
-                .border(2.dp, color = colorScheme.onSurface, RoundedCornerShape(20.dp))
-        )
+        if (loading){
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.5f))
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+        }
     }
 }
 

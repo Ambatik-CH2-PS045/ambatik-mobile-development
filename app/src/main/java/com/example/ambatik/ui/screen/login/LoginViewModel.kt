@@ -11,6 +11,7 @@ import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.repository.UserRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.HttpException
 
 class LoginViewModel(private val repository: UserRepository): ViewModel() {
@@ -28,7 +29,7 @@ class LoginViewModel(private val repository: UserRepository): ViewModel() {
                 status.postValue(true)
                 val token = loginResponse.data?.accessToken
                 val idUser = loginResponse.data?.id
-                repository.saveSession(UserModel(username, token ?: "", true, idUser ?: 0) )
+                runBlocking { repository.saveSession(UserModel(username, token ?: "", true, idUser ?: 0) ) }
                 Log.d("LOGIN", "$loginResponse")
             } catch (e: HttpException) {
                 _loading.value = false

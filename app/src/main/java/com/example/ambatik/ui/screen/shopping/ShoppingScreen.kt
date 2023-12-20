@@ -146,7 +146,7 @@ fun ShoppingScreen(
             }
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(160.dp),
-                contentPadding = PaddingValues(16.dp, bottom = 30.dp),
+                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 30.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = modifier
@@ -170,42 +170,6 @@ fun ShoppingScreen(
         }
     }
 }
-
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun SearchBarShop(
-//    query: String,
-//    onQueryChange: (String) -> Unit,
-//    modifier: Modifier = Modifier
-//) {
-//    SearchBar(
-//        query = query,
-//        onQueryChange = onQueryChange,
-//        onSearch = {},
-//        active = false,
-//        onActiveChange = {},
-//        shape = RoundedCornerShape(10.dp),
-//        colors = SearchBarDefaults.colors(containerColor = Color.White),
-//        leadingIcon = {
-//            Icon(
-//                imageVector = Icons.Default.Search,
-//                contentDescription = "",
-//                tint = colorScheme.onSurface
-//            )
-//        },
-//        placeholder = {
-//            Text(
-//                text = "Cari batik",
-//                fontSize = 14.sp,
-//            )
-//        },
-//        modifier = modifier
-//            .padding(16.dp, 16.dp, 0.dp, 16.dp)
-//            .fillMaxWidth(0.85f)
-//            .height(48.dp)
-//    ) {
-//    }
-//}
 
 @Preview
 @Composable

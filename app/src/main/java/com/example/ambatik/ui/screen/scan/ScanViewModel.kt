@@ -21,14 +21,16 @@ class ScanViewModel(private val repository: BatikRepository): ViewModel() {
     val loading: LiveData<Boolean> = _loading
 
     val detailScanBatik = MutableLiveData<DataPredictBatik?>()
+    val akurasiBatik = MutableLiveData<ResponsePredictBatik?>()
 
     fun scanBatik(file: File){
+        _loading.postValue(true)
         viewModelScope.launch {
             try {
-                _loading.value = true
                 val responseScanBatik = repository.predictBatik(file)
                 status.postValue(true)
                 detailScanBatik.postValue(responseScanBatik.data)
+                akurasiBatik.postValue(responseScanBatik)
                 Log.d("SCAN BATIK", "$responseScanBatik")
             }catch (e: HttpException){
                 _loading.value = false
@@ -43,6 +45,8 @@ class ScanViewModel(private val repository: BatikRepository): ViewModel() {
                 error.postValue("Terjadi kesalahan saat edit profile")
                 status.postValue(false)
                 Log.d("SCAN BATIK", "$e")
+            }finally {
+                _loading.value = false
             }
         }
     }

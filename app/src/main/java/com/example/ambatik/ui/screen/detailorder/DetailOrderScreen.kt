@@ -114,7 +114,7 @@ fun BottomBarContent(
             text = "Total Item: $totalItem"
         )
         Text(
-            text = "Total Price: Rp. ${formatCurrency(totalPrice.toDouble())}"
+            text = "Total Price: ${formatCurrency(totalPrice.toDouble())}"
         )
     }
 }

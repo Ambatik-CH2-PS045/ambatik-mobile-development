@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.ModalBottomSheet
@@ -95,11 +97,16 @@ fun EditProfileScreen(
         Objects.requireNonNull(context),
         BuildConfig.APPLICATION_ID + ".provider", file
     )
+    var hasImage by remember {
+        mutableStateOf(false)
+    }
+
     var capturedImage by remember {
         mutableStateOf<Uri>(Uri.EMPTY)
     }
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()){
         capturedImage = Uri.fromFile(file)
+        hasImage = true
         Log.d("CameraURI", "URI from camera: $uri")
     }
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri1 ->
@@ -115,10 +122,16 @@ fun EditProfileScreen(
         if (it) {
             Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show()
             cameraLauncher.launch(uri)
+            hasImage = false
         } else {
             Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
         }
     }
+
+    val loadingEditProfile by editViewModel.loadingEditProfile.observeAsState(false)
+    val loadingEditPhotoProfile by editViewModel.loadingEditPhotoProfile.observeAsState(false)
+    var checkImage by remember { mutableStateOf(false) }
+
     val localFocusManager = LocalFocusManager.current
 
     val detailUserState = profileViewModel.detailUser.observeAsState()
@@ -148,15 +161,19 @@ fun EditProfileScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         if (capturedImage?.path?.isNotEmpty() == true) {
-                            Image(
-                                painter = rememberImagePainter(capturedImage),
-                                contentScale = ContentScale.Crop,
-                                contentDescription = "Edit Profile",
-                                modifier = modifier
-                                    .size(150.dp)
-                                    .clip(CircleShape)
-                            )
+                            checkImage= true
+                            if (hasImage){
+                                Image(
+                                    painter = rememberImagePainter(capturedImage),
+                                    contentScale = ContentScale.Crop,
+                                    contentDescription = "Edit Profile",
+                                    modifier = modifier
+                                        .size(150.dp)
+                                        .clip(CircleShape)
+                                )
+                            }
                         } else {
+                            checkImage = false
                             AsyncImage(
                                 model = data.urlProfile,
                                 contentScale = ContentScale.Crop,
@@ -276,10 +293,12 @@ fun EditProfileScreen(
                             shape = RoundedCornerShape(10.dp),
                             colors = ButtonDefaults.buttonColors(colorScheme.primary),
                             onClick = {
-                                editViewModel.editProfile(userModel.id, fullname ?: "", address ?: "", numberHandphone ?: "")
-                                editViewModel.editPhotoProfile(capturedImage.toFile(), userModel.id)
-                                Toast.makeText(context, "Berhasil Edit Profile", Toast.LENGTH_SHORT).show()
-                                Log.d("UPLOAD IMAGE", "${capturedImage.toFile()}")
+                                if (checkImage){
+                                    editViewModel.editProfile(userModel.id, fullname ?: "", address ?: "", numberHandphone ?: "")
+                                    editViewModel.editPhotoProfile(capturedImage.toFile(), userModel.id)
+                                }else{
+                                    editViewModel.editProfile(userModel.id, fullname ?: "", address ?: "", numberHandphone ?: "")
+                                }
                             },
                             modifier = Modifier
                                 .padding(8.dp, 20.dp, 8.dp, 4.dp)
@@ -316,6 +335,7 @@ fun EditProfileScreen(
                                             ContextCompat.checkSelfPermission(context, android.Manifest.permission.CAMERA)
                                         if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
                                             cameraLauncher.launch(uri)
+                                            hasImage = false
                                             showBottomSheet = false
                                         } else {
                                             permissionLauncher.launch(android.Manifest.permission.CAMERA)
@@ -350,6 +370,17 @@ fun EditProfileScreen(
                         }
                     }
                 }
+            }
+        }
+        if (loadingEditProfile || loadingEditPhotoProfile){
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.5f))
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
             }
         }
     }
