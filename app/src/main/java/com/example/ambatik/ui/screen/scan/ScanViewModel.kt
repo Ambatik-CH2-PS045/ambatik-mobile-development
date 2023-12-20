@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ambatik.api.response.DataPredictBatik
+import com.example.ambatik.api.response.ProductsItemBatikScan
 import com.example.ambatik.api.response.ResponsePredictBatik
 import com.example.ambatik.data.repository.BatikRepository
 import com.google.gson.Gson
@@ -22,6 +23,7 @@ class ScanViewModel(private val repository: BatikRepository): ViewModel() {
 
     val detailScanBatik = MutableLiveData<DataPredictBatik?>()
     val akurasiBatik = MutableLiveData<ResponsePredictBatik?>()
+    val rekomendasiProduk = MutableLiveData<List<ProductsItemBatikScan?>?>()
 
     fun scanBatik(file: File){
         _loading.postValue(true)
@@ -31,6 +33,7 @@ class ScanViewModel(private val repository: BatikRepository): ViewModel() {
                 status.postValue(true)
                 detailScanBatik.postValue(responseScanBatik.data)
                 akurasiBatik.postValue(responseScanBatik)
+                rekomendasiProduk.postValue(responseScanBatik.products)
                 Log.d("SCAN BATIK", "$responseScanBatik")
             }catch (e: HttpException){
                 _loading.value = false

@@ -15,7 +15,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,10 +34,10 @@ import com.example.ambatik.utlis.formatCurrency
 fun ProductBatikItem(
     image: String,
     nameProduct: String,
-    price: Int,
+    price: String,
     store: String,
-    rating: Double,
-    productSold: Int,
+    rating: String,
+    productSold: String,
     modifier: Modifier = Modifier
 ){
     Card(
@@ -132,10 +131,10 @@ fun PreviewProductBatikItem(){
         ProductBatikItem(
             image = "",
             nameProduct = "LAPTOP GAMING TERBAIK TAHUN INI",
-            price = 15000000,
+            price = "15000000",
             store = "NVIDIA GAMING OFFICIAL",
-            rating = 5.0,
-            productSold = 30000
+            rating = "5.0",
+            productSold = "30000"
         )
     }
 }

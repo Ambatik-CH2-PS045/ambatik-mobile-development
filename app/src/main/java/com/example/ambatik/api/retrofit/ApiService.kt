@@ -17,6 +17,7 @@ import com.example.ambatik.api.response.ResponseLikeArticle
 import com.example.ambatik.api.response.ResponseListLikeArticle
 import com.example.ambatik.api.response.ResponseListQuiz
 import com.example.ambatik.api.response.ResponseLogin
+import com.example.ambatik.api.response.ResponsePersonalizationBatik
 import com.example.ambatik.api.response.ResponsePredictBatik
 import com.example.ambatik.api.response.ResponseQuizQuestion
 import com.example.ambatik.api.response.ResponseRegister
@@ -151,4 +152,9 @@ interface ApiService{
 
     @GET("quiz/leaderboard")
     suspend fun getLeaderboard(): ResponseLeaderboard
+
+    @POST("batik/personalization")
+    suspend fun personalization(
+        @Body request: HashMap<String, Any>
+    ): ResponsePersonalizationBatik
 }

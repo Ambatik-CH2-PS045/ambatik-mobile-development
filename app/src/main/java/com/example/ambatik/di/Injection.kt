@@ -9,6 +9,7 @@ import com.example.ambatik.data.repository.ArticleRepository
 import com.example.ambatik.data.repository.BatikRepository
 import com.example.ambatik.data.repository.CartRepository
 import com.example.ambatik.data.repository.OrderRepository
+import com.example.ambatik.data.repository.PersonalizationRepository
 import com.example.ambatik.data.repository.QuizRepository
 import com.example.ambatik.data.repository.ShopRepository
 import com.example.ambatik.data.repository.UserRepository
@@ -70,5 +71,13 @@ object Injection {
 //        val apiService = ApiConfig.getApiService(user.token, context)
         val apiService = ApiConfig.getApiService(pref, context)
         return BatikRepository.getInstance(apiService, pref)
+    }
+
+    fun providePersonalizationRepository(context: Context): PersonalizationRepository{
+        val pref = UserPreference.getInstance(context.dataStore)
+        val user = runBlocking { pref.getSession().first() }
+//        val apiService = ApiConfig.getApiService(user.token, context)
+        val apiService = ApiConfig.getApiService(pref, context)
+        return PersonalizationRepository.getInstance(apiService, pref)
     }
 }

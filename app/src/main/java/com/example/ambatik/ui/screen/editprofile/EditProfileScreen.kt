@@ -112,6 +112,7 @@ fun EditProfileScreen(
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri1 ->
         if (uri1 != null) {
             capturedImage = uriToFile(uri1, context).toUri()
+            hasImage = true
         }
         Log.d("GalleryURI", "URI from gallery: $uri1")
     }
@@ -165,6 +166,15 @@ fun EditProfileScreen(
                             if (hasImage){
                                 Image(
                                     painter = rememberImagePainter(capturedImage),
+                                    contentScale = ContentScale.Crop,
+                                    contentDescription = "Edit Profile",
+                                    modifier = modifier
+                                        .size(150.dp)
+                                        .clip(CircleShape)
+                                )
+                            }else{
+                                AsyncImage(
+                                    model = data.urlProfile,
                                     contentScale = ContentScale.Crop,
                                     contentDescription = "Edit Profile",
                                     modifier = modifier
@@ -354,6 +364,7 @@ fun EditProfileScreen(
                                 Button(
                                     onClick = {
                                         galleryLauncher.launch("image/*")
+                                        hasImage = false
                                         showBottomSheet = false
                                     },
                                     modifier = modifier

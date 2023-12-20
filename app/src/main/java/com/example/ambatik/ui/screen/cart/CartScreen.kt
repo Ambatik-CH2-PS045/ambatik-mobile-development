@@ -48,6 +48,8 @@ import com.example.ambatik.ui.components.cart.CartItem
 import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.theme.AmbatikTheme
 import com.example.ambatik.utlis.formatCurrency
+import kotlinx.coroutines.runBlocking
+import java.util.logging.Handler
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -92,7 +94,9 @@ fun CartScreen(
                         onAddToOrder = {
                             if (data.data?.isNotEmpty() == true){
                                 viewModelOrder.checkout(totalQty, grandTotalOrder, userModel.id, eachQuantity, eachPriceList, eachProduct)
-                                viewModel.getCart(userModel.id)
+                                android.os.Handler().postDelayed({
+                                    viewModel.getCart(userModel.id)
+                                }, 100)
                             }else{
                                 Toast.makeText(context, "Cart kamu masih kosong", Toast.LENGTH_SHORT).show()
                             }

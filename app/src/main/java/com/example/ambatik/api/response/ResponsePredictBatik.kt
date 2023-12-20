@@ -20,7 +20,10 @@ data class ResponsePredictBatik(
 	val message: String? = null,
 
 	@field:SerializedName("batikName")
-	val batikName: String? = null
+	val batikName: String? = null,
+
+	@field:SerializedName("products")
+	val products: List<ProductsItemBatikScan?>? = null
 ) : Parcelable
 
 @Parcelize
@@ -43,4 +46,26 @@ data class DataPredictBatik(
 
 	@field:SerializedName("usage_purpose")
 	val usagePurpose: String? = null
+) : Parcelable
+
+@Parcelize
+data class ProductsItemBatikScan(
+
+	@field:SerializedName("price")
+	val price: Int? = null,
+
+	@field:SerializedName("name")
+	val name: String? = null,
+
+	@field:SerializedName("rating")
+	val rating: Int? = null,
+
+	@field:SerializedName("url_product")
+	val urlProduct: String? = null,
+
+	@field:SerializedName("store_name")
+	val storeName: String? = null,
+
+	@field:SerializedName("product_sold")
+	val productSold: Int? = null
 ) : Parcelable

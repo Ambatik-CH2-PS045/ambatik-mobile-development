@@ -9,7 +9,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.ambatik.ui.components.alert.AlertLogin
 import com.example.ambatik.ui.screen.articel.ArticelScreen
 import com.example.ambatik.ui.screen.articlelike.ArticleLikeScreen
 import com.example.ambatik.ui.screen.cart.CartScreen
@@ -17,10 +16,12 @@ import com.example.ambatik.ui.screen.detailarticle.DetailArticleScreen
 import com.example.ambatik.ui.screen.detailbatik.DetailBatikScreen
 import com.example.ambatik.ui.screen.detailorder.DetailOrderScreen
 import com.example.ambatik.ui.screen.detailshopping.DetailShopScreen
+import com.example.ambatik.ui.screen.drawing.DrawingScreen
 import com.example.ambatik.ui.screen.editprofile.EditProfileScreen
 import com.example.ambatik.ui.screen.home.HomeScreen
 import com.example.ambatik.ui.screen.login.LoginScreen
 import com.example.ambatik.ui.screen.order.OrderScreen
+import com.example.ambatik.ui.screen.personalization.PersonalizationScreen
 import com.example.ambatik.ui.screen.profile.ProfileScreen
 import com.example.ambatik.ui.screen.quiz.QuizScreen
 import com.example.ambatik.ui.screen.register.RegisterScreen
@@ -173,6 +174,12 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
             DetailOrderScreen(
                 idOrder = id
             )
+        }
+        composable(Screen.Drawing.route){
+            DrawingScreen()
+        }
+        composable(Screen.Personalisasi.route){
+            PersonalizationScreen()
         }
     }
 }

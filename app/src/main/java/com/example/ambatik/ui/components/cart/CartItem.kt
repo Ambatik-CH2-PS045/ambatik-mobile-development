@@ -98,12 +98,16 @@ fun CartItem(
                             orderId = idProduct,
                             orderCount = totalQuantity.toInt(),
                             onProductIncreased = {
-                                viewModel.getCart(userModel.id)
+                                android.os.Handler().postDelayed({
+                                    viewModel.getCart(userModel.id)
+                                }, 50)
                                 viewModel.changeQtyCart(userModel.id, idProduct, commandAdd)
                                 Log.d("CartItem", "Increased: User ID - ${userModel.id}, Product ID - $idProduct")
                             },
                             onProductDecreased = {
-                                viewModel.getCart(userModel.id)
+                                android.os.Handler().postDelayed({
+                                    viewModel.getCart(userModel.id)
+                                }, 50)
                                 viewModel.changeQtyCart(userModel.id, idProduct, commadDecrease)
                                 Log.d("CartItem", "Decreased: User ID - ${userModel.id}, Product ID - $idProduct")
                             },
