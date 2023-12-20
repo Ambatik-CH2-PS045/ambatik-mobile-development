@@ -129,7 +129,6 @@ fun PersonalizationScreen(
                                 stateJawaban1 += 1
                                 stateJawaban2 += 1
                                 selectedAnswer.add(1)
-                                Toast.makeText(context, "$statePertanyaan", Toast.LENGTH_SHORT).show()
                             },
                             modifier = modifier
                                 .padding(vertical = 12.dp)
