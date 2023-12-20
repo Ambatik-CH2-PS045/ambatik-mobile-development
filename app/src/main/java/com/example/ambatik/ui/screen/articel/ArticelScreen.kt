@@ -19,6 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -32,7 +35,11 @@ import com.example.ambatik.data.factory.ArticleModelFactory
 import com.example.ambatik.data.factory.BatikModelFactory
 import com.example.ambatik.ui.components.article.ArticleItem
 import com.example.ambatik.ui.components.batik.BatikItem
+import com.example.ambatik.ui.components.loading.LoadingArticle
+import com.example.ambatik.ui.components.loading.LoadingBatik
 import com.example.ambatik.ui.theme.AmbatikTheme
+import kotlinx.coroutines.delay
+import kotlin.reflect.KProperty
 
 @Composable
 fun ArticelScreen(
@@ -49,13 +56,22 @@ fun ArticelScreen(
 ){
     val articleListState = viewModel.articleList.observeAsState()
     val batikListState = viewModelBatik.batikList.observeAsState()
+//    val loading by viewModel.loading.observeAsState(true)
     val statusState by viewModel.status.observeAsState(false)
     val errorState by viewModel.error.observeAsState(null)
     val context = LocalContext.current
 
+    var loading by remember {
+        mutableStateOf(true)
+    }
+
     LaunchedEffect(Unit) {
         viewModel.getStory()
         viewModelBatik.getBatik()
+        if (loading){
+            delay(500)
+        }
+        loading = false
     }
 
     Surface(
@@ -83,12 +99,17 @@ fun ArticelScreen(
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(batikListState.value ?: emptyList()) { dataBatik ->
-                        BatikItem(
-                            imgUrl = dataBatik?.urlBatik ?: "",
-                            nameBatik = dataBatik?.name ?: "",
-                            origin = dataBatik?.origin ?: "",
-                            modifier = modifier.clickable {
-                                dataBatik?.id?.let { navigateToDetailBatik(it) }
+                        LoadingBatik(
+                            isLoading = loading,
+                            contentAfterLoading = {
+                                BatikItem(
+                                    imgUrl = dataBatik?.urlBatik ?: "",
+                                    nameBatik = dataBatik?.name ?: "",
+                                    origin = dataBatik?.origin ?: "",
+                                    modifier = modifier.clickable {
+                                        dataBatik?.id?.let { navigateToDetailBatik(it) }
+                                    }
+                                )
                             }
                         )
                     }
@@ -111,11 +132,16 @@ fun ArticelScreen(
                                 navigateToDetail(data.id)
                             }
                     ) {
-                        ArticleItem(
-                            image = data.urlBanner,
-                            title = data.title,
-                            createAt = data.createdAt,
-                            totalLike = data.totalLike.toString(),
+                        LoadingArticle(
+                            isLoading = loading,
+                            contentAfterLoading = {
+                                ArticleItem(
+                                    image = data.urlBanner,
+                                    title = data.title,
+                                    createAt = data.createdAt,
+                                    totalLike = data.totalLike.toString(),
+                                )
+                            }
                         )
                     }
                 }
@@ -123,6 +149,7 @@ fun ArticelScreen(
         }
     }
 }
+
 
 @Preview
 @Composable

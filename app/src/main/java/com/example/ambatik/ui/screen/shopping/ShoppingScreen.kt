@@ -70,6 +70,7 @@ fun ShoppingScreen(
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore),
 ) {
     val shopListState = viewModel.shopList.observeAsState()
+    val loading by viewModel.loading.observeAsState(false)
     val statusState by viewModel.status.observeAsState(false)
     val errorState by viewModel.error.observeAsState(null)
     val query by viewModel.query
@@ -108,7 +109,7 @@ fun ShoppingScreen(
                     onSearch = {},
                     active = false,
                     onActiveChange = {},
-                    shape = RoundedCornerShape(10.dp),
+                    shape = RoundedCornerShape(24.dp),
                     colors = SearchBarDefaults.colors(containerColor = Color.White),
                     leadingIcon = {
                         Icon(
@@ -136,9 +137,9 @@ fun ShoppingScreen(
                         .padding(16.dp)
                         .size(40.dp)
                         .clickable {
-                            if (userModel.isLogin){
+                            if (userModel.isLogin) {
                                 navController.navigate(Screen.Cart.route)
-                            }else{
+                            } else {
                                 alertLogin.value = userModel.isLogin
                             }
                         }
@@ -170,42 +171,6 @@ fun ShoppingScreen(
         }
     }
 }
-
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun SearchBarShop(
-//    query: String,
-//    onQueryChange: (String) -> Unit,
-//    modifier: Modifier = Modifier
-//) {
-//    SearchBar(
-//        query = query,
-//        onQueryChange = onQueryChange,
-//        onSearch = {},
-//        active = false,
-//        onActiveChange = {},
-//        shape = RoundedCornerShape(10.dp),
-//        colors = SearchBarDefaults.colors(containerColor = Color.White),
-//        leadingIcon = {
-//            Icon(
-//                imageVector = Icons.Default.Search,
-//                contentDescription = "",
-//                tint = colorScheme.onSurface
-//            )
-//        },
-//        placeholder = {
-//            Text(
-//                text = "Cari batik",
-//                fontSize = 14.sp,
-//            )
-//        },
-//        modifier = modifier
-//            .padding(16.dp, 16.dp, 0.dp, 16.dp)
-//            .fillMaxWidth(0.85f)
-//            .height(48.dp)
-//    ) {
-//    }
-//}
 
 @Preview
 @Composable
