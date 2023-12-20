@@ -2,14 +2,17 @@ package com.example.ambatik.ui.screen.articlelike
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -18,8 +21,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -54,25 +59,35 @@ fun ArticleLikeScreen(
         modifier = modifier
             .fillMaxSize()
     ) {
-        if (statusState){
-            LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ){
-                items(likeListArticleState.value ?: emptyList()){data ->
-                    Card(
-                        colors = CardDefaults.cardColors(Color.White),
-                        modifier = modifier
-                            .clickable {
-                                data?.id?.let { navigateToDetail(it) }
-                            }
-                    ){
-                        ArticleItem(
-                            image = data?.urlBanner ?: "",
-                            title = data?.title ?: "",
-                            createAt = "2023-23-23",
-                            totalLike = data?.totalLike.toString() ?: "",
-                        )
+        Column {
+            Text(
+                text = "Like Article",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = modifier
+                    .padding(start = 16.dp, top = 16.dp, end = 16.dp)
+            )
+            if (statusState){
+                LazyColumn(
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                ){
+                    items(likeListArticleState.value ?: emptyList()){data ->
+                        Card(
+                            colors = CardDefaults.cardColors(Color.White),
+                            modifier = modifier
+                                .clickable {
+                                    data?.id?.let { navigateToDetail(it) }
+                                }
+                        ){
+                            ArticleItem(
+                                image = data?.urlBanner ?: "",
+                                title = data?.title ?: "",
+                                createAt = "2023-23-23",
+                                totalLike = data?.totalLike.toString() ?: "",
+                            )
+                        }
                     }
                 }
             }
