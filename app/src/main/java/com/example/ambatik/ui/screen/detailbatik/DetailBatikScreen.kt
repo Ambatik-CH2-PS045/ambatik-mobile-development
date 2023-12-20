@@ -1,10 +1,16 @@
 package com.example.ambatik.ui.screen.detailbatik
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -28,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.ambatik.data.factory.BatikModelFactory
+import com.example.ambatik.ui.components.shop.ProductBatikItem
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 @Composable
@@ -36,9 +43,11 @@ fun DetailBatikScreen(
     modifier: Modifier = Modifier,
     viewModel: DetailBatikViewModel = viewModel(
         factory = BatikModelFactory.getInstance(LocalContext.current)
-    )
+    ),
+    navigateToDetailProduct: (Int) -> Unit
 ) {
     val detailBatikState = viewModel.detailBatik.observeAsState()
+    val produk = viewModel.produkBatik.observeAsState()
 
     LaunchedEffect(Unit){
         viewModel.getDetailBatik(idBatik)
@@ -49,19 +58,54 @@ fun DetailBatikScreen(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        Column(
-            modifier = modifier
-                .verticalScroll(rememberScrollState())
+        LazyColumn(
         ) {
-            detailBatikState.value?.let { data ->
-                DetailBatikContent(
-                    image = data.urlBatik ?: "",
-                    name = data.name ?: "",
-                    origin = data.origin ?: "",
-                    meaning = data.meaning ?: "",
-                    makingProcess = data.makingProcess ?: "",
-                    usagePurpose = data.usagePurpose ?: ""
+            item {
+                detailBatikState.value?.let { data ->
+                    DetailBatikContent(
+                        image = data.urlBatik ?: "",
+                        name = data.name ?: "",
+                        origin = data.origin ?: "",
+                        meaning = data.meaning ?: "",
+                        makingProcess = data.makingProcess ?: "",
+                        usagePurpose = data.usagePurpose ?: ""
+                    )
+                }
+            }
+            item {
+                Divider(
+                    modifier = modifier
+                        .padding(start = 12.dp, end = 12.dp, top = 16.dp)
+                        .height(0.75.dp)
                 )
+                Text(
+                    text = "Batik Serupa",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = modifier
+                        .padding(start = 12.dp, end = 12.dp,top = 16.dp)
+                )
+            }
+            item {
+                LazyRow(
+                    contentPadding = PaddingValues(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ){
+                    items(produk.value ?: emptyList()){ data ->
+                        ProductBatikItem(
+                            image = data?.urlProduct ?: "",
+                            nameProduct = data?.name ?: "",
+                            price = data?.price.toString() ?: "",
+                            store = data?.storeName ?: "",
+                            rating = data?.rating.toString() ?: "",
+                            productSold = data?.productSold.toString() ?: "",
+                            modifier = modifier
+                                .clickable {
+                                    data?.id?.let { navigateToDetailProduct(it) }
+                                }
+                        )
+                    }
+                }
             }
         }
     }

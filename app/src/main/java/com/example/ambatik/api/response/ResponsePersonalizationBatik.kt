@@ -24,5 +24,8 @@ data class DataItemPersonalisasi(
 	val name: String? = null,
 
 	@field:SerializedName("id")
-	val id: Int? = null
+	val id: Int? = null,
+
+	@field:SerializedName("url_image")
+	val urlImage: String? = null
 ) : Parcelable

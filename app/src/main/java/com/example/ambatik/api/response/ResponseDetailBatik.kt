@@ -1,8 +1,8 @@
 package com.example.ambatik.api.response
 
+import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ResponseDetailBatik(
@@ -14,7 +14,35 @@ data class ResponseDetailBatik(
 	val error: Boolean? = null,
 
 	@field:SerializedName("message")
-	val message: String? = null
+	val message: String? = null,
+
+	@field:SerializedName("products")
+	val products: List<ProductsItemDetailBatik?>? = null
+) : Parcelable
+
+@Parcelize
+data class ProductsItemDetailBatik(
+
+	@field:SerializedName("price")
+	val price: Int? = null,
+
+	@field:SerializedName("name")
+	val name: String? = null,
+
+	@field:SerializedName("rating")
+	val rating: Double? = null,
+
+	@field:SerializedName("url_product")
+	val urlProduct: String? = null,
+
+	@field:SerializedName("store_name")
+	val storeName: String? = null,
+
+	@field:SerializedName("id")
+	val id: Int? = null,
+
+	@field:SerializedName("product_sold")
+	val productSold: Int? = null
 ) : Parcelable
 
 @Parcelize

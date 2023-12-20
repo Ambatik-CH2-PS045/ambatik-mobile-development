@@ -162,7 +162,10 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
         ){
             val id = it.arguments?.getInt(idBatik) ?: 0
             DetailBatikScreen(
-                idBatik = id
+                idBatik = id,
+                navigateToDetailProduct = {productId ->
+                    navController.navigate(Screen.DetailShop.createRoute(productId))
+                }
             )
         }
         val idOrder = "idOrder"
@@ -179,7 +182,10 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
             DrawingScreen()
         }
         composable(Screen.Personalisasi.route){
-            PersonalizationScreen()
+            PersonalizationScreen(
+                navigateToDetailBatik = {batikId ->
+                    navController.navigate(Screen.DetailBatik.createRoute(batikId))}
+            )
         }
     }
 }

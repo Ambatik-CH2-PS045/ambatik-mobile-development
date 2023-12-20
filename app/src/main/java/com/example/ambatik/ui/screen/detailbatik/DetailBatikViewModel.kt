@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ambatik.api.response.DataDetailBatik
+import com.example.ambatik.api.response.ProductsItemDetailBatik
 import com.example.ambatik.api.response.ResponseDetailBatik
 import com.example.ambatik.data.repository.BatikRepository
 import com.google.gson.Gson
@@ -15,6 +16,7 @@ class DetailBatikViewModel(private val repository: BatikRepository): ViewModel()
     val error = MutableLiveData<String?>()
     val status: MutableLiveData<Boolean> = MutableLiveData()
     val detailBatik = MutableLiveData<DataDetailBatik?>()
+    val produkBatik = MutableLiveData<List<ProductsItemDetailBatik?>?>()
 
     fun getDetailBatik(idBatik: Int){
         viewModelScope.launch {
@@ -22,6 +24,7 @@ class DetailBatikViewModel(private val repository: BatikRepository): ViewModel()
                 val batikDetailResponse = repository.getDetailBatik(idBatik)
                 status.postValue(true)
                 detailBatik.postValue(batikDetailResponse.data)
+                produkBatik.postValue(batikDetailResponse.products)
                 Log.d("DETAIL BATIK", "$batikDetailResponse")
             }catch (e: HttpException){
                 val jsonInString = e.response()?.errorBody()?.string()

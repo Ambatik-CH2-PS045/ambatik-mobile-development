@@ -3,6 +3,7 @@ package com.example.ambatik.ui.screen.personalization
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.example.ambatik.R
 import com.example.ambatik.data.factory.PersonalizationFactory
 import com.example.ambatik.ui.components.shop.ProductBatikItem
@@ -55,7 +60,8 @@ fun PersonalizationScreen(
     modifier: Modifier = Modifier,
     viewModel: PersonalizationViewModel = viewModel(
         factory = PersonalizationFactory.getInstance(LocalContext.current)
-    )
+    ),
+    navigateToDetailBatik: (Int) -> Unit
 ) {
     val rekomendasi = viewModel.rekomendasi.observeAsState()
 
@@ -138,7 +144,6 @@ fun PersonalizationScreen(
                                 stateJawaban1 += 1
                                 stateJawaban2 += 1
                                 selectedAnswer.add(2)
-                                Toast.makeText(context, "$statePertanyaan", Toast.LENGTH_SHORT).show()
                             },
                             modifier = modifier
                                 .fillMaxWidth()
@@ -201,7 +206,8 @@ fun PersonalizationScreen(
             }else{
                 LazyColumn(
                     contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = modifier
                         .padding(horizontal = 16.dp)
                 ){
@@ -211,28 +217,51 @@ fun PersonalizationScreen(
                             fontSize = 24.sp,
                             textAlign = TextAlign.Center,
                             modifier = modifier
+                                .padding(bottom = 12.dp)
                                 .fillMaxWidth()
                         )
                     }
-                    items(rekomendasi.value ?: emptyList()){data ->
-                        Text(text = "${data?.name}")
+                    item {
+                        LazyRow(
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ){
+                            items(rekomendasi.value ?: emptyList()){ data ->
+                                Card(
+                                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary),
+                                    modifier = modifier
+                                        .size(150.dp, 200.dp)
+                                        .clickable {
+                                            data?.id?.let { navigateToDetailBatik(it) }
+                                        }
+                                ) {
+                                    Column {
+                                        AsyncImage(
+                                            model = data?.urlImage,
+                                            contentDescription = "PERSONALISASI BATIK",
+                                            contentScale = ContentScale.Crop,
+                                            modifier = modifier
+                                                .size(150.dp, 150.dp)
+                                                .fillMaxWidth()
+                                                .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp))
+                                        )
+                                        Text(
+                                            text = data?.name ?: "",
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            fontSize = 16.sp,
+                                            lineHeight = 16.sp,
+                                            maxLines = 1,
+                                            textAlign = TextAlign.Center,
+                                            fontWeight = FontWeight.Bold,
+                                            overflow = TextOverflow.Ellipsis,
+                                            modifier = modifier
+                                                .padding(12.dp, 8.dp, 12.dp, 0.dp)
+                                                .fillMaxWidth()
+                                        )
+                                    }
+                                }
+                            }
+                        }
                     }
-//                    item {
-//                        LazyRow(
-//                            horizontalArrangement = Arrangement.spacedBy(16.dp)
-//                        ){
-//                            items(rekomendasi.value ?: emptyList()){ data ->
-//                                ProductBatikItem(
-//                                    image = data?.urlProduct ?: "",
-//                                    nameProduct = data?.name ?: "",
-//                                    price = data?.price.toString() ?: "",
-//                                    store = data?.storeName ?: "",
-//                                    rating = data?.rating.toString() ?: "",
-//                                    productSold = data?.productSold.toString() ?: "",
-//                                )
-//                            }
-//                        }
-//                    }
                 }
             }
         }
@@ -243,7 +272,9 @@ fun PersonalizationScreen(
 @Preview
 fun PreviewPersonalizationScreen(){
     AmbatikTheme {
-        PersonalizationScreen()
+        PersonalizationScreen(
+            navigateToDetailBatik = {}
+        )
     }
 }
 
