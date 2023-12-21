@@ -15,6 +15,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -50,6 +53,7 @@ fun CartItem(
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
     val commandAdd = "add"
     val commadDecrease = "reduce"
+    var isButtonEnabled by remember { mutableStateOf(true) }
 
     Surface(
         color = Color.White,
@@ -99,18 +103,26 @@ fun CartItem(
                             orderId = idProduct,
                             orderCount = totalQuantity.toInt(),
                             onProductIncreased = {
-                                android.os.Handler().postDelayed({
-                                    viewModel.getCart(userModel.id)
-                                }, 50)
-                                viewModel.changeQtyCart(userModel.id, idProduct, commandAdd)
-                                Log.d("CartItem", "Increased: User ID - ${userModel.id}, Product ID - $idProduct")
+                                if (isButtonEnabled) {
+                                    isButtonEnabled = false
+                                    android.os.Handler().postDelayed({
+                                        viewModel.getCart(userModel.id)
+                                        isButtonEnabled = true
+                                    }, 50)
+                                    viewModel.changeQtyCart(userModel.id, idProduct, commandAdd)
+                                    Log.d("CartItem", "Increased: User ID - ${userModel.id}, Product ID - $idProduct")
+                                }
                             },
                             onProductDecreased = {
-                                android.os.Handler().postDelayed({
-                                    viewModel.getCart(userModel.id)
-                                }, 50)
-                                viewModel.changeQtyCart(userModel.id, idProduct, commadDecrease)
-                                Log.d("CartItem", "Decreased: User ID - ${userModel.id}, Product ID - $idProduct")
+                                if (isButtonEnabled) {
+                                    isButtonEnabled = false
+                                    android.os.Handler().postDelayed({
+                                        viewModel.getCart(userModel.id)
+                                        isButtonEnabled = true
+                                    }, 50)
+                                    viewModel.changeQtyCart(userModel.id, idProduct, commadDecrease)
+                                    Log.d("CartItem", "Decreased: User ID - ${userModel.id}, Product ID - $idProduct")
+                                }
                             },
                             modifier = modifier
                                 .padding(top = 4.dp)
