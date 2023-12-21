@@ -42,7 +42,7 @@ You can install this application by click this link and download it. After finis
   <img src="https://contrib.rocks/image?repo=austinlieandro/Ambatik" />
 </a>
 
-# Preview
+# Preview App
 <p>
   <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/1.jpg" width="20%"/>
   <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/2.jpg" width="20%"/>
