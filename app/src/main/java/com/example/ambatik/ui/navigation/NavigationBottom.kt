@@ -94,6 +94,9 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
             ScanScreen(
                 navigateToWelcome = {
                     navController.navigate(Screen.Welcome.route)
+                },
+                navigateToDetailProduct = {productId ->
+                    navController.navigate(Screen.DetailShop.createRoute(productId))
                 }
             )
         }

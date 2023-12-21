@@ -94,6 +94,7 @@ fun ScanScreen(
         factory = BatikModelFactory.getInstance(LocalContext.current)
     ),
     navigateToWelcome: () -> Unit,
+    navigateToDetailProduct: (Int) -> Unit,
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore),
     ){
     var scanBatikState by remember { mutableStateOf(false) }
@@ -492,6 +493,10 @@ fun ScanScreen(
                                         store = data?.storeName ?: "",
                                         rating = data?.rating.toString() ?: "",
                                         productSold = data?.productSold.toString() ?: "",
+                                        modifier = modifier
+                                            .clickable {
+                                                data?.id?.let { navigateToDetailProduct(it) }
+                                            }
                                     )
                                 }
                             }
@@ -520,7 +525,8 @@ fun ScanScreen(
 fun PreviewScanScreen(){
     AmbatikTheme {
         ScanScreen(
-            navigateToWelcome = {}
+            navigateToWelcome = {},
+            navigateToDetailProduct = {}
         )
     }
 }

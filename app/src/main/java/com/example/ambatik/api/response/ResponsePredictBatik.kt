@@ -50,6 +50,8 @@ data class DataPredictBatik(
 
 @Parcelize
 data class ProductsItemBatikScan(
+	@field:SerializedName("id")
+	val id: Int? = null,
 
 	@field:SerializedName("price")
 	val price: Int? = null,
