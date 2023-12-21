@@ -62,7 +62,8 @@ fun CartScreen(
     viewModelOrder: AddOrderViewModel = viewModel(
         factory = OrderModelFactory.getInstance(LocalContext.current)
     ),
-    userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore)
+    userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore),
+    navigateToOrder: () -> Unit
 ){
     val dataCartListState = viewModel.dataCart.observeAsState()
     val statusState by viewModel.status.observeAsState(false)
@@ -96,7 +97,9 @@ fun CartScreen(
                                 viewModelOrder.checkout(totalQty, grandTotalOrder, userModel.id, eachQuantity, eachPriceList, eachProduct)
                                 android.os.Handler().postDelayed({
                                     viewModel.getCart(userModel.id)
-                                }, 100)
+                                }, 500)
+                                Toast.makeText(context, "Kamu telah berhasil melakukan transaksi", Toast.LENGTH_SHORT).show()
+                                navigateToOrder()
                             }else{
                                 Toast.makeText(context, "Cart kamu masih kosong", Toast.LENGTH_SHORT).show()
                             }
@@ -112,26 +115,40 @@ fun CartScreen(
             modifier = modifier
                 .fillMaxSize()
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(bottom = 80.dp)
-            ) {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+            if (dataCartListState.value?.data?.size == 0){
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(20.dp)
                 ){
-                    items(dataCartListState.value?.data ?: emptyList()){data ->
-                        CartItem(
-                            idProduct = data?.id ?: 0,
-                            name = data?.name ?: "",
-                            image = data?.urlProduct ?: "",
-                            price = data?.price.toString() ?: "",
-                            totalPrice = data?.totalPrice ?: "",
-                            totalQuantity = data?.totalQty ?: "",
-                            storeName = data?.storeName ?: "",
-                        )
+                    Text(
+                        text = "Belum ada barang didalam cart kamu",
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }else{
+                Column(
+                    modifier = Modifier
+                        .padding(bottom = 80.dp)
+                ) {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                    ){
+                        items(dataCartListState.value?.data ?: emptyList()){data ->
+                            CartItem(
+                                idProduct = data?.id ?: 0,
+                                name = data?.name ?: "",
+                                image = data?.urlProduct ?: "",
+                                price = data?.price.toString() ?: "",
+                                totalPrice = data?.totalPrice ?: "",
+                                totalQuantity = data?.totalQty ?: "",
+                                storeName = data?.storeName ?: "",
+                            )
+                        }
                     }
                 }
-
             }
         }
     }
@@ -203,6 +220,8 @@ fun PreviewBottomCart(){
 @Composable
 fun PreviewCartScreen(){
     AmbatikTheme {
-        CartScreen()
+        CartScreen(
+            navigateToOrder = {}
+        )
     }
 }

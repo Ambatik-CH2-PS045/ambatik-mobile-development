@@ -382,7 +382,10 @@ fun RegisterScreen(
                 onClick = {
                     if(!isValidEmail || !isValidPassword){
                         Toast.makeText(context, "Masukan Format email dan password yang benar", Toast.LENGTH_SHORT).show()
-                    }else{
+                    }else if(fullname.length == 0 || email.length == 0 || passwordRegister.length == 0 || numberHandphone.length == 0){
+                        Toast.makeText(context, "Harap isi semua data terlebih dahulu", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
                         viewModel.register(fullname, email, username, passwordRegister, numberHandphone)
                     }
                 },
@@ -401,7 +404,9 @@ fun RegisterScreen(
                 }
             }
             errorState?.let { errorMsg ->
-                Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+                if (errorMsg != null) {
+                    Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+                }
             }
         }
         Box(

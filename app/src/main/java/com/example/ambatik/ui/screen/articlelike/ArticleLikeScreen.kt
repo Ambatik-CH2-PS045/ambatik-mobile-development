@@ -2,9 +2,11 @@ package com.example.ambatik.ui.screen.articlelike
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -69,24 +72,39 @@ fun ArticleLikeScreen(
                     .padding(start = 16.dp, top = 16.dp, end = 16.dp)
             )
             if (statusState){
-                LazyColumn(
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ){
-                    items(likeListArticleState.value ?: emptyList()){data ->
-                        Card(
-                            colors = CardDefaults.cardColors(Color.White),
-                            modifier = modifier
-                                .clickable {
-                                    data?.id?.let { navigateToDetail(it) }
-                                }
-                        ){
-                            ArticleItem(
-                                image = data?.urlBanner ?: "",
-                                title = data?.title ?: "",
-                                createAt = "2023-23-23",
-                                totalLike = data?.totalLike.toString() ?: "",
-                            )
+                if (likeListArticleState.value?.size == 0){
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(20.dp)
+                    ){
+                        Text(
+                            text = "Belum ada article yang kamu like",
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }else{
+                    LazyColumn(
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                    ){
+                        items(likeListArticleState.value ?: emptyList()){data ->
+                            Card(
+                                colors = CardDefaults.cardColors(Color.White),
+                                modifier = modifier
+                                    .clickable {
+                                        data?.id?.let { navigateToDetail(it) }
+                                    }
+                            ){
+                                ArticleItem(
+                                    image = data?.urlBanner ?: "",
+                                    title = data?.title ?: "",
+                                    createAt = "2023-23-23",
+                                    totalLike = data?.totalLike.toString() ?: "",
+                                )
+                            }
                         }
                     }
                 }

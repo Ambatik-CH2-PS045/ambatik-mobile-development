@@ -68,21 +68,20 @@ fun AmbatikApp(
                 .padding(20.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ambatik),
+                painter = painterResource(id = R.drawable.ambatik1),
                 contentDescription = "Foto Login",
                 modifier = Modifier
-                    .size(150.dp, 150.dp)
+                    .size(300.dp, 100.dp)
             )
             Text(
                 text = "Selamat datang di Ambatik",
                 color = colorScheme.onSurface,
                 fontSize = 24.sp,
-//                fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .padding(8.dp)
             )
             Text(
-                text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ipsum orci, aliquam non leo non, laoreet blandit sem. Nunc nec.",
+                text = "Ambatik is an Android-based application aimed at increasing awareness, understanding, and accessibility of Indonesian batik.",
                 color = colorScheme.onSurface,
                 textAlign = TextAlign.Center,
                 modifier = Modifier

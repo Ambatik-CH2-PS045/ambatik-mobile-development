@@ -16,7 +16,6 @@ import com.example.ambatik.ui.screen.detailarticle.DetailArticleScreen
 import com.example.ambatik.ui.screen.detailbatik.DetailBatikScreen
 import com.example.ambatik.ui.screen.detailorder.DetailOrderScreen
 import com.example.ambatik.ui.screen.detailshopping.DetailShopScreen
-import com.example.ambatik.ui.screen.drawing.DrawingScreen
 import com.example.ambatik.ui.screen.editprofile.EditProfileScreen
 import com.example.ambatik.ui.screen.home.HomeScreen
 import com.example.ambatik.ui.screen.login.LoginScreen
@@ -126,7 +125,12 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
             )
         }
         composable(Screen.Cart.route){
-            CartScreen(navController)
+            CartScreen(
+                navController,
+                navigateToOrder = {
+                    navController.navigate(Screen.Order.route)
+                }
+            )
         }
         composable(Screen.LikeArticle.route){
             ArticleLikeScreen(navigateToDetail = {articleId ->
@@ -177,9 +181,6 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
             DetailOrderScreen(
                 idOrder = id
             )
-        }
-        composable(Screen.Drawing.route){
-            DrawingScreen()
         }
         composable(Screen.Personalisasi.route){
             PersonalizationScreen(

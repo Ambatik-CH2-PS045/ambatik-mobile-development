@@ -85,17 +85,9 @@ fun ArticelScreen(
                 .padding(horizontal = 16.dp)
         ) {
             item {
-                Text(
-                    text = "AYO GAMBAR BATIK",
-                    modifier = modifier
-                        .clickable {
-                            navController.navigate(Screen.Drawing.route)
-                        }
-                )
-            }
-            item {
                 Box(
                     modifier = modifier
+                        .padding(top = 16.dp)
                         .fillMaxWidth()
                         .fillMaxHeight()
                         .clip(RoundedCornerShape(10.dp))

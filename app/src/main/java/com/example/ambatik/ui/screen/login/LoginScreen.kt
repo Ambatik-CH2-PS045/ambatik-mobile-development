@@ -143,22 +143,12 @@ fun LoginScreen(
                 ),
                 singleLine = true,
                 trailingIcon = {
-                    if(showPassword){
-                        IconButton(onClick = { showPassword = false }) {
-                            Icon(
-                                imageVector = Icons.Filled.Visibility,
-                                contentDescription = "Hide Password",
-                                tint = colorScheme.onSurface
-                            )
-                        }
-                    } else{
-                        IconButton(onClick = { showPassword = true }) {
-                            Icon(
-                                imageVector = Icons.Filled.VisibilityOff,
-                                contentDescription = "Hide Password",
-                                tint = colorScheme.onSurface
-                            )
-                        }
+                    IconButton(onClick = { showPassword = !showPassword }) {
+                        Icon(
+                            imageVector = if (showPassword) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                            contentDescription = if (showPassword) "Hide Password" else "Show Password",
+                            tint = colorScheme.onSurface
+                        )
                     }
                 },
                 placeholder = {
@@ -206,7 +196,9 @@ fun LoginScreen(
                 }
             }
             errorState?.let { errorMsg ->
-                Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+                if (errorMsg != null) {
+                    Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+                }
             }
         }
         Box(

@@ -306,8 +306,14 @@ fun EditProfileScreen(
                                 if (checkImage){
                                     editViewModel.editProfile(userModel.id, fullname ?: "", address ?: "", numberHandphone ?: "")
                                     editViewModel.editPhotoProfile(capturedImage.toFile(), userModel.id)
+                                    if (!loadingEditProfile && !loadingEditPhotoProfile){
+                                        Toast.makeText(context, "Berhasil edit profile", Toast.LENGTH_SHORT).show()
+                                    }
                                 }else{
                                     editViewModel.editProfile(userModel.id, fullname ?: "", address ?: "", numberHandphone ?: "")
+                                    if (!loadingEditProfile && !loadingEditPhotoProfile){
+                                        Toast.makeText(context, "Berhasil edit profile", Toast.LENGTH_SHORT).show()
+                                    }
                                 }
                             },
                             modifier = Modifier

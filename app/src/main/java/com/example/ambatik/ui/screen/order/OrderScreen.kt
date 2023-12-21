@@ -19,6 +19,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -68,28 +69,43 @@ fun OrderScreen(
                 modifier = modifier
                     .padding(start = 16.dp, top = 16.dp, end = 16.dp)
             )
-            LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ){
-                items(orderListState.value ?: emptyList()){ data ->
-                    var otherItem by remember { mutableStateOf("") }
-                    if(data.otherItem == 0){
-                        otherItem = ""
-                    }else{
-                        otherItem = "+${data.otherItem} product lainnya"
-                    }
-                    OrderItem(
-                        image = data.productUrlProduct,
-                        totalPrice = data.totalPrice.toString(),
-                        totalItem = data.totalItem.toString(),
-                        otherItem = otherItem,
-                        productName = data.productName,
-                        modifier = modifier
-                            .clickable {
-                                navigateToDetailOrder(data.id)
-                            }
+            if (orderListState.value?.size == 0){
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(20.dp)
+                ){
+                    Text(
+                        text = "Kamu belum pernah melakukan transaksi",
+                        fontWeight = FontWeight.Bold
                     )
+                }
+            }else{
+                LazyColumn(
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                ){
+                    items(orderListState.value ?: emptyList()){ data ->
+                        var otherItem by remember { mutableStateOf("") }
+                        if(data.otherItem == 0){
+                            otherItem = ""
+                        }else{
+                            otherItem = "+${data.otherItem} product lainnya"
+                        }
+                        OrderItem(
+                            image = data.productUrlProduct,
+                            totalPrice = data.totalPrice.toString(),
+                            totalItem = data.totalItem.toString(),
+                            otherItem = otherItem,
+                            productName = data.productName,
+                            modifier = modifier
+                                .clickable {
+                                    navigateToDetailOrder(data.id)
+                                }
+                        )
+                    }
                 }
             }
         }
