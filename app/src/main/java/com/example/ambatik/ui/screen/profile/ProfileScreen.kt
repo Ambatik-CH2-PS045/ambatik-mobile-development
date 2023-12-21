@@ -252,9 +252,7 @@ fun ProfileScreen(
                                     .padding(5.dp)
                                     .fillMaxWidth()
                                     .clickable {
-                                        Toast
-                                            .makeText(context, "About", Toast.LENGTH_SHORT)
-                                            .show()
+                                        navController.navigate(Screen.About.route)
                                     },
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -302,7 +300,6 @@ fun ProfileScreen(
                             },
                             modifier = modifier
                                 .fillMaxWidth()
-//                            .fillMaxHeight(0.2f)
                                 .border(2.dp, color = colorScheme.primary, RoundedCornerShape(10.dp))
                         ) {
                             Text(

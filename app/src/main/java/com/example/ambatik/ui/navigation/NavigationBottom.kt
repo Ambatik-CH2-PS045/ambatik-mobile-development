@@ -9,6 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.ambatik.ui.screen.about.AboutScreen
 import com.example.ambatik.ui.screen.articel.ArticelScreen
 import com.example.ambatik.ui.screen.articlelike.ArticleLikeScreen
 import com.example.ambatik.ui.screen.cart.CartScreen
@@ -190,6 +191,9 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
                 navigateToDetailBatik = {batikId ->
                     navController.navigate(Screen.DetailBatik.createRoute(batikId))}
             )
+        }
+        composable(Screen.About.route){
+            AboutScreen()
         }
     }
 }
