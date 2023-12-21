@@ -16,7 +16,7 @@ Ambatik is an Android-based application aimed at increasing awareness, understan
 
 # Android Tools Used
 - Android Studio Hedgehog | 2023.1.1
-- Android SDK Api Level 34 with Minimum SDK API Level 24
+- Android SDK API Level 34 with Minimum SDK API Level 24
 - Android Gradle Plugin Version 8.1.3 with Gradle Version 8.0
 - Created using Jetpack Compose
 - Postman and Chukker for API Testing
