@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -67,8 +66,6 @@ fun ArticelScreen(
     val articleListState = viewModel.articleList.observeAsState()
     val batikListState = viewModelBatik.batikList.observeAsState()
     val statusState by viewModel.status.observeAsState(false)
-    val loading by viewModel.loading.observeAsState(initial = false)
-    val loadingBatik by viewModelBatik.loading.observeAsState(false)
     val errorState by viewModel.error.observeAsState(null)
     val context = LocalContext.current
 
