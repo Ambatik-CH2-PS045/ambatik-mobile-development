@@ -24,14 +24,14 @@ You can install this application by click this link and download it. After finis
 
 # Preview
 <p>
-  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/1.jpg" width="10%"/>
-  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/2.jpg" width="10%"/>
-  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/3.jpg" width="10%"/>
-  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/4.jpg" width="10%"/>
-  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/5.jpg" width="10%"/>
-  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/6.jpg" width="10%"/>
-  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/7.jpg" width="10%"/>
-  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/8.jpg" width="10%"/>
-  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/9.jpg" width="10%"/>
-  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/10.jpg" width="10%"/>
+  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/1.jpg" width="15%"/>
+  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/2.jpg" width="15%"/>
+  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/3.jpg" width="15%"/>
+  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/4.jpg" width="15%"/>
+  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/5.jpg" width="15%"/>
+  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/6.jpg" width="15%"/>
+  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/7.jpg" width="15%"/>
+  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/8.jpg" width="15%"/>
+  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/9.jpg" width="15%"/>
+  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/10.jpg" width="15%"/>
 </p>
