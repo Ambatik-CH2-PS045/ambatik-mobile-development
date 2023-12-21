@@ -74,7 +74,7 @@ fun AmbatikApp(
                     .size(300.dp, 100.dp)
             )
             Text(
-                text = "Selamat datang di Ambatik",
+                text = "Welcome to Ambatik",
                 color = colorScheme.onSurface,
                 fontSize = 24.sp,
                 modifier = Modifier
