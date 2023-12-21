@@ -28,6 +28,10 @@ Ambatik is an Android-based application aimed at increasing awareness, understan
 You can install this application by click this link and download it. After finish downloading you can install it on your Android device. Link to download: https://bit.ly/Ambatik-apk-install
 
 # Author
+| Name | Github | Linkedin
+| --- | --- | --- |
+| Austin Lieandro | https://github.com/austinlieandro | https://www.linkedin.com/in/austinlieandro/
+| Roosyidah A. | https://github.com/shaulascr | https://www.linkedin.com/in/ralyar/
 <a href="https://github.com/austinlieandro/Ambatik/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=austinlieandro/Ambatik" />
 </a>
