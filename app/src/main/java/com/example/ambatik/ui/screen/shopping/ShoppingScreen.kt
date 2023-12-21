@@ -152,7 +152,7 @@ fun ShoppingScreen(
                         nameProduct = data.name,
                         price = data.price.toString(),
                         store = data.storeName,
-                        rating = data.rating.toString(),
+                        rating = data.rating.toDouble(),
                         productSold = data.productSold.toString(),
                         modifier = modifier
                             .clickable {

@@ -85,6 +85,7 @@ import com.example.ambatik.ui.theme.AmbatikTheme
 import com.example.ambatik.utlis.createCustomTempFile
 import com.example.ambatik.utlis.uriToFile
 import java.util.Objects
+import java.util.logging.Handler
 
 @Composable
 fun ScanScreen(
@@ -100,7 +101,7 @@ fun ScanScreen(
     var scanBatikState by remember { mutableStateOf(false) }
     val statusState by viewModel.status.observeAsState(false)
     val hasilPredictBatik = viewModel.detailScanBatik.observeAsState()
-    val akurasiBatik = viewModel.akurasiBatik.observeAsState()
+    val akurasiBatik = viewModel.akurasiBatik.observeAsState().value
     val rekomendasiBatik = viewModel.rekomendasiProduk.observeAsState()
     val context = LocalContext.current
     val file = createCustomTempFile(context)
@@ -330,13 +331,16 @@ fun ScanScreen(
             }
         }else{
             var stateAkurasi by remember { mutableStateOf(false) }
-            LaunchedEffect(akurasiBatik.value?.accuracy) {
-                akurasiBatik.value?.accuracy?.let { accuracy ->
-                    stateAkurasi = accuracy >= 80.0
-                }
+            LaunchedEffect(akurasiBatik?.accuracy) {
+                android.os.Handler().postDelayed({
+                    akurasiBatik?.accuracy?.let { accuracy ->
+                        stateAkurasi = accuracy >= 80.0
+                    }
+                }, 250)
             }
-            if (!stateAkurasi){
-                if (!loading){
+            if (!loading){
+                Log.d("DEBUG", "ScanScreen: ${akurasiBatik?.accuracy}")
+                if (akurasiBatik?.accuracy != null && akurasiBatik.accuracy < 80.0){
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
@@ -355,153 +359,155 @@ fun ScanScreen(
                             )
                         }
                     }
-                }
-            }else{
-                var formatAkurasi by remember { mutableStateOf(0.0) }
-                LaunchedEffect(akurasiBatik.value?.accuracy){
-                    var akurasi = akurasiBatik.value?.accuracy
+                }else{
+                    Log.d("DEBUG", "ScanScreen: ${akurasiBatik?.accuracy}")
+                    var formatAkurasi by remember { mutableStateOf(0.0) }
+                    LaunchedEffect(akurasiBatik?.accuracy){
+                        android.os.Handler().postDelayed({
+                            var akurasi = akurasiBatik?.accuracy
 
-                    if (akurasi != null && akurasi.toInt() < 100) {
-                        formatAkurasi = String.format("%.2f", akurasi).toDoubleOrNull() ?: 0.0
-                    } else {
-                        formatAkurasi = 100.0
+                            if (akurasi != null && akurasi.toInt() < 100) {
+                                formatAkurasi = String.format("%.2f", akurasi).toDoubleOrNull() ?: 0.0
+                            } else {
+                                formatAkurasi = 100.0
+                            }
+                        }, 250)
                     }
-                }
-                if (!loading){
-                    LazyColumn(
-                        contentPadding = PaddingValues(bottom = 30.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                        modifier = modifier
-                            .padding(horizontal = 16.dp)
-                    ){
-                        item {
-                            hasilPredictBatik.value?.let { data ->
-                                Column(
-                                    modifier = modifier
-                                        .padding(bottom = 12.dp)
-                                ) {
-                                    AsyncImage(
-                                        model = data.urlBatik,
-                                        contentDescription = "Detail Scan Batik",
-                                        contentScale = ContentScale.Crop,
+                    if (!loading){
+                        LazyColumn(
+                            contentPadding = PaddingValues(bottom = 30.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                            modifier = modifier
+                                .padding(horizontal = 16.dp)
+                        ){
+                            item {
+                                hasilPredictBatik.value?.let { data ->
+                                    Column(
                                         modifier = modifier
                                             .padding(bottom = 12.dp)
-                                            .fillMaxWidth()
-                                            .height(250.dp)
-                                            .clip(
-                                                RoundedCornerShape(
-                                                    bottomStart = 24.dp,
-                                                    bottomEnd = 24.dp
+                                    ) {
+                                        AsyncImage(
+                                            model = data.urlBatik,
+                                            contentDescription = "Detail Scan Batik",
+                                            contentScale = ContentScale.Crop,
+                                            modifier = modifier
+                                                .padding(bottom = 12.dp)
+                                                .fillMaxWidth()
+                                                .height(250.dp)
+                                                .clip(
+                                                    RoundedCornerShape(
+                                                        bottomStart = 24.dp,
+                                                        bottomEnd = 24.dp
+                                                    )
                                                 )
-                                            )
-                                    )
-                                    Box(
-                                        modifier = modifier
-                                            .padding(horizontal = 12.dp)
-                                    ){
-                                        Column {
-                                            Text(
-                                                text = data.name ?: "",
-                                                fontSize = 20.sp,
-                                                fontWeight = FontWeight.Bold,
-                                                maxLines = 2,
-                                                overflow = TextOverflow.Ellipsis
-                                            )
-                                            Text(
-                                                text = data.origin ?: "",
-                                                maxLines = 2,
-                                                overflow = TextOverflow.Ellipsis,
-                                                modifier = modifier
-                                                    .padding(top = 4.dp)
-                                            )
-                                            Text(
-                                                text = "Akurasi pengecekan: $formatAkurasi",
-                                                modifier = modifier
-                                                    .padding(top = 4.dp)
-                                            )
-                                            Divider(
-                                                modifier = modifier
-                                                    .padding(top = 16.dp)
-                                                    .height(0.75.dp)
-                                            )
-                                            Text(
-                                                text = "Arti",
-                                                fontSize = 20.sp,
-                                                fontWeight = FontWeight.Bold,
-                                                modifier = modifier
-                                                    .padding(top = 16.dp)
-                                            )
-                                            Text(
-                                                text = data.meaning ?: "",
-                                                textAlign = TextAlign.Justify
-                                            )
-                                            Divider(
-                                                modifier = modifier
-                                                    .padding(top = 16.dp)
-                                                    .height(0.75.dp)
-                                            )
-                                            Text(
-                                                text = "Proses Pembuatan",
-                                                fontSize = 20.sp,
-                                                fontWeight = FontWeight.Bold,
-                                                modifier = modifier
-                                                    .padding(top = 16.dp)
-                                            )
-                                            Text(
-                                                text = data.makingProcess ?: "",
-                                                textAlign = TextAlign.Justify
-                                            )
-                                            Divider(
-                                                modifier = modifier
-                                                    .padding(top = 16.dp)
-                                                    .height(0.75.dp)
-                                            )
-                                            Text(
-                                                text = "Penggunaan",
-                                                fontSize = 20.sp,
-                                                fontWeight = FontWeight.Bold,
-                                                modifier = modifier
-                                                    .padding(top = 16.dp)
-                                            )
-                                            Text(
-                                                text = data.usagePurpose ?: "",
-                                                textAlign = TextAlign.Justify
-                                            )
+                                        )
+                                        Box(
+                                            modifier = modifier
+                                                .padding(horizontal = 12.dp)
+                                        ){
+                                            Column {
+                                                Text(
+                                                    text = data.name ?: "",
+                                                    fontSize = 20.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    maxLines = 2,
+                                                    overflow = TextOverflow.Ellipsis
+                                                )
+                                                Text(
+                                                    text = data.origin ?: "",
+                                                    maxLines = 2,
+                                                    overflow = TextOverflow.Ellipsis,
+                                                    modifier = modifier
+                                                        .padding(top = 4.dp)
+                                                )
+                                                Text(
+                                                    text = "Akurasi pengecekan: $formatAkurasi",
+                                                    modifier = modifier
+                                                        .padding(top = 4.dp)
+                                                )
+                                                Divider(
+                                                    modifier = modifier
+                                                        .padding(top = 16.dp)
+                                                        .height(0.75.dp)
+                                                )
+                                                Text(
+                                                    text = "Arti",
+                                                    fontSize = 20.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    modifier = modifier
+                                                        .padding(top = 16.dp)
+                                                )
+                                                Text(
+                                                    text = data.meaning ?: "",
+                                                    textAlign = TextAlign.Justify
+                                                )
+                                                Divider(
+                                                    modifier = modifier
+                                                        .padding(top = 16.dp)
+                                                        .height(0.75.dp)
+                                                )
+                                                Text(
+                                                    text = "Proses Pembuatan",
+                                                    fontSize = 20.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    modifier = modifier
+                                                        .padding(top = 16.dp)
+                                                )
+                                                Text(
+                                                    text = data.makingProcess ?: "",
+                                                    textAlign = TextAlign.Justify
+                                                )
+                                                Divider(
+                                                    modifier = modifier
+                                                        .padding(top = 16.dp)
+                                                        .height(0.75.dp)
+                                                )
+                                                Text(
+                                                    text = "Penggunaan",
+                                                    fontSize = 20.sp,
+                                                    fontWeight = FontWeight.Bold,
+                                                    modifier = modifier
+                                                        .padding(top = 16.dp)
+                                                )
+                                                Text(
+                                                    text = data.usagePurpose ?: "",
+                                                    textAlign = TextAlign.Justify
+                                                )
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                        item {
-                            Text(
-                                text = "Rekomendasi Batik",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = modifier
-                                    .padding(top = 16.dp)
-                            )
-                        }
-                        item {
-                            LazyRow(
-                                horizontalArrangement = Arrangement.spacedBy(16.dp)
-                            ){
-                                items(rekomendasiBatik.value ?: emptyList()){ data ->
-                                    ProductBatikItem(
-                                        image = data?.urlProduct ?: "",
-                                        nameProduct = data?.name ?: "",
-                                        price = data?.price.toString() ?: "",
-                                        store = data?.storeName ?: "",
-                                        rating = data?.rating.toString() ?: "",
-                                        productSold = data?.productSold.toString() ?: "",
-                                        modifier = modifier
-                                            .clickable {
-                                                data?.id?.let { navigateToDetailProduct(it) }
-                                            }
-                                    )
+                            item {
+                                Text(
+                                    text = "Rekomendasi Batik",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = modifier
+                                        .padding(top = 16.dp)
+                                )
+                            }
+                            item {
+                                LazyRow(
+                                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                                ){
+                                    items(rekomendasiBatik.value ?: emptyList()){ data ->
+                                        ProductBatikItem(
+                                            image = data?.urlProduct ?: "",
+                                            nameProduct = data?.name ?: "",
+                                            price = data?.price.toString() ?: "",
+                                            store = data?.storeName ?: "",
+                                            rating = data?.rating?.toDouble() ?: 0.0,
+                                            productSold = data?.productSold.toString() ?: "",
+                                            modifier = modifier
+                                                .clickable {
+                                                    data?.id?.let { navigateToDetailProduct(it) }
+                                                }
+                                        )
+                                    }
                                 }
                             }
                         }
-
                     }
                 }
             }

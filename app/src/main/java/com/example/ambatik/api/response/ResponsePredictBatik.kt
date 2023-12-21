@@ -60,7 +60,7 @@ data class ProductsItemBatikScan(
 	val name: String? = null,
 
 	@field:SerializedName("rating")
-	val rating: Int? = null,
+	val rating: Double? = null,
 
 	@field:SerializedName("url_product")
 	val urlProduct: String? = null,

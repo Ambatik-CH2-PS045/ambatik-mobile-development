@@ -97,7 +97,7 @@ fun DetailBatikScreen(
                             nameProduct = data?.name ?: "",
                             price = data?.price.toString() ?: "",
                             store = data?.storeName ?: "",
-                            rating = data?.rating.toString() ?: "",
+                            rating = data?.rating?.toDouble() ?: 0.0,
                             productSold = data?.productSold.toString() ?: "",
                             modifier = modifier
                                 .clickable {

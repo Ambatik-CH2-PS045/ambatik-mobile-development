@@ -36,7 +36,7 @@ fun ProductBatikItem(
     nameProduct: String,
     price: String,
     store: String,
-    rating: String,
+    rating: Double,
     productSold: String,
     modifier: Modifier = Modifier
 ){
@@ -133,7 +133,7 @@ fun PreviewProductBatikItem(){
             nameProduct = "LAPTOP GAMING TERBAIK TAHUN INI",
             price = "15000000",
             store = "NVIDIA GAMING OFFICIAL",
-            rating = "5.0",
+            rating = 5.0,
             productSold = "30000"
         )
     }
