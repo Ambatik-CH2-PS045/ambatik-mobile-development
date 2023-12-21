@@ -24,6 +24,12 @@ Ambatik is an Android-based application aimed at increasing awareness, understan
 - Figma for Android UI Design
 - Firebase for Notification
 
+# System Architecture
+Ambatik is an application created using the MVVM architecture. MVVM is a GUI-based application creation architecture that focuses on separating code for business logic and application display. In its application, MVVM is divided into several layers, namely Model, View, and ViewModel.
+<p>
+  <img src="https://miro.medium.com/v2/resize:fit:1400/1*BqFy9rd2_hCtOeHgUY72gg.png" />
+</p>
+
 # How to Install
 You can install this application by click this link and download it. After finish downloading you can install it on your Android device. Link to download: https://bit.ly/Ambatik-apk-install
 
