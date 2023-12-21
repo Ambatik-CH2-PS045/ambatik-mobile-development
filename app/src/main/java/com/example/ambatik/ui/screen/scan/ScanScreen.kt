@@ -329,14 +329,12 @@ fun ScanScreen(
             }
         }else{
             var stateAkurasi by remember { mutableStateOf(false) }
-            LaunchedEffect(akurasiBatik.value?.accuracy){
-                if (akurasiBatik.value?.accuracy != null && akurasiBatik.value?.accuracy!! < 80.0){
-                    stateAkurasi = false
-                }else{
-                    stateAkurasi = true
+            LaunchedEffect(akurasiBatik.value?.accuracy) {
+                akurasiBatik.value?.accuracy?.let { accuracy ->
+                    stateAkurasi = accuracy >= 80.0
                 }
             }
-            if (stateAkurasi){
+            if (!stateAkurasi){
                 if (!loading){
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -350,7 +348,9 @@ fun ScanScreen(
                             contentAlignment = Alignment.Center
                         ){
                             Text(
-                                text = "Mohon maaf kami tidak mengenali batik tersebut, mohon foto batik lebih jelas"
+                                text = "Mohon maaf kami tidak mengenali batik tersebut, mohon foto batik lebih jelas",
+                                textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.Bold
                             )
                         }
                     }

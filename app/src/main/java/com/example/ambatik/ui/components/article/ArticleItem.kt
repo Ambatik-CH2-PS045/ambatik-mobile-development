@@ -70,7 +70,8 @@ fun ArticleItem(
                     )
                     Box(
                         modifier = modifier
-                            .padding(0.dp, 30.dp, 0.dp, 0.dp)
+                            .padding(0.dp, 30.dp, 0.dp, 0.dp),
+                        contentAlignment = Alignment.Center
                     ) {
                         Row{
                             Icon(
@@ -85,7 +86,7 @@ fun ArticleItem(
                                 fontSize = 12.sp,
                                 color = colorScheme.onSurface,
                                 modifier = modifier
-                                    .padding(5.dp, 0.dp, 0.dp, 0.dp)
+                                    .padding(5.dp, 0.dp, 0.dp, 5.dp)
                             )
                             Box(
                                 modifier = modifier

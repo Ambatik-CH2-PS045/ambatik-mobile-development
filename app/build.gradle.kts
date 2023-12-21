@@ -92,6 +92,8 @@ dependencies {
 
     implementation ("com.github.bumptech.glide:compose:1.0.0-beta01")
 
+    implementation ("androidx.compose.ui:ui-text-google-fonts:1.5.4")
+
     debugImplementation ("com.github.chuckerteam.chucker:library:4.0.0")
     releaseImplementation ("com.github.chuckerteam.chucker:library-no-op:4.0.0")
 }

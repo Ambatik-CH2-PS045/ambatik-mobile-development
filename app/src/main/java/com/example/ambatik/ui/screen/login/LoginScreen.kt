@@ -1,6 +1,8 @@
 package com.example.ambatik.ui.screen.login
 
+import android.app.Activity
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +56,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.data.factory.UserModelFactory
 import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.theme.AmbatikTheme
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,6 +77,11 @@ fun LoginScreen(
     val statusState by viewModel.status.observeAsState(false)
     val errorState by viewModel.error.observeAsState(null)
 
+
+    BackHandler(enabled = true) {
+        navController.navigate(Screen.Welcome.route)
+    }
+
     Surface(
         color = colorScheme.surface,
         modifier = modifier
@@ -90,7 +99,7 @@ fun LoginScreen(
                 fontWeight = FontWeight.Bold,
             )
             Text(
-                text = "Lorem ipsum dolor sit amet",
+                text = "Harap masukan data kamu!",
                 color = colorScheme.onSurface,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center,

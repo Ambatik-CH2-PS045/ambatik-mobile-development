@@ -1,6 +1,7 @@
 package com.example.ambatik.ui.screen.articel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +17,11 @@ class BatikViewModel(private val repository: BatikRepository): ViewModel() {
     val status: MutableLiveData<Boolean> = MutableLiveData()
     val batikList = MutableLiveData<List<DataItemBatik?>?>()
 
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
+
     fun getBatik(){
+        _loading.postValue(true)
         viewModelScope.launch {
             try {
                 val batikResponse = repository.getBatik()
@@ -34,6 +39,8 @@ class BatikViewModel(private val repository: BatikRepository): ViewModel() {
                 error.postValue("Terjadi kesalahan saat memuat data")
                 status.postValue(false)
                 Log.d("BATIK", "$e")
+            }finally {
+                _loading.value = false
             }
         }
     }

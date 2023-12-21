@@ -22,15 +22,14 @@ class ArticleViewModel(private val repository: ArticleRepository): ViewModel() {
     val articleList = MutableLiveData<List<DataItem>>()
 
     fun getStory(){
+        _loading.postValue(true)
         viewModelScope.launch {
             try {
-                _loading.value = true
                 val articleResponse = repository.getArticle()
                 status.postValue(true)
                 articleList.postValue(articleResponse.data)
                 Log.d("Article", "$articleResponse")
             }catch (e: HttpException){
-                _loading.value = false
                 val jsonInString = e.response()?.errorBody()?.string()
                 Log.e("Article", "Error response: $jsonInString")
                 val errorBody = Gson().fromJson(jsonInString, ResponseArticle::class.java)
@@ -38,10 +37,11 @@ class ArticleViewModel(private val repository: ArticleRepository): ViewModel() {
                 status.postValue(false)
                 Log.d("Article", "$e")
             }catch (e: Exception) {
-                _loading.value = false
                 error.postValue("Terjadi kesalahan saat membuat data")
                 status.postValue(false)
                 Log.d("Article", "$e")
+            }finally {
+                _loading.value = false
             }
         }
     }
