@@ -1,3 +1,7 @@
+<p>
+  <img src="https://github.com/austinlieandro/Ambatik/blob/master/asset/Thumbnail.jpg"/>
+</p>
+
 # About
 Ambatik is an Android-based application aimed at increasing awareness, understanding, and accessibility of Indonesian batik. With a focus on education, preservation, and commerce, Ambatik strives to fostering a deeper appreciation for the artistry and cultural significance of Indonesian batik.
 
