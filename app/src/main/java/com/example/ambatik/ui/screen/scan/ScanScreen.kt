@@ -72,6 +72,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.ambatik.BuildConfig
 import com.example.ambatik.R
@@ -188,9 +189,10 @@ fun ScanScreen(
                     if (hasImage){
                         Image(
                             contentDescription = "Image Scan Batik",
-                            painter = rememberImagePainter(capturedImage),
+                            painter = rememberAsyncImagePainter(capturedImage),
                             modifier = modifier
                                 .size(300.dp, 400.dp)
+                                .clip(RoundedCornerShape(20.dp))
                                 .border(
                                     2.dp,
                                     color = colorScheme.onSurface,
