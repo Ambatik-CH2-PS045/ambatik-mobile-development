@@ -14,7 +14,7 @@ import retrofit2.HttpException
 class OrderViewModel(private val repository: OrderRepository): ViewModel() {
     val error = MutableLiveData<String?>()
     val status: MutableLiveData<Boolean> = MutableLiveData()
-    val orderList = MutableLiveData<List<DataItemOrder>>()
+    val orderList = MutableLiveData<List<DataItemOrder?>?>()
 
     fun getOrder(id: Int){
         viewModelScope.launch {

@@ -19,7 +19,7 @@ class ArticleViewModel(private val repository: ArticleRepository): ViewModel() {
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
-    val articleList = MutableLiveData<List<DataItem>>()
+    val articleList = MutableLiveData<List<DataItem?>?>()
 
     fun getStory(){
         _loading.postValue(true)

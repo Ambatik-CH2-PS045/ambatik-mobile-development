@@ -145,14 +145,16 @@ fun ArticelScreen(
                         colors = CardDefaults.cardColors(colorScheme.onPrimary),
                         modifier = modifier
                             .clickable {
-                                navigateToDetail(data.id)
+                                if (data != null) {
+                                    data?.id?.let { navigateToDetail(it) }
+                                }
                             }
                     ) {
                         ArticleItem(
-                            image = data.urlBanner,
-                            title = data.title,
-                            createAt = data.createdAt,
-                            totalLike = data.totalLike.toString(),
+                            image = data?.urlBanner ?: "",
+                            title = data?.title ?: "",
+                            createAt = data?.createdAt ?: "",
+                            totalLike = data?.totalLike.toString() ?: "",
                         )
                     }
                 }

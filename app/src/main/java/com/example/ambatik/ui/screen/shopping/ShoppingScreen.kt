@@ -146,15 +146,15 @@ fun ShoppingScreen(
             ){
                 items(shopListState.value ?: emptyList()){ data ->
                     ProductBatikItem(
-                        image = data.urlProduct,
-                        nameProduct = data.name,
-                        price = data.price.toString(),
-                        store = data.storeName,
-                        rating = data.rating.toDouble(),
-                        productSold = data.productSold.toString(),
+                        image = data?.urlProduct ?: "",
+                        nameProduct = data?.name ?: "",
+                        price = data?.price.toString(),
+                        store = data?.storeName ?: "",
+                        rating = data?.rating?.toDouble() ?: 0.0,
+                        productSold = data?.productSold.toString(),
                         modifier = modifier
                             .clickable {
-                                navigateToDetailShop(data.id)
+                                data?.id?.let { navigateToDetailShop(it) }
                             }
                             .animateItemPlacement(tween(durationMillis = 100))
                     )

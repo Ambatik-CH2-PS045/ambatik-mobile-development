@@ -8,36 +8,36 @@ import kotlinx.parcelize.Parcelize
 data class ResponseShop(
 
 	@field:SerializedName("data")
-	val data: List<DataItemShop>,
+	val data: List<DataItemShop?>? = null,
 
 	@field:SerializedName("error")
-	val error: Boolean,
+	val error: Boolean? = null,
 
 	@field:SerializedName("message")
-	val message: String
+	val message: String? = null
 ) : Parcelable
 
 @Parcelize
 data class DataItemShop(
 
 	@field:SerializedName("price")
-	val price: Int,
+	val price: Int? = null,
 
 	@field:SerializedName("name")
-	val name: String,
+	val name: String? = null,
 
 	@field:SerializedName("rating")
-	val rating: Double,
+	val rating: Double? = null,
 
 	@field:SerializedName("url_product")
-	val urlProduct: String,
+	val urlProduct: String? = null,
 
 	@field:SerializedName("store_name")
-	val storeName: String,
+	val storeName: String? = null,
 
 	@field:SerializedName("id")
-	val id: Int,
+	val id: Int? = null,
 
 	@field:SerializedName("product_sold")
-	val productSold: Int
+	val productSold: Int? = null
 ) : Parcelable

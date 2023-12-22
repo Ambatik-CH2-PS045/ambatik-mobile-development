@@ -15,9 +15,9 @@ class ShopRepository(private val apiService: ApiService, private val userPrefere
         return apiService.getDetailShop(id)
     }
 
-    suspend fun searchShop(query: String): List<DataItemShop> {
-        return apiService.getShop().data.filter {
-            it.name.contains(query, ignoreCase = true)
+    suspend fun searchShop(query: String): List<DataItemShop?>? {
+        return apiService.getShop().data?.filter {
+            it?.name?.contains(query, ignoreCase = true) == true
         }
     }
 

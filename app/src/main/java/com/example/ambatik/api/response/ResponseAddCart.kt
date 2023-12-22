@@ -8,11 +8,11 @@ import kotlinx.parcelize.Parcelize
 data class ResponseAddCart(
 
 	@field:SerializedName("error")
-	val error: Boolean,
+	val error: Boolean? = null,
 
 	@field:SerializedName("message")
-	val message: String,
+	val message: String? = null,
 
 	@field:SerializedName("firstTimeAdded")
-	val firstTimeAdded: Boolean
+	val firstTimeAdded: Boolean? = null
 ) : Parcelable

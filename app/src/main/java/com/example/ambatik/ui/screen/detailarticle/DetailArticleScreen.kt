@@ -82,18 +82,18 @@ fun DetailArticleScreen(
         if (userModel.isLogin){
             articleListState.value?.let { detailArticle ->
                 var holdLike by remember { mutableStateOf("") }
-                if (detailArticle.likes.isEmpty()){
+                if (detailArticle.likes?.isEmpty() == true){
                     holdLike = "0"
                 }else{
-                    holdLike = detailArticle.likes.firstOrNull()!!.statusLike
+                    holdLike = detailArticle.likes?.firstOrNull()!!.statusLike.toString()
                 }
-                Log.d("DetailArticleContent", "${detailArticle.likes.firstOrNull()?.statusLike}")
+                Log.d("DetailArticleContent", "${detailArticle.likes?.firstOrNull()?.statusLike}")
                 DetailArticleContent(
                     image = detailArticle.urlBanner ?: "",
                     title = detailArticle.title ?: "",
                     author = detailArticle.author ?: "",
                     createAt = detailArticle.createdAt ?: "",
-                    totalLike = detailArticle.totalLike,
+                    totalLike = detailArticle.totalLike ?: 0,
                     description = detailArticle.content ?: "",
                     isLiked = holdLike,
                     isLogin = userModel.isLogin,
@@ -107,16 +107,16 @@ fun DetailArticleScreen(
         }else{
             articleListNoLoginState.value?.let { detailArticle ->
                 var holdLike by remember { mutableStateOf("") }
-                if (detailArticle.likes.isNotEmpty()){
+                if (detailArticle.likes?.isNotEmpty() == true){
                     holdLike = "0"
                 }
-                Log.d("DetailArticleContent", "${detailArticle.likes.firstOrNull()?.statusLike}")
+                Log.d("DetailArticleContent", "${detailArticle.likes?.firstOrNull()?.statusLike}")
                 DetailArticleContent(
                     image = detailArticle.urlBanner ?: "",
                     title = detailArticle.title ?: "",
                     author = detailArticle.author ?: "",
                     createAt = detailArticle.createdAt ?: "",
-                    totalLike = detailArticle.totalLike,
+                    totalLike = detailArticle.totalLike ?: 0,
                     description = detailArticle.content ?: "",
                     isLiked = holdLike,
                     isLogin = userModel.isLogin,

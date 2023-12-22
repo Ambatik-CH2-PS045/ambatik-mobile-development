@@ -21,7 +21,7 @@ class ShoppingViewModel(private val repository: ShopRepository): ViewModel() {
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
-    val shopList = MutableLiveData<List<DataItemShop>>()
+    val shopList = MutableLiveData<List<DataItemShop?>?>()
 
     private val _query = mutableStateOf("")
     val query: State<String> get() = _query

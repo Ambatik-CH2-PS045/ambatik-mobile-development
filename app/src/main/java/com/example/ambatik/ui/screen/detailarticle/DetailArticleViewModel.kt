@@ -15,9 +15,9 @@ import retrofit2.HttpException
 class DetailArticleViewModel(private val repository: ArticleRepository): ViewModel() {
     val error = MutableLiveData<String?>()
     val status: MutableLiveData<Boolean> = MutableLiveData()
-    val detailArticle = MutableLiveData<DataItemArticle>()
-    val detailArticleNoLogin = MutableLiveData<DataItemArticle>()
-    val statusLike: MutableLiveData<Boolean> = MutableLiveData()
+    val detailArticle = MutableLiveData<DataItemArticle?>()
+    val detailArticleNoLogin = MutableLiveData<DataItemArticle?>()
+    val statusLike: MutableLiveData<Boolean?> = MutableLiveData()
 
     fun getDetailStory(id: Int, idUser: Int){
         viewModelScope.launch {
@@ -27,7 +27,7 @@ class DetailArticleViewModel(private val repository: ArticleRepository): ViewMod
                 statusLike.postValue(articleDetailResponse.liked)
                 detailArticle.postValue(articleDetailResponse.data)
                 Log.e("DETAIL ARTICLE", "$detailArticle")
-                Log.d("DETAIL ARTICLE", "${articleDetailResponse.data.likes[0].statusLike}")
+                Log.d("DETAIL ARTICLE", "${articleDetailResponse?.data?.likes?.get(0)?.statusLike}")
             }catch (e: HttpException){
                 val jsonInString = e.response()?.errorBody()?.string()
                 Log.e("DETAIL ARTICLE", "Error response: $jsonInString")

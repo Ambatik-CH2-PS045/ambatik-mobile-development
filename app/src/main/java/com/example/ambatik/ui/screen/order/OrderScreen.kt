@@ -89,20 +89,22 @@ fun OrderScreen(
                 ){
                     items(orderListState.value ?: emptyList()){ data ->
                         var otherItem by remember { mutableStateOf("") }
-                        if(data.otherItem == 0){
+                        if(data?.otherItem == 0){
                             otherItem = ""
                         }else{
-                            otherItem = "+${data.otherItem} product lainnya"
+                            otherItem = "+${data?.otherItem} product lainnya"
                         }
                         OrderItem(
-                            image = data.productUrlProduct,
-                            totalPrice = data.totalPrice.toString(),
-                            totalItem = data.totalItem.toString(),
+                            image = data?.productUrlProduct ?: "",
+                            totalPrice = data?.totalPrice.toString(),
+                            totalItem = data?.totalItem.toString(),
                             otherItem = otherItem,
-                            productName = data.productName,
+                            productName = data?.productName ?: "",
                             modifier = modifier
                                 .clickable {
-                                    navigateToDetailOrder(data.id)
+                                    if (data != null) {
+                                        data.id?.let { navigateToDetailOrder(it) }
+                                    }
                                 }
                         )
                     }

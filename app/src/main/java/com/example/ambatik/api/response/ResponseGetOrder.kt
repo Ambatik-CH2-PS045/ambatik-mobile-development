@@ -8,42 +8,42 @@ import kotlinx.parcelize.Parcelize
 data class ResponseGetOrder(
 
 	@field:SerializedName("availableOrder")
-	val availableOrder: Boolean,
+	val availableOrder: Boolean? = null,
 
 	@field:SerializedName("data")
-	val data: List<DataItemOrder>,
+	val data: List<DataItemOrder?>? = null,
 
 	@field:SerializedName("error")
-	val error: Boolean,
+	val error: Boolean? = null,
 
 	@field:SerializedName("message")
-	val message: String
+	val message: String? = null
 ) : Parcelable
 
 @Parcelize
 data class DataItemOrder(
 
 	@field:SerializedName("product.url_product")
-	val productUrlProduct: String,
+	val productUrlProduct: String? = null,
 
 	@field:SerializedName("total_item")
-	val totalItem: Int,
+	val totalItem: Int? = null,
 
 	@field:SerializedName("createdAt")
-	val createdAt: String,
+	val createdAt: String? = null,
 
 	@field:SerializedName("total_price")
-	val totalPrice: Int,
+	val totalPrice: Int? = null,
 
 	@field:SerializedName("product.id")
-	val productId: Int,
+	val productId: Int? = null,
 
 	@field:SerializedName("product.name")
-	val productName: String,
+	val productName: String? = null,
 
 	@field:SerializedName("id")
-	val id: Int,
+	val id: Int? = null,
 
 	@field:SerializedName("other_item")
-	val otherItem: Int
+	val otherItem: Int? = null
 ) : Parcelable
