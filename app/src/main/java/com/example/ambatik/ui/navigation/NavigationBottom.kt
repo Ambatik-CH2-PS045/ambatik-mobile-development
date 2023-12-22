@@ -170,6 +170,7 @@ fun NavigationBottom(navController: NavHostController, innerPadding: PaddingValu
         ){
             val id = it.arguments?.getInt(idBatik) ?: 0
             DetailBatikScreen(
+                navController,
                 idBatik = id,
                 navigateToDetailProduct = {productId ->
                     navController.navigate(Screen.DetailShop.createRoute(productId))

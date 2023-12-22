@@ -2,6 +2,7 @@ package com.example.ambatik.ui.screen.personalization
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +23,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -74,6 +76,8 @@ fun PersonalizationScreen(
     var stateJawaban1 by remember { mutableStateOf(1) }
     var stateJawaban2 by remember { mutableStateOf(1) }
     var changeScreen by remember { mutableStateOf(false) }
+
+    val loading by viewModel.loading.observeAsState(initial = false)
     val context = LocalContext.current
 
     when(statePertanyaan){
@@ -203,64 +207,77 @@ fun PersonalizationScreen(
                     }
                 }
             }else{
-                LazyColumn(
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = modifier
-                        .padding(horizontal = 16.dp)
-                ){
-                    item {
-                        Text(
-                            text = "Berikut merupakan rekomendasi batik yang cocok buat kamu.",
-                            fontSize = 24.sp,
-                            textAlign = TextAlign.Center,
-                            modifier = modifier
-                                .padding(bottom = 12.dp)
-                                .fillMaxWidth()
-                        )
-                    }
-                    item {
-                        LazyRow(
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
-                        ){
-                            items(rekomendasi.value ?: emptyList()){ data ->
-                                Card(
-                                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary),
-                                    modifier = modifier
-                                        .size(150.dp, 200.dp)
-                                        .clickable {
-                                            data?.id?.let { navigateToDetailBatik(it) }
+                if (!loading){
+                    LazyColumn(
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = modifier
+                            .padding(horizontal = 16.dp)
+                    ){
+                        item {
+                            Text(
+                                text = "Berikut merupakan rekomendasi batik yang cocok buat kamu.",
+                                fontSize = 24.sp,
+                                textAlign = TextAlign.Center,
+                                modifier = modifier
+                                    .padding(bottom = 12.dp)
+                                    .fillMaxWidth()
+                            )
+                        }
+                        item {
+                            LazyRow(
+                                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                            ){
+                                items(rekomendasi.value ?: emptyList()){ data ->
+                                    Card(
+                                        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary),
+                                        modifier = modifier
+                                            .size(150.dp, 200.dp)
+                                            .clickable {
+                                                data?.id?.let { navigateToDetailBatik(it) }
+                                            }
+                                    ) {
+                                        Column {
+                                            AsyncImage(
+                                                model = data?.urlImage,
+                                                contentDescription = "PERSONALISASI BATIK",
+                                                contentScale = ContentScale.Crop,
+                                                modifier = modifier
+                                                    .size(150.dp, 150.dp)
+                                                    .fillMaxWidth()
+                                                    .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp))
+                                            )
+                                            Text(
+                                                text = data?.name ?: "",
+                                                color = MaterialTheme.colorScheme.onSurface,
+                                                fontSize = 16.sp,
+                                                lineHeight = 16.sp,
+                                                maxLines = 1,
+                                                textAlign = TextAlign.Center,
+                                                fontWeight = FontWeight.Bold,
+                                                overflow = TextOverflow.Ellipsis,
+                                                modifier = modifier
+                                                    .padding(12.dp, 8.dp, 12.dp, 0.dp)
+                                                    .fillMaxWidth()
+                                            )
                                         }
-                                ) {
-                                    Column {
-                                        AsyncImage(
-                                            model = data?.urlImage,
-                                            contentDescription = "PERSONALISASI BATIK",
-                                            contentScale = ContentScale.Crop,
-                                            modifier = modifier
-                                                .size(150.dp, 150.dp)
-                                                .fillMaxWidth()
-                                                .clip(RoundedCornerShape(bottomStart = 25.dp, bottomEnd = 25.dp))
-                                        )
-                                        Text(
-                                            text = data?.name ?: "",
-                                            color = MaterialTheme.colorScheme.onSurface,
-                                            fontSize = 16.sp,
-                                            lineHeight = 16.sp,
-                                            maxLines = 1,
-                                            textAlign = TextAlign.Center,
-                                            fontWeight = FontWeight.Bold,
-                                            overflow = TextOverflow.Ellipsis,
-                                            modifier = modifier
-                                                .padding(12.dp, 8.dp, 12.dp, 0.dp)
-                                                .fillMaxWidth()
-                                        )
                                     }
                                 }
                             }
                         }
                     }
+                }
+            }
+            if (loading){
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.5f))
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
+                    )
                 }
             }
         }

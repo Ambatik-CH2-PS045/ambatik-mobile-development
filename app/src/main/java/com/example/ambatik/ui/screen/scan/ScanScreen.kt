@@ -190,6 +190,7 @@ fun ScanScreen(
                         Image(
                             contentDescription = "Image Scan Batik",
                             painter = rememberAsyncImagePainter(capturedImage),
+                            contentScale = ContentScale.Crop,
                             modifier = modifier
                                 .size(300.dp, 400.dp)
                                 .clip(RoundedCornerShape(20.dp))

@@ -1,6 +1,7 @@
 package com.example.ambatik.ui.screen.personalization
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,7 +18,11 @@ class PersonalizationViewModel(private val repository: PersonalizationRepository
     val status: MutableLiveData<Boolean> = MutableLiveData()
     val rekomendasi = MutableLiveData<List<DataItemPersonalisasi?>?>()
 
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
+
     fun personalization(userAnswer: List<Int>){
+        _loading.postValue(true)
         viewModelScope.launch {
             try {
                 val responsePersonalisasi = repository.personalization(userAnswer)
@@ -34,6 +39,8 @@ class PersonalizationViewModel(private val repository: PersonalizationRepository
                 status.value = false
                 error.postValue("Terjadi kesalahan saat memuat data")
                 Log.d("PERSONALISASI", "$e")
+            }finally {
+                _loading.value = false
             }
         }
     }

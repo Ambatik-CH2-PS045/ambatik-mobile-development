@@ -1,5 +1,6 @@
 package com.example.ambatik.ui.screen.detailbatik
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,13 +33,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.ambatik.data.factory.BatikModelFactory
 import com.example.ambatik.ui.components.shop.ProductBatikItem
+import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 @Composable
 fun DetailBatikScreen(
+    navController: NavHostController = rememberNavController(),
     idBatik: Int,
     modifier: Modifier = Modifier,
     viewModel: DetailBatikViewModel = viewModel(
@@ -48,6 +53,11 @@ fun DetailBatikScreen(
 ) {
     val detailBatikState = viewModel.detailBatik.observeAsState()
     val produk = viewModel.produkBatik.observeAsState()
+
+    BackHandler(enabled = true) {
+        navController.popBackStack()
+    }
+
 
     LaunchedEffect(Unit){
         viewModel.getDetailBatik(idBatik)
