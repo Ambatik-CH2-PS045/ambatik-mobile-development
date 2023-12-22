@@ -75,7 +75,6 @@ fun AboutScreen(
                 modifier = modifier
                     .padding(vertical = 12.dp)
             )
-
             Text(
                 text = "Contributors",
                 fontWeight = FontWeight.Bold,
