@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -38,7 +36,6 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.ambatik.data.factory.BatikModelFactory
 import com.example.ambatik.ui.components.shop.ProductBatikItem
-import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.theme.AmbatikTheme
 
 @Composable
@@ -57,7 +54,6 @@ fun DetailBatikScreen(
     BackHandler(enabled = true) {
         navController.popBackStack()
     }
-
 
     LaunchedEffect(Unit){
         viewModel.getDetailBatik(idBatik)

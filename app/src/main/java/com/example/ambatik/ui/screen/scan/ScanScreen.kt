@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,14 +22,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.PhotoLibrary
@@ -73,7 +67,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import com.example.ambatik.BuildConfig
 import com.example.ambatik.R
 import com.example.ambatik.data.factory.BatikModelFactory
@@ -86,7 +79,6 @@ import com.example.ambatik.ui.theme.AmbatikTheme
 import com.example.ambatik.utlis.createCustomTempFile
 import com.example.ambatik.utlis.uriToFile
 import java.util.Objects
-import java.util.logging.Handler
 
 @Composable
 fun ScanScreen(
@@ -100,7 +92,6 @@ fun ScanScreen(
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore),
     ){
     var scanBatikState by remember { mutableStateOf(false) }
-    val statusState by viewModel.status.observeAsState(false)
     val hasilPredictBatik = viewModel.detailScanBatik.observeAsState()
     val akurasiBatik = viewModel.akurasiBatik.observeAsState().value
     val rekomendasiBatik = viewModel.rekomendasiProduk.observeAsState()

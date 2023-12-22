@@ -30,7 +30,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -70,10 +69,6 @@ fun StartQuizScreen(
     var selectedAnswers by remember { mutableStateOf(mutableListOf<Int>()) }
     var selectedQuestion by remember { mutableStateOf(mutableListOf<Int>()) }
     var changeScreen by remember { mutableStateOf(false) }
-
-    val scope = rememberCoroutineScope()
-
-    val context = LocalContext.current
     
     var state by remember { mutableStateOf(false) }
 

@@ -64,7 +64,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import com.example.ambatik.BuildConfig
 import com.example.ambatik.data.factory.UserModelFactory
 import com.example.ambatik.data.pref.UserModel

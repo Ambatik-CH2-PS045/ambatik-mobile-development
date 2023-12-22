@@ -2,11 +2,9 @@ package com.example.ambatik.ui.screen.articlelike
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -50,7 +48,6 @@ fun ArticleLikeScreen(
 ){
     val likeListArticleState = viewModel.likeArticleList.observeAsState()
     val statusState by viewModel.status.observeAsState(false)
-    val errorState by viewModel.error.observeAsState(null)
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
 
     LaunchedEffect(userModel.id){

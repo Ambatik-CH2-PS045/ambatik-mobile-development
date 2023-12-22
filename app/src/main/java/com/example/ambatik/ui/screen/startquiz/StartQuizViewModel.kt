@@ -1,7 +1,6 @@
 package com.example.ambatik.ui.screen.startquiz
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,8 +21,6 @@ class StartQuizViewModel(private val repository: QuizRepository): ViewModel() {
     val quizAnswer = MutableLiveData<List<AnswersItem?>?>()
 
     val submitQuizez = MutableLiveData<Summary?>()
-    private val _statusSubmitQuiz: MutableLiveData<Boolean> = MutableLiveData()
-    val statusSubmitQuiz: LiveData<Boolean> = _statusSubmitQuiz
     val errorSubmit = MutableLiveData<String>()
 
     fun getQuestion(idModul: Int, idQuestion: Int){
@@ -64,11 +61,9 @@ class StartQuizViewModel(private val repository: QuizRepository): ViewModel() {
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ResponseCheckout::class.java)
                 val errorMassage = errorBody?.message ?: "Terjadi kesalahan saat Submit Quiz"
-                _statusSubmitQuiz.value = false
                 errorSubmit.postValue(errorMassage)
                 Log.d("SUBMIT QUIZ", "$e")
             }catch (e: HttpException){
-                _statusSubmitQuiz.value = false
                 errorSubmit.postValue("Terjadi kesalahan saat memuat data")
                 Log.d("SUBMIT QUIZ", "$e")
             }

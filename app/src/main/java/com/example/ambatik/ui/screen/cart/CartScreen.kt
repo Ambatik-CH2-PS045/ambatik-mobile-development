@@ -45,11 +45,8 @@ import com.example.ambatik.data.pref.UserModel
 import com.example.ambatik.data.pref.UserPreference
 import com.example.ambatik.data.pref.dataStore
 import com.example.ambatik.ui.components.cart.CartItem
-import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.theme.AmbatikTheme
 import com.example.ambatik.utlis.formatCurrency
-import kotlinx.coroutines.runBlocking
-import java.util.logging.Handler
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -66,7 +63,6 @@ fun CartScreen(
     navigateToOrder: () -> Unit
 ){
     val dataCartListState = viewModel.dataCart.observeAsState()
-    val statusState by viewModel.status.observeAsState(false)
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
     val context = LocalContext.current
 

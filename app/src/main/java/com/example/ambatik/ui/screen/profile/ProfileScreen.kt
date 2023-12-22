@@ -1,6 +1,5 @@
 package com.example.ambatik.ui.screen.profile
 
-import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -44,7 +43,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
@@ -79,7 +77,6 @@ fun ProfileScreen(
             }
         )
     }
-
 
     LaunchedEffect(userModel.id){
         viewModel.getDetailUser(userModel.id)

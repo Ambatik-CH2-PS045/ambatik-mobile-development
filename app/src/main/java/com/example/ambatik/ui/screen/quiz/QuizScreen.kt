@@ -13,11 +13,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Stars
 import androidx.compose.material3.Icon
@@ -76,7 +74,6 @@ fun QuizScreen(
     val listQuizState = viewModel.quizList.observeAsState()
     val listLeaderboard = viewModel.leaderboardList.observeAsState()
     val detailUserState = viewModelProfile.detailUser.observeAsState()
-    val statusState by viewModel.status.observeAsState(false)
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("Quiz", "Leaderboard")

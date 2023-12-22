@@ -1,7 +1,6 @@
 package com.example.ambatik.ui.screen.cart
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,8 +16,6 @@ class CartViewModel(private val repository: CartRepository): ViewModel() {
     val status: MutableLiveData<Boolean> = MutableLiveData()
     val dataCart = MutableLiveData<ResponseCart>()
 
-    private val _statusChangeCart: MutableLiveData<Boolean> = MutableLiveData()
-    val statusChangeCart: LiveData<Boolean> = _statusChangeCart
 
     val errorChangeToCart = MutableLiveData<String?>()
 
@@ -48,17 +45,14 @@ class CartViewModel(private val repository: CartRepository): ViewModel() {
         viewModelScope.launch {
             try {
                 val changeQtyResponse = repository.addToCart(idUser, productId, command)
-                _statusChangeCart.value = true
                 Log.d("CHANGE CART", "$changeQtyResponse")
             }catch (e: HttpException){
                 val jsonInString = e.response()?.errorBody()?.string()
                 val errorBody = Gson().fromJson(jsonInString, ResponseAddCart::class.java)
                 val errorMassage = errorBody?.message ?: "Terjadi kesalahan saat menambah cart"
-                _statusChangeCart.value = false
                 errorChangeToCart.postValue(errorMassage)
                 Log.d("CHANGE CART", "$e")
             }catch (e: HttpException){
-                _statusChangeCart.value = false
                 errorChangeToCart.postValue("Terjadi kesalahan saat menambah cart")
                 Log.d("CHANGE CART", "$e")
             }

@@ -22,17 +22,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.ambatik.R
-import com.example.ambatik.data.factory.UserModelFactory
 import com.example.ambatik.ui.navigation.Screen
 import com.example.ambatik.ui.theme.AmbatikTheme
 import kotlinx.coroutines.launch
@@ -42,9 +39,6 @@ import kotlinx.coroutines.launch
 fun AmbatikApp(
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
-    viewModel: WelcomeViewModel = viewModel(
-        factory = UserModelFactory.getInstance(LocalContext.current)
-    ),
 ){
     val scope = rememberCoroutineScope()
 

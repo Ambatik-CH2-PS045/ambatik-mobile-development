@@ -246,7 +246,6 @@ fun DetailShopContent(
             }
         }
     }
-
 }
 
 @Preview

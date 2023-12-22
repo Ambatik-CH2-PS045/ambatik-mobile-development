@@ -65,8 +65,6 @@ fun ShoppingScreen(
     userPreference: UserPreference = UserPreference.getInstance(LocalContext.current.dataStore),
 ) {
     val shopListState = viewModel.shopList.observeAsState()
-    val statusState by viewModel.status.observeAsState(false)
-    val errorState by viewModel.error.observeAsState(null)
     val query by viewModel.query
 
     val userModel by userPreference.getSession().collectAsState(initial = UserModel("", "", false, 0))

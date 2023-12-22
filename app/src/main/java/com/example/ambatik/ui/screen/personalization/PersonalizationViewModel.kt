@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ambatik.api.response.DataItemPersonalisasi
-import com.example.ambatik.api.response.ResponseCheckout
 import com.example.ambatik.api.response.ResponsePersonalizationBatik
 import com.example.ambatik.data.repository.PersonalizationRepository
 import com.google.gson.Gson
